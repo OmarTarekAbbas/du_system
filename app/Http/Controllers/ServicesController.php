@@ -206,11 +206,6 @@ class ServicesController extends Controller {
         $message = '<!DOCTYPE html>
 					<html lang="en-US">
 						<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<<<<<<< HEAD
-
-=======
-
->>>>>>> origin/yousef
 						</head>
 						<body>
 							<h2>' . $subject . '</h2>
@@ -236,11 +231,6 @@ class ServicesController extends Controller {
         $message2 = '<!DOCTYPE html>
 					<html lang="en-US">
 						<head>
-<<<<<<< HEAD
-
-=======
-
->>>>>>> origin/yousef
 						</head>
 						<body>
 							<h2> ISYS Content for :' . Carbon::now()->format('Y-m-d') . '</h2>
