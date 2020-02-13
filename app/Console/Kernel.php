@@ -59,8 +59,8 @@ class Kernel extends ConsoleKernel
 
         */
 
-        $schedule->call('App\Http\Controllers\ServicesController@TodayMessagesStatus')->dailyAt('08:40');  // our time is 10+2 = 12
-        $schedule->call('App\Http\Controllers\ServicesController@toSendTomorrow')->dailyAt('08:45');
+      //  $schedule->call('App\Http\Controllers\ServicesController@TodayMessagesStatus')->dailyAt('08:40');  // our time is 10+2 = 12
+      //  $schedule->call('App\Http\Controllers\ServicesController@toSendTomorrow')->dailyAt('08:45');
       //  $schedule->call('App\Http\Controllers\ServicesController@notSendTomrrow')->dailyAt('09:20');
     }
 
