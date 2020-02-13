@@ -1,0 +1,4143 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.api.sdp.ericsson.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://www.ericsson.com/com/ericsson/sdp/api/ws" name="UnifiedPartnerService" targetNamespace="http://ws.api.sdp.ericsson.com/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.drutt.com/msdp/userprofile-v2" targetNamespace="http://ws.drutt.com/msdp/userprofile-v2" version="1.0">
+
+  <xs:element name="WSException">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="errorCode" type="xs:int"/>
+        <xs:element name="message" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="createUserProfile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userProfileInformation" type="tns:userProfileInformation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="createUserProfileResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="uid" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deleteUserProfile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deleteUserProfileById">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="uid" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deleteUserProfileByIdResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deleteUserProfileResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMeta">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="keys" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMetaAsString">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="key" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMetaAsStringResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMetaAsStrings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="key" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMetaAsStringsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMetaResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="metaWs" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMsisdn">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMsisdnResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="msisdn" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserProfileInformation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userURI" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="key" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserProfileInformationById">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="uid" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="key" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserProfileInformationByIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userProfileInformation" type="tns:userProfileInformation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserProfileInformationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userProfileInformation" type="tns:userProfileInformation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="setMeta_String">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="key" type="xs:string"/>
+        <xs:element minOccurs="0" name="value" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="setMeta_StringResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="setMeta_Strings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="key" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="value" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="setMeta_StringsResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="setMetas">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="setMetasResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="setMsisdn">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="msisdn" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="setMsisdnResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="setPincode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="pincode" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="setPincodeResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="updateUserProfile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userProfileInformation" type="tns:userProfileInformation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="updateUserProfileResponse">
+    <xs:complexType>
+      <xs:sequence/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="userProfileExist">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="userProfileExistResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="xs:boolean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="metaWs">
+    <xs:sequence>
+      <xs:element name="key" type="xs:string"/>
+      <xs:element name="value" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="userProfileInformation">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+      <xs:element name="msisdn" type="xs:string"/>
+      <xs:element name="pincode" type="xs:string"/>
+      <xs:element name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="uid" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.drutt.com/msdp/commerce/v7" targetNamespace="http://ws.drutt.com/msdp/commerce/v7" version="1.0">
+
+  <xs:element name="WSException">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="errorCode" type="xs:int"/>
+        <xs:element minOccurs="0" name="message" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="batchDeactivatePurchasesByServiceId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="serviceId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="batchDeactivatePurchasesByServiceIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:batchOperationReceiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="batchRefundByServiceId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="serviceId" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="refundMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="batchRefundByServiceIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:batchOperationReceiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="checkValidTicket">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userURI" type="xs:string"/>
+        <xs:element name="premiumResource" type="tns:premiumResource"/>
+        <xs:element name="validSeconds" type="xs:long"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="checkValidTicketResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="xs:boolean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="consume">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userURI" type="xs:string"/>
+        <xs:element name="serviceId" type="xs:string"/>
+        <xs:element name="premiumResource" type="tns:premiumResource"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="consumeByTicketId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ticketId" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="consumeByTicketIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="consumeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="createPremiumOffers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userURI" type="xs:string"/>
+        <xs:element name="serviceId" type="xs:string"/>
+        <xs:element name="premiumResource" type="tns:premiumResource"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="createPremiumOffersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:premiumOfferWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deactivateOneTimePurchase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="purchaseId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deactivatePurchaseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deactivateRecurrentPurchase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="recurrentPurchaseId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="extendOneTimePurchase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="purchaseId" type="xs:string"/>
+        <xs:element name="extendTime" type="xs:long"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="extendOneTimePurchaseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="extendRecurrentPurchase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="recurrentPurchaseId" type="xs:string"/>
+        <xs:element name="extendTime" type="xs:long"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="extendRecurrentPurchaseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="fullGift">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="senderURI" type="xs:string"/>
+        <xs:element name="receiverURI" type="xs:string"/>
+        <xs:element name="serviceId" type="xs:string"/>
+        <xs:element name="premiumResource" type="tns:premiumResource"/>
+        <xs:element name="serviceURL" type="xs:string"/>
+        <xs:element name="productWs" type="tns:productWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="premiumTransactionMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="messageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="fullGiftResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:giftReceiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="fullPurchase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userURI" type="xs:string"/>
+        <xs:element name="serviceId" type="xs:string"/>
+        <xs:element name="premiumResource" type="tns:premiumResource"/>
+        <xs:element name="product" type="tns:productWs"/>
+        <xs:element minOccurs="0" name="subDistributionList" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="fullPurchaseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getBatchOperationItems">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="batchOperationId" type="xs:string"/>
+        <xs:element name="paginationRequest" type="tns:paginationRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getBatchOperationItemsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:batchOperationItemsReceiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getBatchOperationResult">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="batchOperationId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getBatchOperationResultResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:batchOperationResultReceiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getPrices">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userURI" type="xs:string"/>
+        <xs:element name="premiumResource" type="tns:premiumResource"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getPricesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:priceQuoteWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getProducts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="premiumResource" type="tns:premiumResource"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getProductsByIds">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="productId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getProductsByIdsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:productInfoWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getProductsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:productInfoWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getTicketUsagesByTicketId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userURI" type="xs:string"/>
+        <xs:element name="ticketId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getTicketUsagesByTicketIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:userTicketUsagesWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getTicketsByPurchaseId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userURI" type="xs:string"/>
+        <xs:element name="purchaseId" type="xs:string"/>
+        <xs:element minOccurs="0" name="filter" type="tns:ticketFilterWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getTicketsByPurchaseIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:userTicketWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserPurchases">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userURI" type="xs:string"/>
+        <xs:element name="paginationRequest" type="tns:paginationRequest"/>
+        <xs:element minOccurs="0" name="sortItem" type="tns:sortItem"/>
+        <xs:element minOccurs="0" name="filter" type="tns:purchaseFilterWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserPurchasesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:userPurchasesWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserTickets">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResource" type="tns:premiumResource"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserTicketsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:userTicketWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="gift">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="senderURI" type="xs:string"/>
+        <xs:element name="receiverURI" type="xs:string"/>
+        <xs:element name="serviceId" type="xs:string"/>
+        <xs:element name="premiumResource" type="tns:premiumResource"/>
+        <xs:element name="serviceURL" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="premiumTransactionMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="messageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="giftByPremiumOfferId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="receiverURI" type="xs:string"/>
+        <xs:element name="premiumOfferId" type="xs:string"/>
+        <xs:element name="serviceURL" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="premiumTransactionMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="messageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="giftByPremiumOfferIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:giftReceiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="giftByProductId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="senderURI" type="xs:string"/>
+        <xs:element name="receiverURI" type="xs:string"/>
+        <xs:element name="serviceId" type="xs:string"/>
+        <xs:element name="premiumResource" type="tns:premiumResource"/>
+        <xs:element name="productId" type="xs:string"/>
+        <xs:element name="serviceURL" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="premiumTransactionMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="messageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="giftByProductIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:giftReceiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="giftResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:giftReceiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userURI" type="xs:string"/>
+        <xs:element name="serviceId" type="xs:string"/>
+        <xs:element name="premiumResource" type="tns:premiumResource"/>
+        <xs:element minOccurs="0" name="subDistributionList" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchaseByPremiumOfferId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="premiumOfferId" type="xs:string"/>
+        <xs:element minOccurs="0" name="subDistributionList" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchaseByPremiumOfferIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchaseByProductId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userURI" type="xs:string"/>
+        <xs:element name="serviceId" type="xs:string"/>
+        <xs:element name="premiumResource" type="tns:premiumResource"/>
+        <xs:element name="productId" type="xs:string"/>
+        <xs:element minOccurs="0" name="subDistributionList" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchaseByProductIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchaseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="refill">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ticketId" type="xs:string"/>
+        <xs:element name="numberOfUsages" type="xs:int"/>
+        <xs:element minOccurs="0" name="expirationTime" type="tns:ticketExpirationWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="refillResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:refillReceiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="refund">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="purchaseId" type="xs:string"/>
+        <xs:element minOccurs="0" name="amount" type="xs:long"/>
+        <xs:element minOccurs="0" name="closePurchase" type="xs:boolean"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="refundMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="refundResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="resumeRecurrentPurchase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="recurrentPurchaseId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="resumeRecurrentPurchaseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="stopPurchaseRenewal">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="recurrentPurchaseId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="stopPurchaseRenewalResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="switchSubDistributionList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="subDistributionList" type="xs:string"/>
+        <xs:element name="purchaseId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="switchSubDistributionListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="giftReceiptWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="billingId" type="xs:string"/>
+      <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+      <xs:element minOccurs="0" name="associatedPurchaseId" type="xs:string"/>
+      <xs:element name="purchaseIsDone" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="recurrentPurchaseId" type="xs:string"/>
+      <xs:element name="statusCode" type="xs:int"/>
+      <xs:element name="unlimitedTicketUsed" type="xs:boolean"/>
+      <xs:element name="ticketConsumed" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="transactionId" type="xs:string"/>
+      <xs:element minOccurs="0" name="billingErrorInformation" type="tns:billingErrorInformation"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="billingErrorInformation">
+    <xs:sequence>
+      <xs:element name="errorCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="errorMessage" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="variables" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="priceQuoteWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="currencyCode" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="metas" nillable="true" type="tns:metaWs"/>
+      <xs:element name="price" type="xs:long"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element minOccurs="0" name="vatCode" type="xs:string"/>
+      <xs:element name="vatPrice" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="metaWs">
+    <xs:sequence>
+      <xs:element name="key" type="xs:string"/>
+      <xs:element minOccurs="0" name="value" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="receiptWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="billingId" type="xs:string"/>
+      <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+      <xs:element name="purchaseIsDone" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="recurrentPurchaseId" type="xs:string"/>
+      <xs:element name="statusCode" type="xs:int"/>
+      <xs:element name="unlimitedTicketUsed" type="xs:boolean"/>
+      <xs:element name="ticketConsumed" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="transactionId" type="xs:string"/>
+      <xs:element minOccurs="0" name="billingErrorInformation" type="tns:billingErrorInformation"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="batchOperationItemsReceiptWs">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="items" nillable="true" type="tns:batchOperationItemWs"/>
+      <xs:element name="page" type="tns:paginationResult"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="batchOperationItemWs">
+    <xs:sequence>
+      <xs:element name="purchaseId" type="xs:string"/>
+      <xs:element name="successFlag" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="user" type="tns:userWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="userWs">
+    <xs:sequence>
+      <xs:element name="msisdn" type="xs:string"/>
+      <xs:element name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="paginationResult">
+    <xs:sequence>
+      <xs:element name="lastItem" type="xs:int"/>
+      <xs:element name="nbrIems" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="premiumResource">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="relativeExpirationType">
+    <xs:sequence>
+      <xs:element name="expiration" type="xs:int"/>
+      <xs:element name="expirationUnit" type="tns:recurrentUnitType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ticketFilterWs">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractFilterWs">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="premiumResource" type="tns:premiumResource"/>
+          <xs:element minOccurs="0" name="state" type="tns:ticketState"/>
+          <xs:element minOccurs="0" name="type" type="tns:ticketType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstractFilterWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:string"/>
+      <xs:element minOccurs="0" name="start" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="end" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseFilterWs">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractFilterWs">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="productId" type="xs:string"/>
+          <xs:element minOccurs="0" name="type" type="tns:purchaseType"/>
+          <xs:element minOccurs="0" name="providerId" type="xs:string"/>
+          <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+          <xs:element minOccurs="0" name="state" type="tns:purchaseState"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="productInfoWs">
+    <xs:complexContent>
+      <xs:extension base="tns:productWs">
+        <xs:sequence>
+          <xs:element name="enabled" type="xs:boolean"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+          <xs:element minOccurs="0" name="priceCode" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="priceQuotes" nillable="true" type="tns:priceQuoteWs"/>
+          <xs:element name="recurrent" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="recurrenceExpiration" type="tns:recurrenceExpirationWs"/>
+          <xs:element minOccurs="0" name="renewalsAllowed" type="xs:int"/>
+          <xs:element minOccurs="0" name="recurrentInterval" type="xs:int"/>
+          <xs:element minOccurs="0" name="recurrentTrialInterval" type="xs:int"/>
+          <xs:element minOccurs="0" name="recurrentTrialUnit" type="tns:recurrentUnitType"/>
+          <xs:element minOccurs="0" name="recurrentUnit" type="tns:recurrentUnitType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="productWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="price" type="tns:priceWs"/>
+      <xs:element name="productId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="tickets" nillable="true" type="tns:ticketWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="recurrenceExpirationWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="absolute" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="relative" type="tns:relativeExpirationType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="priceWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="currencyCode" type="xs:string"/>
+      <xs:element name="price" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ticketWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+      <xs:element minOccurs="0" name="expirationTime" type="tns:ticketExpirationWs"/>
+      <xs:element minOccurs="0" name="premiumResource" type="tns:premiumResource"/>
+      <xs:element name="usageUnlimited" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="count" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ticketExpirationWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="absolute" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="relative" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="batchOperationReceiptWs">
+    <xs:sequence>
+      <xs:element name="statusCode" type="xs:int"/>
+      <xs:element name="batchOperationId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="batchOperationResultReceiptWs">
+    <xs:sequence>
+      <xs:element name="batchOperationId" type="xs:string"/>
+      <xs:element name="statusCode" type="xs:int"/>
+      <xs:element name="created" type="xs:dateTime"/>
+      <xs:element name="ended" type="xs:dateTime"/>
+      <xs:element name="operationType" type="xs:string"/>
+      <xs:element name="successCount" type="xs:int"/>
+      <xs:element name="failureCount" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="paginationRequest">
+    <xs:sequence>
+      <xs:element name="fromItem" type="xs:int"/>
+      <xs:element name="maxItems" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="sortItem">
+    <xs:sequence>
+      <xs:element name="field" type="tns:sortedField"/>
+      <xs:element name="order" type="tns:sortedOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="userTicketUsagesWs">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="created" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="userTicketWs">
+    <xs:sequence>
+      <xs:element name="ticketId" type="xs:string"/>
+      <xs:element minOccurs="0" name="state" type="tns:ticketState"/>
+      <xs:element minOccurs="0" name="count" type="xs:int"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="expirationTime" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="limit" type="xs:int"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element name="purchaseId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResource" type="tns:premiumResource"/>
+      <xs:element name="ticketType" type="tns:ticketType"/>
+      <xs:element minOccurs="0" name="recurrentPurchaseId" type="xs:string"/>
+      <xs:element minOccurs="0" name="recurrentExpiresTime" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="recurrentCancelTime" type="xs:dateTime"/>
+      <xs:element name="usageUnlimited" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="premiumOfferWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+      <xs:element name="premiumOfferId" type="xs:string"/>
+      <xs:element name="price" type="tns:priceWs"/>
+      <xs:element name="productId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="tickets" nillable="true" type="tns:userTicketWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="refillReceiptWs">
+    <xs:sequence>
+      <xs:element name="statusCode" type="xs:int"/>
+      <xs:element name="purchaseId" type="xs:string"/>
+      <xs:element name="compensationTicketId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseWs">
+    <xs:sequence>
+      <xs:element name="purchaseId" type="xs:string"/>
+      <xs:element minOccurs="0" name="price" type="xs:string"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="created" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element minOccurs="0" name="providerId" type="xs:string"/>
+      <xs:element minOccurs="0" name="vatCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="vatPrice" type="xs:string"/>
+      <xs:element minOccurs="0" name="type" type="tns:purchaseType"/>
+      <xs:element minOccurs="0" name="state" type="tns:purchaseState"/>
+      <xs:element minOccurs="0" name="recurrentPurchaseId" type="xs:string"/>
+      <xs:element minOccurs="0" name="recurrentIntervalExpirationTime" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="recurrenceCancelTime" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="recurrenceExpirationTime" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="renewalsAllowed" type="xs:int"/>
+      <xs:element minOccurs="0" name="renewalsDone" type="xs:int"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="userPurchasesWs">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchases" nillable="true" type="tns:purchaseWs"/>
+      <xs:element minOccurs="0" name="page" type="tns:paginationResult"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="purchaseType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NORMAL"/>
+      <xs:enumeration value="GIFT_PURCHASE"/>
+      <xs:enumeration value="GIFT"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="purchaseState">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OPEN"/>
+      <xs:enumeration value="OFFERED"/>
+      <xs:enumeration value="CLOSED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="recurrentUnitType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DAY"/>
+      <xs:enumeration value="MONTH"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ticketState">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OPEN"/>
+      <xs:enumeration value="CLOSED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ticketType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NORMAL"/>
+      <xs:enumeration value="COMPENSATION"/>
+      <xs:enumeration value="GIFT"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="sortedField">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="created"/>
+      <xs:enumeration value="serviceId"/>
+      <xs:enumeration value="productId"/>
+      <xs:enumeration value="providerId"/>
+      <xs:enumeration value="type"/>
+      <xs:enumeration value="state"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="sortedOrder">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="asc"/>
+      <xs:enumeration value="desc"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.drutt.com/msdp/commerce/v2" targetNamespace="http://ws.drutt.com/msdp/commerce/v2" version="1.0">
+
+  <xs:element name="WSException">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="errorCode" type="xs:int"/>
+        <xs:element minOccurs="0" name="message" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="checkValidSubscription">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+        <xs:element name="validSeconds" type="xs:long"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="checkValidSubscriptionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="return" type="xs:boolean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="consume">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="consumeElseFullPurchaseConsume">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+        <xs:element minOccurs="0" name="product" type="tns:productWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="consumeElseFullPurchaseConsumeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="consumeElsePurchaseConsume">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="consumeElsePurchaseConsumeProductId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+        <xs:element minOccurs="0" name="productId" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="consumeElsePurchaseConsumeProductIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="consumeElsePurchaseConsumeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="consumeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="createPremiumOffers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="createPremiumOffersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:premiumOfferWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deactivatePurchase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+        <xs:element minOccurs="0" name="recurrentSubscriptionId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deactivatePurchaseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="fullPurchase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+        <xs:element minOccurs="0" name="product" type="tns:productWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="fullPurchaseConsume">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+        <xs:element minOccurs="0" name="product" type="tns:productWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="fullPurchaseConsumeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="fullPurchaseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getProducts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getProductsByIds">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="productId" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getProductsByIdsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:productInfoWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getProductsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:productInfoWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserSubscriptions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserSubscriptionsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:userSubscriptionWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserTickets">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getUserTicketsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:userTicketWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchaseConsume">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchaseConsumeProductId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+        <xs:element minOccurs="0" name="productId" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchaseConsumeProductIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchaseConsumeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchasePremiumOffer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="premiumOfferId" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchasePremiumOfferResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchaseProductId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+        <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+        <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+        <xs:element minOccurs="0" name="productId" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchaseProductIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchaseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="refund">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="refundMetas" nillable="true" type="tns:metaWs"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="refundResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="stopPurchaseRenewal">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="recurrentSubscriptionId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="stopPurchaseRenewalResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="receiptWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="billingId" type="xs:string"/>
+      <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+      <xs:element name="purchaseIsDone" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="recurrentSubscriptionId" type="xs:string"/>
+      <xs:element name="statusCode" type="xs:int"/>
+      <xs:element name="subscriptionUsed" type="xs:boolean"/>
+      <xs:element name="ticketConsumed" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="transactionId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="productInfoWs">
+    <xs:complexContent>
+      <xs:extension base="tns:productWs">
+        <xs:sequence>
+          <xs:element name="enabled" type="xs:boolean"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+          <xs:element minOccurs="0" name="priceCode" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="priceQuotes" nillable="true" type="tns:priceQuoteWs"/>
+          <xs:element name="recurrent" type="xs:boolean"/>
+          <xs:element name="recurrentInterval" type="xs:int"/>
+          <xs:element name="recurrentTrialInterval" type="xs:int"/>
+          <xs:element minOccurs="0" name="recurrentTrialUnit" type="xs:string"/>
+          <xs:element minOccurs="0" name="recurrentUnit" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="productWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="price" type="tns:priceWs"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="subscriptions" nillable="true" type="tns:subscriptionWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="tickets" nillable="true" type="tns:ticketWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="metaWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="key" type="xs:string"/>
+      <xs:element minOccurs="0" name="value" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="priceQuoteWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="currencyCode" type="xs:string"/>
+      <xs:element name="price" type="xs:long"/>
+      <xs:element minOccurs="0" name="vatCode" type="xs:string"/>
+      <xs:element name="vatPrice" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="priceWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="currencyCode" type="xs:string"/>
+      <xs:element name="price" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="subscriptionWs">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractTicketWs">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstractTicketWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="expirationTime" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="relativeExpirationTime" type="xs:long"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ticketWs">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractTicketWs">
+        <xs:sequence>
+          <xs:element name="count" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="userSubscriptionWs">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractUserProfileTicketWs">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstractUserProfileTicketWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="expiration" type="xs:dateTime"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+      <xs:element minOccurs="0" name="resourceTypeId" type="xs:string"/>
+      <xs:element minOccurs="0" name="ticketType" type="xs:string"/>
+      <xs:element minOccurs="0" name="recurrentSubscriptionId" type="xs:string"/>
+      <xs:element minOccurs="0" name="recurrentExpiresTimestamp" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="recurrentCancelTimestamp" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="userTicketWs">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractUserProfileTicketWs">
+        <xs:sequence>
+          <xs:element name="count" type="xs:int"/>
+          <xs:element name="limit" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="premiumOfferWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+      <xs:element minOccurs="0" name="premiumOfferId" type="xs:string"/>
+      <xs:element minOccurs="0" name="price" type="tns:priceWs"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="subscriptions" nillable="true" type="tns:userSubscriptionWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="tickets" nillable="true" type="tns:userTicketWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.drutt.com/msdp/commerce" xmlns:ns1="http://ws.drutt.com/msdp/FetchUserSubscription" targetNamespace="http://ws.drutt.com/msdp/commerce" version="1.0">
+
+  <xs:import namespace="http://ws.drutt.com/msdp/FetchUserSubscription"/>
+
+  <xs:element name="WSException" type="ns1:WSException"/>
+
+  <xs:element name="checkUserSubscription" type="tns:checkUserSubscription"/>
+
+  <xs:element name="checkUserSubscriptionResponse" type="tns:checkUserSubscriptionResponse"/>
+
+  <xs:element name="checkValidSubscription" type="tns:checkValidSubscription"/>
+
+  <xs:element name="checkValidSubscriptionResponse" type="tns:checkValidSubscriptionResponse"/>
+
+  <xs:element name="consume" type="tns:consume"/>
+
+  <xs:element name="consumeElseFullPurchaseConsume" type="tns:consumeElseFullPurchaseConsume"/>
+
+  <xs:element name="consumeElseFullPurchaseConsumeResponse" type="tns:consumeElseFullPurchaseConsumeResponse"/>
+
+  <xs:element name="consumeElsePurchaseConsume" type="tns:consumeElsePurchaseConsume"/>
+
+  <xs:element name="consumeElsePurchaseConsumeProductId" type="tns:consumeElsePurchaseConsumeProductId"/>
+
+  <xs:element name="consumeElsePurchaseConsumeProductIdResponse" type="tns:consumeElsePurchaseConsumeProductIdResponse"/>
+
+  <xs:element name="consumeElsePurchaseConsumeResponse" type="tns:consumeElsePurchaseConsumeResponse"/>
+
+  <xs:element name="consumeResponse" type="tns:consumeResponse"/>
+
+  <xs:element name="createPremiumOffers" type="tns:createPremiumOffers"/>
+
+  <xs:element name="createPremiumOffersResponse" type="tns:createPremiumOffersResponse"/>
+
+  <xs:element name="deactivatePurchase" type="tns:deactivatePurchase"/>
+
+  <xs:element name="deactivatePurchaseResponse" type="tns:deactivatePurchaseResponse"/>
+
+  <xs:element name="extendSubscription" type="tns:extendSubscription"/>
+
+  <xs:element name="extendSubscriptionResponse" type="tns:extendSubscriptionResponse"/>
+
+  <xs:element name="fullPurchase" type="tns:fullPurchase"/>
+
+  <xs:element name="fullPurchaseConsume" type="tns:fullPurchaseConsume"/>
+
+  <xs:element name="fullPurchaseConsumeResponse" type="tns:fullPurchaseConsumeResponse"/>
+
+  <xs:element name="fullPurchaseResponse" type="tns:fullPurchaseResponse"/>
+
+  <xs:element name="getProducts" type="tns:getProducts"/>
+
+  <xs:element name="getProductsResponse" type="tns:getProductsResponse"/>
+
+  <xs:element name="getUserSubscriptions" type="tns:getUserSubscriptions"/>
+
+  <xs:element name="getUserSubscriptionsResponse" type="tns:getUserSubscriptionsResponse"/>
+
+  <xs:element name="getUserTickets" type="tns:getUserTickets"/>
+
+  <xs:element name="getUserTicketsResponse" type="tns:getUserTicketsResponse"/>
+
+  <xs:element name="purchase" type="tns:purchase"/>
+
+  <xs:element name="purchaseConsume" type="tns:purchaseConsume"/>
+
+  <xs:element name="purchaseConsumeProductId" type="tns:purchaseConsumeProductId"/>
+
+  <xs:element name="purchaseConsumeProductIdResponse" type="tns:purchaseConsumeProductIdResponse"/>
+
+  <xs:element name="purchaseConsumeResponse" type="tns:purchaseConsumeResponse"/>
+
+  <xs:element name="purchasePremiumOffer" type="tns:purchasePremiumOffer"/>
+
+  <xs:element name="purchasePremiumOfferResponse" type="tns:purchasePremiumOfferResponse"/>
+
+  <xs:element name="purchaseProductId" type="tns:purchaseProductId"/>
+
+  <xs:element name="purchaseProductIdResponse" type="tns:purchaseProductIdResponse"/>
+
+  <xs:element name="purchaseResponse" type="tns:purchaseResponse"/>
+
+  <xs:element name="refund" type="tns:refund"/>
+
+  <xs:element name="refundResponse" type="tns:refundResponse"/>
+
+  <xs:element name="stopPurchaseRenewal" type="tns:stopPurchaseRenewal"/>
+
+  <xs:element name="stopPurchaseRenewalResponse" type="tns:stopPurchaseRenewalResponse"/>
+
+  <xs:complexType name="receiptWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="billingId" type="xs:string"/>
+      <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+      <xs:element name="purchaseIsDone" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="recurrentSubscriptionId" type="xs:string"/>
+      <xs:element name="statusCode" type="xs:int"/>
+      <xs:element name="subscriptionUsed" type="xs:boolean"/>
+      <xs:element name="ticketConsumed" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="transactionId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="productWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="price" type="tns:priceWs"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="subscriptions" nillable="true" type="tns:subscriptionWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="tickets" nillable="true" type="tns:ticketWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="priceWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="currencyCode" type="xs:string"/>
+      <xs:element name="price" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="subscriptionWs">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractTicketWs">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstractTicketWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="expirationTime" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ticketWs">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractTicketWs">
+        <xs:sequence>
+          <xs:element name="count" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="productInfoWs">
+    <xs:complexContent>
+      <xs:extension base="tns:productWs">
+        <xs:sequence>
+          <xs:element name="enabled" type="xs:boolean"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+          <xs:element minOccurs="0" name="priceCode" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="priceQuotes" nillable="true" type="tns:priceQuoteWs"/>
+          <xs:element name="recurrent" type="xs:boolean"/>
+          <xs:element name="recurrentInterval" type="xs:int"/>
+          <xs:element name="recurrentTrialInterval" type="xs:int"/>
+          <xs:element minOccurs="0" name="recurrentTrialUnit" type="xs:string"/>
+          <xs:element minOccurs="0" name="recurrentUnit" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="metaWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="key" type="xs:string"/>
+      <xs:element minOccurs="0" name="value" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="priceQuoteWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="currencyCode" type="xs:string"/>
+      <xs:element name="price" type="xs:long"/>
+      <xs:element minOccurs="0" name="vatCode" type="xs:string"/>
+      <xs:element name="vatPrice" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deactivatePurchase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+      <xs:element minOccurs="0" name="recurrentSubscriptionId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkUserSubscriptionResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createPremiumOffers">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="stopPurchaseRenewalResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="stopPurchaseRenewal">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="recurrentSubscriptionId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserSubscriptionsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:userSubscriptionWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="userSubscriptionWs">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractUserProfileTicketWs">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstractUserProfileTicketWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="expiration" type="xs:dateTime"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+      <xs:element minOccurs="0" name="resourceTypeId" type="xs:string"/>
+      <xs:element minOccurs="0" name="ticketType" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="userTicketWs">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractUserProfileTicketWs">
+        <xs:sequence>
+          <xs:element name="count" type="xs:int"/>
+          <xs:element name="limit" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="purchasePremiumOffer">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="premiumOfferId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchasePremiumOfferResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="fullPurchaseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="extendSubscriptionResponse">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="getUserTicketsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:userTicketWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseConsumeProductId">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkValidSubscriptionResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deactivatePurchaseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseProductId">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseConsumeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkUserSubscription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="msisdn" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="resourceTypeId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consumeElsePurchaseConsume">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="fullPurchaseConsume">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="product" type="tns:productWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="extendSubscription">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="extendParameters" nillable="true" type="tns:extendParamter"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="extendParamter">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="extendTime" type="xs:long"/>
+      <xs:element minOccurs="0" name="id" type="xs:string"/>
+      <xs:element minOccurs="0" name="idType" type="tns:extendTypeEnum"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="metas" nillable="true" type="tns:extMeta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="extMeta">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="key" type="xs:string"/>
+      <xs:element minOccurs="0" name="value" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consumeElseFullPurchaseConsume">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="product" type="tns:productWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseProductIdResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createPremiumOffersResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:premiumOfferWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="premiumOfferWs">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="meta" nillable="true" type="tns:metaWs"/>
+      <xs:element minOccurs="0" name="premiumOfferId" type="xs:string"/>
+      <xs:element minOccurs="0" name="price" type="tns:priceWs"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="subscriptions" nillable="true" type="tns:userSubscriptionWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="tickets" nillable="true" type="tns:userTicketWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getProductsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:productInfoWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="fullPurchaseConsumeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserSubscriptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkValidSubscription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element name="validSeconds" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consumeElseFullPurchaseConsumeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consumeElsePurchaseConsumeProductId">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseConsumeProductIdResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consumeElsePurchaseConsumeProductIdResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consumeElsePurchaseConsumeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consume">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="fullPurchase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="product" type="tns:productWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getProducts">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consumeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseConsume">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="ruleProperties" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="refundResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserTickets">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="refund">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="refundMetas" nillable="true" type="tns:metaWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" nillable="true" type="tns:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="extendTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PURCHASE"/>
+      <xs:enumeration value="USER"/>
+      <xs:enumeration value="RECURRENT"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ws.drutt.com/msdp/FetchUserSubscription" version="1.0">
+
+  <xs:complexType name="WSException">
+    <xs:sequence>
+      <xs:element name="errorCode" type="xs:int"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.api.sdp.ericsson.com/" xmlns:ns4="http://ws.drutt.com/msdp/userprofile-v2" xmlns:ns3="http://ws.drutt.com/msdp/commerce/v2" xmlns:ns2="http://ws.drutt.com/msdp/commerce/v7" xmlns:ns1="http://ws.drutt.com/msdp/commerce" elementFormDefault="unqualified" targetNamespace="http://ws.api.sdp.ericsson.com/" version="1.0">
+
+  <xs:import namespace="http://ws.drutt.com/msdp/commerce"/>
+
+  <xs:import namespace="http://ws.drutt.com/msdp/commerce/v7"/>
+
+  <xs:import namespace="http://ws.drutt.com/msdp/commerce/v2"/>
+
+  <xs:import namespace="http://ws.drutt.com/msdp/userprofile-v2"/>
+
+  <xs:element name="ResponseList" type="tns:ResponseList"/>
+
+  <xs:element name="Subscription">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="productId" type="xs:string"/>
+        <xs:element minOccurs="0" name="description" type="xs:string"/>
+        <xs:element minOccurs="0" name="expirationDate" type="xs:dateTime"/>
+        <xs:element minOccurs="0" name="resourceTypeId" type="xs:string"/>
+        <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+        <xs:element minOccurs="0" name="recurrentId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="cancelUserSubscription" type="tns:cancelUserSubscription"/>
+
+  <xs:element name="cancelUserSubscriptionResponse" type="tns:cancelUserSubscriptionResponse"/>
+
+  <xs:element name="checkUserExists" type="tns:checkUserExists"/>
+
+  <xs:element name="checkUserExistsResponse" type="tns:checkUserExistsResponse"/>
+
+  <xs:element name="checkValidSubscription" type="tns:checkValidSubscription"/>
+
+  <xs:element name="checkValidSubscriptionResponse" type="tns:checkValidSubscriptionResponse"/>
+
+  <xs:element name="consume" type="tns:consume"/>
+
+  <xs:element name="consumeResponse" type="tns:consumeResponse"/>
+
+  <xs:element name="createOffers" type="tns:createOffers"/>
+
+  <xs:element name="createOffersResponse" type="tns:createOffersResponse"/>
+
+  <xs:element name="ensureUserExists" type="tns:ensureUserExists"/>
+
+  <xs:element name="ensureUserExistsResponse" type="tns:ensureUserExistsResponse"/>
+
+  <xs:element name="extendOneTimePurchase" type="tns:extendOneTimePurchase"/>
+
+  <xs:element name="extendOneTimePurchaseResponse" type="tns:extendOneTimePurchaseResponse"/>
+
+  <xs:element name="extendRecurringSubscription" type="tns:extendRecurringSubscription"/>
+
+  <xs:element name="extendRecurringSubscriptionResponse" type="tns:extendRecurringSubscriptionResponse"/>
+
+  <xs:element name="fullPurchaseConsume" type="tns:fullPurchaseConsume"/>
+
+  <xs:element name="fullPurchaseConsumeResponse" type="tns:fullPurchaseConsumeResponse"/>
+
+  <xs:element name="fullPurchaseConsumeWithIPAddress" type="tns:fullPurchaseConsumeWithIPAddress"/>
+
+  <xs:element name="fullPurchaseConsumeWithIPAddressResponse" type="tns:fullPurchaseConsumeWithIPAddressResponse"/>
+
+  <xs:element name="getPrepaidBalance" type="tns:getPrepaidBalance"/>
+
+  <xs:element name="getPrepaidBalanceResponse" type="tns:getPrepaidBalanceResponse"/>
+
+  <xs:element name="getPrepaidBalanceWithIPAddress" type="tns:getPrepaidBalanceWithIPAddress"/>
+
+  <xs:element name="getPrepaidBalanceWithIPAddressResponse" type="tns:getPrepaidBalanceWithIPAddressResponse"/>
+
+  <xs:element name="getStoreFrontPrice" type="tns:getStoreFrontPrice"/>
+
+  <xs:element name="getStoreFrontPriceResponse" type="tns:getStoreFrontPriceResponse"/>
+
+  <xs:element name="getUserAttribute" type="tns:getUserAttribute"/>
+
+  <xs:element name="getUserAttributeResponse" type="tns:getUserAttributeResponse"/>
+
+  <xs:element name="getUserAttributeWithIPAddress" type="tns:getUserAttributeWithIPAddress"/>
+
+  <xs:element name="getUserAttributeWithIPAddressResponse" type="tns:getUserAttributeWithIPAddressResponse"/>
+
+  <xs:element name="getUserAttributes" type="tns:getUserAttributes"/>
+
+  <xs:element name="getUserAttributesResponse" type="tns:getUserAttributesResponse"/>
+
+  <xs:element name="getUserAttributesWithIPAddress" type="tns:getUserAttributesWithIPAddress"/>
+
+  <xs:element name="getUserAttributesWithIPAddressResponse" type="tns:getUserAttributesWithIPAddressResponse"/>
+
+  <xs:element name="listPurchases" type="tns:listPurchases"/>
+
+  <xs:element name="listPurchasesResponse" type="tns:listPurchasesResponse"/>
+
+  <xs:element name="listSubscriptions" type="tns:listSubscriptions"/>
+
+  <xs:element name="listSubscriptionsResponse" type="tns:listSubscriptionsResponse"/>
+
+  <xs:element name="notifyDistributionListText" type="tns:notifyDistributionListText"/>
+
+  <xs:element name="notifyDistributionListTextResponse" type="tns:notifyDistributionListTextResponse"/>
+
+  <xs:element name="notifyDistributionListWapPush" type="tns:notifyDistributionListWapPush"/>
+
+  <xs:element name="notifyDistributionListWapPushResponse" type="tns:notifyDistributionListWapPushResponse"/>
+
+  <xs:element name="offer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:string"/>
+        <xs:element minOccurs="0" name="description" type="xs:string"/>
+        <xs:element name="price" type="xs:long"/>
+        <xs:element minOccurs="0" name="currencyCode" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="prepaidBalance">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="amount" type="xs:long"/>
+        <xs:element minOccurs="0" name="currencyCode" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="purchase" type="tns:purchase"/>
+
+  <xs:element name="purchaseConsume" type="tns:purchaseConsume"/>
+
+  <xs:element name="purchaseConsumeProduct" type="tns:purchaseConsumeProduct"/>
+
+  <xs:element name="purchaseConsumeProductResponse" type="tns:purchaseConsumeProductResponse"/>
+
+  <xs:element name="purchaseConsumeProductWithIPAddress" type="tns:purchaseConsumeProductWithIPAddress"/>
+
+  <xs:element name="purchaseConsumeProductWithIPAddressResponse" type="tns:purchaseConsumeProductWithIPAddressResponse"/>
+
+  <xs:element name="purchaseConsumeResponse" type="tns:purchaseConsumeResponse"/>
+
+  <xs:element name="purchaseOffer" type="tns:purchaseOffer"/>
+
+  <xs:element name="purchaseOfferResponse" type="tns:purchaseOfferResponse"/>
+
+  <xs:element name="purchaseProduct" type="tns:purchaseProduct"/>
+
+  <xs:element name="purchaseProductResponse" type="tns:purchaseProductResponse"/>
+
+  <xs:element name="purchaseResponse" type="tns:purchaseResponse"/>
+
+  <xs:element name="purchaseSubscribeDistributionList" type="tns:purchaseSubscribeDistributionList"/>
+
+  <xs:element name="purchaseSubscribeDistributionListResponse" type="tns:purchaseSubscribeDistributionListResponse"/>
+
+  <xs:element name="refund" type="tns:refund"/>
+
+  <xs:element name="refundResponse" type="tns:refundResponse"/>
+
+  <xs:element name="saveUserAttribute" type="tns:saveUserAttribute"/>
+
+  <xs:element name="saveUserAttributeResponse" type="tns:saveUserAttributeResponse"/>
+
+  <xs:element name="terminateUserSubscription" type="tns:terminateUserSubscription"/>
+
+  <xs:element name="terminateUserSubscriptionResponse" type="tns:terminateUserSubscriptionResponse"/>
+
+  <xs:complexType name="extendRecurringSubscription">
+    <xs:sequence>
+      <xs:element name="extendTime" type="xs:long"/>
+      <xs:element minOccurs="0" name="recurrentId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="extendRecurringSubscriptionResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FaultInfo">
+    <xs:sequence>
+      <xs:element name="code" type="xs:int"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PFaultInfo">
+    <xs:sequence>
+      <xs:element name="code" type="xs:int"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseSubscribeDistributionList">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="distributionListName" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="meta">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="key" type="xs:string"/>
+      <xs:element minOccurs="0" name="value" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseSubscribeDistributionListResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseOffer">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="offerId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseOfferResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="listPurchases">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element name="purchaseCount" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="listPurchasesResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:ResponseList"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ResponseList">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="PartnerPurchase" type="tns:PartnerPurchase"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PartnerPurchase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="createdDate" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="providerId" type="xs:string"/>
+      <xs:element minOccurs="0" name="price" type="xs:string"/>
+      <xs:element minOccurs="0" name="type" type="ns2:purchaseType"/>
+      <xs:element minOccurs="0" name="state" type="ns2:purchaseState"/>
+      <xs:element minOccurs="0" name="partnerTxId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="terminateUserSubscription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="terminateUserSubscriptionResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns3:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseProduct">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseProductResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserAttributes">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserAttributesResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns4:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="listSubscriptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="premiumResourceType" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="listSubscriptionsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="productId" type="xs:string"/>
+            <xs:element minOccurs="0" name="description" type="xs:string"/>
+            <xs:element minOccurs="0" name="expirationDate" type="xs:dateTime"/>
+            <xs:element minOccurs="0" name="resourceTypeId" type="xs:string"/>
+            <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+            <xs:element minOccurs="0" name="recurrentId" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ensureUserExists">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ensureUserExistsResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseConsumeProduct">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseConsumeProductResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserAttribute">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="attributeName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserAttributeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseConsume">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseConsumeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="fullPurchaseConsume">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userURI" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="product" type="ns1:productWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="fullPurchaseConsumeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="notifyDistributionListText">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="dlPassword" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="content" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="notifyDistributionListTextResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getPrepaidBalance">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getPrepaidBalanceResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="amount" type="xs:long"/>
+            <xs:element minOccurs="0" name="currencyCode" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOffers">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="ratingMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOffersResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="id" type="xs:string"/>
+            <xs:element minOccurs="0" name="description" type="xs:string"/>
+            <xs:element name="price" type="xs:long"/>
+            <xs:element minOccurs="0" name="currencyCode" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkValidSubscription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element name="validity" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkValidSubscriptionResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="notifyDistributionListWapPush">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="dlPassword" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="url" type="xs:string"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="notifyDistributionListWapPushResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="cancelUserSubscription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="cancelUserSubscriptionResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns3:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="extendOneTimePurchase">
+    <xs:sequence>
+      <xs:element name="extendTime" type="xs:long"/>
+      <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="extendOneTimePurchaseResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="refund">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="purchaseId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="refundMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="refundResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consume">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consumeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserAttributesWithIPAddress">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeName" type="xs:string"/>
+      <xs:element minOccurs="0" name="ipAddress" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserAttributesWithIPAddressResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns4:metaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getPrepaidBalanceWithIPAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ipAddress" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getPrepaidBalanceWithIPAddressResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="amount" type="xs:long"/>
+            <xs:element minOccurs="0" name="currencyCode" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkUserExists">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkUserExistsResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="fullPurchaseConsumeWithIPAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ipAddress" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="product" type="ns1:productWs"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="fullPurchaseConsumeWithIPAddressResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="saveUserAttribute">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="attributeName" type="xs:string"/>
+      <xs:element minOccurs="0" name="attributeValue" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="saveUserAttributeResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getStoreFrontPrice">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="ratingMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getStoreFrontPriceResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:price"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="price">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="currencyCode" type="xs:string"/>
+      <xs:element name="price" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseConsumeProductWithIPAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ipAddress" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceId" type="xs:string"/>
+      <xs:element minOccurs="0" name="premiumResourceType" type="xs:string"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="purchaseMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="billingMetas" type="tns:meta"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="usageMetas" type="tns:meta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="purchaseConsumeProductWithIPAddressResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:receiptWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserAttributeWithIPAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attributeName" type="xs:string"/>
+      <xs:element minOccurs="0" name="ipAddress" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserAttributeWithIPAddressResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.ericsson.com/com/ericsson/sdp/api/ws" xmlns:ns0="http://ws.api.sdp.ericsson.com/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.ericsson.com/com/ericsson/sdp/api/ws">
+  <xsd:import namespace="http://ws.api.sdp.ericsson.com/"/>
+  <xsd:element name="ServiceException" type="tns:ServiceException"/>
+  <xsd:complexType name="ServiceException">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="classContext" type="xsd:string"/>
+      <xsd:element name="faultInfo" nillable="true" type="ns0:FaultInfo"/>
+      <xsd:element minOccurs="0" name="message" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="PolicyException" type="tns:PolicyException"/>
+  <xsd:complexType name="PolicyException">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="classContext" type="xsd:string"/>
+      <xsd:element name="faultInfo" nillable="true" type="ns0:PFaultInfo"/>
+      <xsd:element minOccurs="0" name="message" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="purchaseResponse">
+    <wsdl:part element="tns:purchaseResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserAttribute">
+    <wsdl:part element="tns:getUserAttribute" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPrepaidBalance">
+    <wsdl:part element="tns:getPrepaidBalance" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="extendOneTimePurchaseResponse">
+    <wsdl:part element="tns:extendOneTimePurchaseResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listPurchases">
+    <wsdl:part element="tns:listPurchases" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchaseConsume">
+    <wsdl:part element="tns:purchaseConsume" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="refund">
+    <wsdl:part element="tns:refund" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserAttributeWithIPAddress">
+    <wsdl:part element="tns:getUserAttributeWithIPAddress" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPrepaidBalanceResponse">
+    <wsdl:part element="tns:getPrepaidBalanceResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ensureUserExistsResponse">
+    <wsdl:part element="tns:ensureUserExistsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPrepaidBalanceWithIPAddressResponse">
+    <wsdl:part element="tns:getPrepaidBalanceWithIPAddressResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="extendOneTimePurchase">
+    <wsdl:part element="tns:extendOneTimePurchase" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchase">
+    <wsdl:part element="tns:purchase" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchaseConsumeProduct">
+    <wsdl:part element="tns:purchaseConsumeProduct" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="PolicyException">
+    <wsdl:part element="ns1:PolicyException" name="PolicyException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consumeResponse">
+    <wsdl:part element="tns:consumeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="consume">
+    <wsdl:part element="tns:consume" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchaseConsumeProductWithIPAddressResponse">
+    <wsdl:part element="tns:purchaseConsumeProductWithIPAddressResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="checkUserExists">
+    <wsdl:part element="tns:checkUserExists" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="terminateUserSubscription">
+    <wsdl:part element="tns:terminateUserSubscription" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchaseSubscribeDistributionListResponse">
+    <wsdl:part element="tns:purchaseSubscribeDistributionListResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getStoreFrontPriceResponse">
+    <wsdl:part element="tns:getStoreFrontPriceResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelUserSubscription">
+    <wsdl:part element="tns:cancelUserSubscription" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="checkValidSubscriptionResponse">
+    <wsdl:part element="tns:checkValidSubscriptionResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserAttributeWithIPAddressResponse">
+    <wsdl:part element="tns:getUserAttributeWithIPAddressResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listSubscriptions">
+    <wsdl:part element="tns:listSubscriptions" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchaseConsumeResponse">
+    <wsdl:part element="tns:purchaseConsumeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fullPurchaseConsumeWithIPAddressResponse">
+    <wsdl:part element="tns:fullPurchaseConsumeWithIPAddressResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notifyDistributionListText">
+    <wsdl:part element="tns:notifyDistributionListText" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="checkValidSubscription">
+    <wsdl:part element="tns:checkValidSubscription" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fullPurchaseConsume">
+    <wsdl:part element="tns:fullPurchaseConsume" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fullPurchaseConsumeResponse">
+    <wsdl:part element="tns:fullPurchaseConsumeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserAttributes">
+    <wsdl:part element="tns:getUserAttributes" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="extendRecurringSubscriptionResponse">
+    <wsdl:part element="tns:extendRecurringSubscriptionResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserAttributesResponse">
+    <wsdl:part element="tns:getUserAttributesResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listPurchasesResponse">
+    <wsdl:part element="tns:listPurchasesResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notifyDistributionListWapPushResponse">
+    <wsdl:part element="tns:notifyDistributionListWapPushResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPrepaidBalanceWithIPAddress">
+    <wsdl:part element="tns:getPrepaidBalanceWithIPAddress" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchaseSubscribeDistributionList">
+    <wsdl:part element="tns:purchaseSubscribeDistributionList" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ServiceException">
+    <wsdl:part element="ns1:ServiceException" name="ServiceException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchaseConsumeProductWithIPAddress">
+    <wsdl:part element="tns:purchaseConsumeProductWithIPAddress" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listSubscriptionsResponse">
+    <wsdl:part element="tns:listSubscriptionsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserAttributeResponse">
+    <wsdl:part element="tns:getUserAttributeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notifyDistributionListWapPush">
+    <wsdl:part element="tns:notifyDistributionListWapPush" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createOffersResponse">
+    <wsdl:part element="tns:createOffersResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="terminateUserSubscriptionResponse">
+    <wsdl:part element="tns:terminateUserSubscriptionResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchaseOfferResponse">
+    <wsdl:part element="tns:purchaseOfferResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="refundResponse">
+    <wsdl:part element="tns:refundResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="saveUserAttributeResponse">
+    <wsdl:part element="tns:saveUserAttributeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchaseProductResponse">
+    <wsdl:part element="tns:purchaseProductResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fullPurchaseConsumeWithIPAddress">
+    <wsdl:part element="tns:fullPurchaseConsumeWithIPAddress" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserAttributesWithIPAddressResponse">
+    <wsdl:part element="tns:getUserAttributesWithIPAddressResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notifyDistributionListTextResponse">
+    <wsdl:part element="tns:notifyDistributionListTextResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createOffers">
+    <wsdl:part element="tns:createOffers" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchaseProduct">
+    <wsdl:part element="tns:purchaseProduct" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ensureUserExists">
+    <wsdl:part element="tns:ensureUserExists" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchaseConsumeProductResponse">
+    <wsdl:part element="tns:purchaseConsumeProductResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getStoreFrontPrice">
+    <wsdl:part element="tns:getStoreFrontPrice" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="saveUserAttribute">
+    <wsdl:part element="tns:saveUserAttribute" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="checkUserExistsResponse">
+    <wsdl:part element="tns:checkUserExistsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="purchaseOffer">
+    <wsdl:part element="tns:purchaseOffer" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="extendRecurringSubscription">
+    <wsdl:part element="tns:extendRecurringSubscription" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserAttributesWithIPAddress">
+    <wsdl:part element="tns:getUserAttributesWithIPAddress" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelUserSubscriptionResponse">
+    <wsdl:part element="tns:cancelUserSubscriptionResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="UnifiedPartner">
+    <wsdl:operation name="extendRecurringSubscription">
+      <wsdl:input message="tns:extendRecurringSubscription" name="extendRecurringSubscription">
+    </wsdl:input>
+      <wsdl:output message="tns:extendRecurringSubscriptionResponse" name="extendRecurringSubscriptionResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchaseSubscribeDistributionList">
+      <wsdl:input message="tns:purchaseSubscribeDistributionList" name="purchaseSubscribeDistributionList">
+    </wsdl:input>
+      <wsdl:output message="tns:purchaseSubscribeDistributionListResponse" name="purchaseSubscribeDistributionListResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchaseOffer">
+      <wsdl:input message="tns:purchaseOffer" name="purchaseOffer">
+    </wsdl:input>
+      <wsdl:output message="tns:purchaseOfferResponse" name="purchaseOfferResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="listPurchases">
+      <wsdl:input message="tns:listPurchases" name="listPurchases">
+    </wsdl:input>
+      <wsdl:output message="tns:listPurchasesResponse" name="listPurchasesResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="terminateUserSubscription">
+      <wsdl:input message="tns:terminateUserSubscription" name="terminateUserSubscription">
+    </wsdl:input>
+      <wsdl:output message="tns:terminateUserSubscriptionResponse" name="terminateUserSubscriptionResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchaseProduct">
+      <wsdl:input message="tns:purchaseProduct" name="purchaseProduct">
+    </wsdl:input>
+      <wsdl:output message="tns:purchaseProductResponse" name="purchaseProductResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchase">
+      <wsdl:input message="tns:purchase" name="purchase">
+    </wsdl:input>
+      <wsdl:output message="tns:purchaseResponse" name="purchaseResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getUserAttributes">
+      <wsdl:input message="tns:getUserAttributes" name="getUserAttributes">
+    </wsdl:input>
+      <wsdl:output message="tns:getUserAttributesResponse" name="getUserAttributesResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="listSubscriptions">
+      <wsdl:input message="tns:listSubscriptions" name="listSubscriptions">
+    </wsdl:input>
+      <wsdl:output message="tns:listSubscriptionsResponse" name="listSubscriptionsResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ensureUserExists">
+      <wsdl:input message="tns:ensureUserExists" name="ensureUserExists">
+    </wsdl:input>
+      <wsdl:output message="tns:ensureUserExistsResponse" name="ensureUserExistsResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchaseConsumeProduct">
+      <wsdl:input message="tns:purchaseConsumeProduct" name="purchaseConsumeProduct">
+    </wsdl:input>
+      <wsdl:output message="tns:purchaseConsumeProductResponse" name="purchaseConsumeProductResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getUserAttribute">
+      <wsdl:input message="tns:getUserAttribute" name="getUserAttribute">
+    </wsdl:input>
+      <wsdl:output message="tns:getUserAttributeResponse" name="getUserAttributeResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchaseConsume">
+      <wsdl:input message="tns:purchaseConsume" name="purchaseConsume">
+    </wsdl:input>
+      <wsdl:output message="tns:purchaseConsumeResponse" name="purchaseConsumeResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="fullPurchaseConsume">
+      <wsdl:input message="tns:fullPurchaseConsume" name="fullPurchaseConsume">
+    </wsdl:input>
+      <wsdl:output message="tns:fullPurchaseConsumeResponse" name="fullPurchaseConsumeResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="notifyDistributionListText">
+      <wsdl:input message="tns:notifyDistributionListText" name="notifyDistributionListText">
+    </wsdl:input>
+      <wsdl:output message="tns:notifyDistributionListTextResponse" name="notifyDistributionListTextResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getPrepaidBalance">
+      <wsdl:input message="tns:getPrepaidBalance" name="getPrepaidBalance">
+    </wsdl:input>
+      <wsdl:output message="tns:getPrepaidBalanceResponse" name="getPrepaidBalanceResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createOffers">
+      <wsdl:input message="tns:createOffers" name="createOffers">
+    </wsdl:input>
+      <wsdl:output message="tns:createOffersResponse" name="createOffersResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="checkValidSubscription">
+      <wsdl:input message="tns:checkValidSubscription" name="checkValidSubscription">
+    </wsdl:input>
+      <wsdl:output message="tns:checkValidSubscriptionResponse" name="checkValidSubscriptionResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="notifyDistributionListWapPush">
+      <wsdl:input message="tns:notifyDistributionListWapPush" name="notifyDistributionListWapPush">
+    </wsdl:input>
+      <wsdl:output message="tns:notifyDistributionListWapPushResponse" name="notifyDistributionListWapPushResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cancelUserSubscription">
+      <wsdl:input message="tns:cancelUserSubscription" name="cancelUserSubscription">
+    </wsdl:input>
+      <wsdl:output message="tns:cancelUserSubscriptionResponse" name="cancelUserSubscriptionResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="extendOneTimePurchase">
+      <wsdl:input message="tns:extendOneTimePurchase" name="extendOneTimePurchase">
+    </wsdl:input>
+      <wsdl:output message="tns:extendOneTimePurchaseResponse" name="extendOneTimePurchaseResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="refund">
+      <wsdl:input message="tns:refund" name="refund">
+    </wsdl:input>
+      <wsdl:output message="tns:refundResponse" name="refundResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consume">
+      <wsdl:input message="tns:consume" name="consume">
+    </wsdl:input>
+      <wsdl:output message="tns:consumeResponse" name="consumeResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getUserAttributesWithIPAddress">
+      <wsdl:input message="tns:getUserAttributesWithIPAddress" name="getUserAttributesWithIPAddress">
+    </wsdl:input>
+      <wsdl:output message="tns:getUserAttributesWithIPAddressResponse" name="getUserAttributesWithIPAddressResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getPrepaidBalanceWithIPAddress">
+      <wsdl:input message="tns:getPrepaidBalanceWithIPAddress" name="getPrepaidBalanceWithIPAddress">
+    </wsdl:input>
+      <wsdl:output message="tns:getPrepaidBalanceWithIPAddressResponse" name="getPrepaidBalanceWithIPAddressResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="checkUserExists">
+      <wsdl:input message="tns:checkUserExists" name="checkUserExists">
+    </wsdl:input>
+      <wsdl:output message="tns:checkUserExistsResponse" name="checkUserExistsResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="fullPurchaseConsumeWithIPAddress">
+      <wsdl:input message="tns:fullPurchaseConsumeWithIPAddress" name="fullPurchaseConsumeWithIPAddress">
+    </wsdl:input>
+      <wsdl:output message="tns:fullPurchaseConsumeWithIPAddressResponse" name="fullPurchaseConsumeWithIPAddressResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="saveUserAttribute">
+      <wsdl:input message="tns:saveUserAttribute" name="saveUserAttribute">
+    </wsdl:input>
+      <wsdl:output message="tns:saveUserAttributeResponse" name="saveUserAttributeResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getStoreFrontPrice">
+      <wsdl:input message="tns:getStoreFrontPrice" name="getStoreFrontPrice">
+    </wsdl:input>
+      <wsdl:output message="tns:getStoreFrontPriceResponse" name="getStoreFrontPriceResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchaseConsumeProductWithIPAddress">
+      <wsdl:input message="tns:purchaseConsumeProductWithIPAddress" name="purchaseConsumeProductWithIPAddress">
+    </wsdl:input>
+      <wsdl:output message="tns:purchaseConsumeProductWithIPAddressResponse" name="purchaseConsumeProductWithIPAddressResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getUserAttributeWithIPAddress">
+      <wsdl:input message="tns:getUserAttributeWithIPAddress" name="getUserAttributeWithIPAddress">
+    </wsdl:input>
+      <wsdl:output message="tns:getUserAttributeWithIPAddressResponse" name="getUserAttributeWithIPAddressResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:PolicyException" name="PolicyException">
+    </wsdl:fault>
+      <wsdl:fault message="tns:ServiceException" name="ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="UnifiedPartnerServiceSoapBinding" type="tns:UnifiedPartner">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="extendRecurringSubscription">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="extendRecurringSubscription">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="extendRecurringSubscriptionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchaseSubscribeDistributionList">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="purchaseSubscribeDistributionList">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="purchaseSubscribeDistributionListResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchaseOffer">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="purchaseOffer">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="purchaseOfferResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="listPurchases">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="listPurchases">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="listPurchasesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchase">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="purchase">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="purchaseResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="terminateUserSubscription">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="terminateUserSubscription">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="terminateUserSubscriptionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchaseProduct">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="purchaseProduct">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="purchaseProductResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getUserAttributes">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getUserAttributes">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getUserAttributesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="listSubscriptions">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="listSubscriptions">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="listSubscriptionsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ensureUserExists">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="ensureUserExists">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ensureUserExistsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchaseConsumeProduct">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="purchaseConsumeProduct">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="purchaseConsumeProductResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getUserAttribute">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getUserAttribute">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getUserAttributeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchaseConsume">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="purchaseConsume">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="purchaseConsumeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="fullPurchaseConsume">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="fullPurchaseConsume">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fullPurchaseConsumeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="notifyDistributionListText">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="notifyDistributionListText">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="notifyDistributionListTextResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getPrepaidBalance">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getPrepaidBalance">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getPrepaidBalanceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createOffers">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createOffers">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createOffersResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="checkValidSubscription">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="checkValidSubscription">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="checkValidSubscriptionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="notifyDistributionListWapPush">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="notifyDistributionListWapPush">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="notifyDistributionListWapPushResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cancelUserSubscription">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cancelUserSubscription">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cancelUserSubscriptionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="extendOneTimePurchase">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="extendOneTimePurchase">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="extendOneTimePurchaseResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="refund">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="refund">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="refundResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consume">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="consume">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="consumeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getUserAttributesWithIPAddress">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getUserAttributesWithIPAddress">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getUserAttributesWithIPAddressResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="checkUserExists">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="checkUserExists">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="checkUserExistsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getPrepaidBalanceWithIPAddress">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getPrepaidBalanceWithIPAddress">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getPrepaidBalanceWithIPAddressResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="fullPurchaseConsumeWithIPAddress">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="fullPurchaseConsumeWithIPAddress">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fullPurchaseConsumeWithIPAddressResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="saveUserAttribute">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="saveUserAttribute">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="saveUserAttributeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getStoreFrontPrice">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getStoreFrontPrice">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getStoreFrontPriceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getUserAttributeWithIPAddress">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getUserAttributeWithIPAddress">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getUserAttributeWithIPAddressResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="purchaseConsumeProductWithIPAddress">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="purchaseConsumeProductWithIPAddress">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="purchaseConsumeProductWithIPAddressResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PolicyException">
+        <soap:fault name="PolicyException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ServiceException">
+        <soap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UnifiedPartnerService">
+    <wsdl:port binding="tns:UnifiedPartnerServiceSoapBinding" name="UnifiedPartnerPort">
+      <soap:address location="https://myworld.du.ae:18081/cxf/services/UnifiedPartner"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
