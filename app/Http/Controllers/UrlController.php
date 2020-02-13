@@ -179,6 +179,69 @@ class UrlController extends Controller {
 
     public function test2(Request $request){
 
+
+        $date = date("Y-m-d h:i:sa");
+        $ip = $request->ip();
+
+        $position = \Location::get($ip);
+
+        if($position){
+            $country = $position->countryName;
+        }else{
+            $country = $position;
+        }
+
+        $data = ['date' => $date, 'ip' => $ip, 'country' => $country];
+
+        $validator = Validator::make($request->all(), [
+            'trxid' => 'required',
+            'msisdn' => 'required',
+            'serviceid' => 'required',
+            'plan' => 'required',
+            'price' => 'required'
+        ]);
+
+
+        if ($validator->fails()) {
+
+            $data = array_merge($data, (array)$request->all(), (array)$validator->errors()->all());
+
+            $this->log('failed', url('/activation'), $data);
+
+            return response()->json(["result" => "FAILED",'error' => implode(', ',$validator->errors()->all())], 401);
+
+        }else{
+
+            $activation = new Activation;
+
+            if($request->filled('trxid')){
+                $activation->trxid = $request->trxid;
+            }
+            if($request->filled('msisdn')){
+                $activation->msisdn = $request->msisdn;
+            }
+            if($request->filled('serviceid')){
+                $activation->serviceid = $request->serviceid;
+            }
+            if($request->filled('plan')){
+                $activation->plan = $request->plan;
+            }
+            if($request->filled('price')){
+                $activation->price = $request->price;
+            }
+
+            $activation->save();
+
+            $activation_id =$activation->id ;
+
+        }
+
+            $array = ["result" => "SUCCESS", "reason" => "The user has been successfully activated"];
+
+            $data = array_merge($data, (array)$request->all(), $array);
+
+            $this->log('success', url('/activation'), $data);
+
  $du_response_success ='<?xml version="1.0" encoding="UTF-8"?>
  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
     <soap:Body>
@@ -236,9 +299,19 @@ class UrlController extends Controller {
                    $status = $statusCode->item(0)->nodeValue;
                  }elseif($faultstring->length !=0 ){
                     $status = $faultstring ->item(0)->nodeValue;
+                 }else{
+                    $status = "" ;
                  }
 
-                 echo  $status ; die;
+
+
+                       // log to DB + files
+                       $act =Activation::findOrFail(  $activation->id) ;
+                       $act->du_request = "Du reques" ;
+                       $act->du_response =  $du_response_success;
+                       $act->status_code = $status ;
+                       $act->save() ;
+                       $this->log('du Flatter Daily Billing', url('/activation'), $data);
 
 
 
@@ -397,21 +470,6 @@ $client->decode_utf8 = FALSE;
                         $data["Date"] =Carbon::now()->format('Y-m-d H:i:s');
                         $data["Request"] =     $client->request;
                         $data["Response"] =  $client->responseData;
-
-
-                // log Du result Code   0 = mean success
-                /*
-                $doc = new \DOMDocument('1.0', 'utf-8');
-                $doc->loadXML( $client->responseData );
-                $XMLresults     = $doc->getElementsByTagName("statusCode");
-                $statusCode = $XMLresults->item(0)->nodeValue;
-                $data["statusCode"] =  $statusCode;
-
-              $act =   Activation::findOrFail($activation_id)  ;
-              $act->status_code =$statusCode ;
-              $act->save();
-*/
-
 
 
                     $doc = new \DOMDocument('1.0', 'utf-8');

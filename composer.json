@@ -11,7 +11,8 @@
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.4.0",
         "maatwebsite/excel": "^2.1",
-        "orangehill/iseed": "^2.6"
+        "orangehill/iseed": "^2.6",
+        "stevebauman/location": "^5.0"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
@@ -38,8 +39,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {
