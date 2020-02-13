@@ -418,7 +418,7 @@ $client->decode_utf8 = FALSE;
                     $doc->loadXML(  $client->responseData  );
                     $statusCode     = $doc->getElementsByTagName("statusCode");  // success
                     $faultstring     = $doc->getElementsByTagName("faultstring");  // insufficient or alreday subscribe
-                    $data["statusCode"] =  $statusCode;
+
 
 
 
@@ -430,7 +430,7 @@ $client->decode_utf8 = FALSE;
                     $status = $faultstring ->item(0)->nodeValue;
                     }
 
-                    echo  $status ; die;
+                    $data["statusCode"] =  $status;
 
 
 
