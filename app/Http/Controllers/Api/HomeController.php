@@ -21,7 +21,7 @@ class HomeController extends Controller
             $unsub->save();
             $sub->delete();
         }else{
-            echo "الرقم غير صحيح";
+            return false;
         }
 
     }
