@@ -69,4 +69,3 @@ Route::get('zainKuwaitDailyMessages','ServicesController@zainKuwaitDailyMessages
 Route::get('testyousef','HomeController@test');
 
 
-

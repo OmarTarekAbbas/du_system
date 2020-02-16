@@ -30,11 +30,11 @@ define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');
 Route::post('activation', 'UrlController@activation');
 Route::post('test2','UrlController@test2');
 
-<<<<<<< HEAD
+Route::get('getTodaySubMessage','UrlController@getTodaySubMessage');
+Route::get('chargeSubs','UrlController@chargeSubs');
+
 Route::post('unsub', 'Api\HomeController@msisdn');
-=======
+Route::post('test', 'Api\HomeController@msisdn');
 
-    Route::post('test', 'Api\HomeController@msisdn');
 
->>>>>>> origin/omar
 

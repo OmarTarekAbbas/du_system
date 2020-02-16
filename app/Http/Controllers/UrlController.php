@@ -4,6 +4,7 @@ use App\Activation;
 use App\Http\Controllers\Controller;
 use App\Url;
 use App\Subscriber;
+use App\Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -189,7 +190,7 @@ class UrlController extends Controller
 
         $data = ['date' => $date, 'ip' => $ip, 'country' => $country];
 
-        $validator = Validator::make($request->all(), [ 
+        $validator = Validator::make($request->all(), [
             'trxid' => 'required',
             'msisdn' => 'required',
             'serviceid' => 'required',
@@ -290,11 +291,11 @@ class UrlController extends Controller
         } else {
             $status = "";
         }
-        
+
         if( $status == 0){
             $this->successfulSubs($activation->id);
         }
- 
+
         // log to DB + files
         $act = Activation::findOrFail($activation->id);
         $act->du_request = "Du reques";
@@ -326,12 +327,12 @@ class UrlController extends Controller
         $subscriber->charging_cron = 0;
         $subscriber->save();
 
-        $this->chargeSubs();
+        //$this->chargeSubs();
 
     }
 
     public function chargeSubs(){
-        
+
         $services = Activation::select('serviceid')->groupBy('serviceid')->get();
 
         $today = Carbon::now()->format('Y-m-d');
@@ -346,13 +347,44 @@ class UrlController extends Controller
             // dd($subscribers);
             foreach($subscribers as $sub){
                 $activation = Activation::findOrFail($sub->activation_id);
-                
-                echo $activation->plan;
+                if($activation->plan == 'daily'){
+                    $sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 day"));
+                    $sub->save();
+                }
+                else{
+                    $sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 week"));
+                    $sub->save();
+                }
+                //echo $activation->plan;
             }
-        
+
         }
-                
-        
+
+
+    }
+
+    // get all subscriber with message
+    public function getTodaySubMessage()
+    {
+        $all = [];
+        $services = Service::all();
+        $today = Carbon::now()->format('Y-m-d');
+        foreach ($services as $key => $service) {
+            $data['serviceId'] = $service->title;
+            $subscribers =  Activation::join('subscribers', 'subscribers.activation_id', '=', 'activation.id')
+                            ->where('activation.serviceid', $service->title)
+                            ->select('activation.msisdn')
+                            ->get();
+            $data['msisdns'] = $subscribers;
+            if($subscribers->count() > 0){
+                $message = \App\Message::where('service_id',$service->id)->where('date',$today)->first();
+                if($message){
+                    $data['message'] = $message->MTBody.' '.$message->ShortnedURL;
+                    array_push($all,$data);
+                }
+            }
+        }
+        return $all;
     }
 
     /*****************/
