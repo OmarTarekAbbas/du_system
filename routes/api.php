@@ -30,7 +30,7 @@ define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');
 Route::post('activation', 'UrlController@activation');
 Route::post('test2','UrlController@test2');
 
-Route::group([ 'namespace' => 'Api'], function () {
-    Route::post('test', 'HomeController@msisdn');
-   });
+
+    Route::post('test', 'Api\HomeController@msisdn');
+
 
