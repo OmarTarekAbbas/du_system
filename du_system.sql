@@ -39,30 +39,6 @@ CREATE TABLE `activation` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `charges`
--- ----------------------------
-DROP TABLE IF EXISTS `charges`;
-CREATE TABLE `charges` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `subscriber_id` int(11) unsigned NOT NULL,
-  `billing_request` text COLLATE utf8_bin NOT NULL,
-  `billing_response` text COLLATE utf8_bin NOT NULL,
-  `status_id` int(11) unsigned NOT NULL,
-  `charging_date` date NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `charge_sub_fk` (`subscriber_id`),
-  KEY `charge_status_fk` (`status_id`),
-  CONSTRAINT `charge_status_fk` FOREIGN KEY (`status_id`) REFERENCES `statues` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `charge_sub_fk` FOREIGN KEY (`subscriber_id`) REFERENCES `subscribers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- ----------------------------
--- Records of charges
--- ----------------------------
-
--- ----------------------------
 -- Table structure for `countries`
 -- ----------------------------
 DROP TABLE IF EXISTS `countries`;
@@ -292,3 +268,27 @@ CREATE TABLE `users` (
 -- ----------------------------
 INSERT INTO `users` VALUES ('1', 'Emad Mohamed', 'emad@ivas.com.eg', '$2y$10$u2evAW530miwgUb2jcXkTuqIGswxnSQ3DSmX1Ji5rtO3Tx.MtVcX2', '1', 'xe9i7NuxobpLMhlxqLTlUfnEnH0ngZAfVwcTWj6Srp2DI7WHmrBOMy7vhblk', '2015-07-26 20:48:09', '2016-02-17 09:46:55');
 INSERT INTO `users` VALUES ('11', 'sherif', 'sherif.mohamed@ivas.com.eg', '$2y$10$sK8Rb1QqU1okO.sGDtRhhOj.0J7/zbSR4Li4IRdQ4JCadf7.V5Yg2', '0', null, '2020-02-12 08:34:14', '2020-02-12 08:34:14');
+
+-- ----------------------------
+-- Table structure for `charges`
+-- ----------------------------
+DROP TABLE IF EXISTS `charges`;
+CREATE TABLE `charges` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `subscriber_id` int(11) unsigned NOT NULL,
+  `billing_request` text COLLATE utf8_bin NOT NULL,
+  `billing_response` text COLLATE utf8_bin NOT NULL,
+  `status_id` int(11) unsigned NOT NULL,
+  `charging_date` date NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `charge_sub_fk` (`subscriber_id`),
+  KEY `charge_status_fk` (`status_id`),
+  CONSTRAINT `charge_status_fk` FOREIGN KEY (`status_id`) REFERENCES `statues` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `charge_sub_fk` FOREIGN KEY (`subscriber_id`) REFERENCES `subscribers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of charges
+-- ----------------------------

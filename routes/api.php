@@ -29,3 +29,12 @@ define('DU_SMS_SEND_MESSAGE','http://41.33.167.14:2080/~smsdu/du_send_message');
 define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');
 Route::post('activation', 'UrlController@activation');
 Route::post('test2','UrlController@test2');
+
+<<<<<<< HEAD
+Route::post('unsub', 'Api\HomeController@msisdn');
+=======
+
+    Route::post('test', 'Api\HomeController@msisdn');
+
+>>>>>>> origin/omar
+
