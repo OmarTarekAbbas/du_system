@@ -12,7 +12,8 @@
         "laravelcollective/html": "^5.4.0",
         "maatwebsite/excel": "^2.1",
         "orangehill/iseed": "^2.6",
-        "stevebauman/location": "^5.0"
+        "stevebauman/location": "^5.0",
+        "econea/nusoap": "^0.9.7"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

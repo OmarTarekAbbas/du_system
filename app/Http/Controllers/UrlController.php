@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Url;
 use App\Subscriber;
 use App\Service;
+use App\Charge;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -344,23 +345,38 @@ class UrlController extends Controller
                         ->where('subscribers.next_charging_date', $today)
                         ->select('subscribers.*')
                         ->get();
-            // dd($subscribers);
+            //dd($subscribers);
             foreach($subscribers as $sub){
                 $activation = Activation::findOrFail($sub->activation_id);
-                if($activation->plan == 'daily'){
-                    $sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 day"));
-                    $sub->save();
-                }
-                else{
-                    $sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 week"));
-                    $sub->save();
-                }
-                //echo $activation->plan;
-            }
+                $serviceid = $activation->serviceid ;
+                $msisdn =    $activation->msisdn ;
 
+
+                if($activation->serviceid == 'flaterdaily' ||$activation->serviceid == 'flaterweekly' ){  // flatter daily , flater weekly
+
+                    $charge_renew_result =   $this->du_charge_per_service($activation,$serviceid, $msisdn,$sub);
+                }
+
+                if($charge_renew_result  == 1 ){  // renew charge success
+
+                    if($activation->plan == 'daily'){
+                        $sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 day"));
+                        $sub->save();
+                    }
+                    elseif($activation->plan == 'weekly'){
+                        $sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 week"));
+                        $sub->save();
+                    }else{ // default is daily
+                        $sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 day"));
+                        $sub->save();
+                    }
+
+                }
+
+            }
         }
 
-
+        echo "Du Charging for toady ". $today. "Is Done" ;
     }
 
     // get all subscriber with message
@@ -388,6 +404,218 @@ class UrlController extends Controller
     }
 
     /*****************/
+
+
+
+
+
+    public function du_charge_per_service($activation,$serviceid, $msisdn,$sub)
+    {
+
+        $charge_renew_result = 0 ;
+
+        $date = date("Y-m-d h:i:sa");
+        $today = date("Y-m-d");
+
+
+            $activation_id = $activation->id;
+
+            // here make Du billing
+            // Config
+            $client = new \nusoap_client('du_integration/du-domain.wsdl', 'wsdl');
+            $client->soap_defencoding = 'UTF-8';
+            $client->decode_utf8 = false;
+
+            if(isset($activation) && isset($serviceid) && isset($msisdn)  &&isset($sub)) {
+
+
+
+            if ($serviceid == "flaterdaily") {
+
+                // header authentication
+                $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
+                $password = "P-7SYBYFVSWA-#1234";
+
+                // service parameters
+                //  $userId = "971529204634" ;
+                $userId = $msisdn;
+                $serviceId = "S-r5ZBYFVSWA-";
+                $premiumResourceType = "MP-PRT-IVAS-Flater-B2-D-Sub";
+                $productId = "Daily Flater B2 MP IVAS Sub";
+
+                $client->setCredentials($username, $password);
+                $error = $client->getError();
+
+                $purchaseMetas = array(
+                    "key" => "du:assetDescription",
+                    "value" => "IVAS TEST",
+                );
+
+                $billingMetas = array(
+                    array(
+                        "key" => "du:assetID",
+                        "value" => "A-cMShAk6_L13",
+
+                    ),
+                    array(
+
+                        "key" => "du:contentType",
+                        "value" => "mobileApp",
+
+                    ),
+                    array(
+
+                        "key" => "du:channel",
+                        "value" => "COMMERCE_API",
+
+                    ),
+
+                );
+
+                $usageMetas = array(
+                    "key" => "du:externalid",
+                    "value" => "X12345",
+                );
+
+                $result = $client->call("purchaseConsumeProduct", array(
+                    "userId" => $userId,
+                    "serviceId" => $serviceId,
+                    "premiumResourceType" => $premiumResourceType,
+                    "productId" => $productId,
+                    "purchaseMetas" => $purchaseMetas,
+                    "billingMetas" => $billingMetas,
+                    "usageMetas" => $usageMetas,
+
+                ));
+
+
+
+                $data["Date"] = Carbon::now()->format('Y-m-d H:i:s');
+                $data["Request"] = $client->request;
+                $data["Response"] = $client->responseData;
+
+                $doc = new \DOMDocument('1.0', 'utf-8');
+                $doc->loadXML($client->responseData);
+                $statusCode = $doc->getElementsByTagName("statusCode"); // success
+                $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
+
+                if ($statusCode->length != 0) { // find results
+                    $status = $statusCode->item(0)->nodeValue;
+                    $charge_renew_result = 1 ;
+                } elseif ($faultstring->length != 0) {
+                    $status = $faultstring->item(0)->nodeValue ;
+                }
+
+                $data["charging_du_result"] = $status;
+                $data["serviceid"] = $serviceid;
+                $data["msisdn"] = $msisdn;
+                $data["charge_renew_result"] = $charge_renew_result;
+
+
+
+
+         // log new charge renew into DB
+            $Charge = new Charge;
+            $Charge->subscriber_id = $sub->id ;
+            $Charge->billing_request = $client->request;
+            $Charge->billing_response = $client->responseData;
+            $Charge->charging_date = $today ;
+            $Charge->status_code = $status  ;
+            $Charge->save() ;
+
+
+
+            } elseif ($request->serviceid == "flaterweekly") {
+                // header authentication
+                $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
+                $password = "P-7SYBYFVSWA-#1234";
+
+                // service parameters
+                //  $userId = "971529204634" ;
+                $userId = $msisdn;
+                $serviceId = "S-r5ZBYFVSWA-";
+                $premiumResourceType = "MP-PRT-IVAS-Flater-B14-W-Sub";
+                $productId = "Weekly Flater B14 MP IVAS Sub";
+
+                $client->setCredentials($username, $password);
+                $error = $client->getError();
+
+                $purchaseMetas = array(
+                    "key" => "du:assetDescription",
+                    "value" => "IVAS TEST",
+                );
+
+                $billingMetas = array(
+                    array(
+                        "key" => "du:assetID",
+                        "value" => "A-cMShAk6_L13",
+
+                    ),
+                    array(
+
+                        "key" => "du:contentType",
+                        "value" => "mobileApp",
+
+                    ),
+                    array(
+
+                        "key" => "du:channel",
+                        "value" => "COMMERCE_API",
+
+                    ),
+
+                );
+
+                $usageMetas = array(
+                    "key" => "du:externalid",
+                    "value" => "X12345",
+                );
+
+                $result = $client->call("purchaseConsumeProduct", array(
+                    "userId" => $userId,
+                    "serviceId" => $serviceId,
+                    "premiumResourceType" => $premiumResourceType,
+                    "productId" => $productId,
+                    "purchaseMetas" => $purchaseMetas,
+                    "billingMetas" => $billingMetas,
+                    "usageMetas" => $usageMetas,
+
+                ));
+
+
+                $data["Date"] = Carbon::now()->format('Y-m-d H:i:s');
+                $data["Request"] = $client->request;
+                $data["Response"] = $client->responseData;
+
+                $doc = new \DOMDocument('1.0', 'utf-8');
+                $doc->loadXML($client->responseData);
+                $statusCode = $doc->getElementsByTagName("statusCode"); // success
+                $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
+
+                if ($statusCode->length != 0) { // find results
+                    $status = $statusCode->item(0)->nodeValue;
+                    $charge_renew_result = 1 ;
+                } elseif ($faultstring->length != 0) {
+                    $status = $faultstring->item(0)->nodeValue;
+                }
+
+                $data["charging_du_result"] = $status;
+                $data["serviceid"] = $serviceid;
+                $data["msisdn"] = $msisdn;
+                $data["charge_renew_result"] = $charge_renew_result;
+
+            }
+
+            $this->log('Du '.serviceid.' charging renew', url('/du_charge_per_service'), $data);
+
+        }
+
+            return $charge_renew_result ;
+
+
+    }
+
+
 
     public function activation(Request $request)
     {
