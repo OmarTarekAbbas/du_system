@@ -309,13 +309,25 @@ class UrlController extends Controller
 
     public function successfulSubs($id){//activation id
 
+// new activition
+      $activation  = Activation::where('id', $id)->first();
 
+// search if old for the same service and the same msisdn
+        $subscriber = \DB::table('subscribers')
+                        ->join('activation', 'subscribers.activation_id', '=', 'activation.id')
+                        ->where('activation.serviceid', $activation->serviceid)
+                        ->where('activation.msisdn', $activation->msisdn)
+                        ->select('activation.msisdn')
+                        ->first();
 
-        $subscriber = new Subscriber;
-
-        $subscriber->activation_id = $id;
-
-        $activation  = Activation::where('id', $id)->first();
+        if($subscriber){ // update 
+            $subscriber->activation_id = $id;
+        }else{  // create new 
+             $subscriber = new Subscriber;
+             $subscriber->activation_id = $id;
+        }
+         
+       
 
         $today = Carbon::now()->format('Y-m-d');
 
