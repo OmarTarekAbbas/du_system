@@ -394,6 +394,7 @@ class UrlController extends Controller
         $all = [];
         $services = Service::all();
         $today = Carbon::now()->format('Y-m-d');
+        $message_type = "Today Message for  ".$today ;
         foreach ($services as $key => $service) {
             $data['serviceId'] = $service->title;
             $subscribers =  Activation::join('subscribers', 'subscribers.activation_id', '=', 'activation.id')
@@ -408,7 +409,9 @@ class UrlController extends Controller
                     array_push($all,$data);
 
                     foreach($subscribers  as $sub){
-                        // send message
+                           // Du sending welcome message
+                    $this->du_send_message($sub>serviceid,$sub->msisdn,  $data['message'] ,$message_type  );
+
 
                     }
                 }
@@ -675,25 +678,13 @@ class UrlController extends Controller
 
 
 
-                    // Du sending welcome message
-                    $du_welcome_message = "welcome to  ". $service_name ."  service";
-                    $du_welcome_message .= " Enjoy from   " . DU_Flatter_Link;
-                    $URL = DU_SMS_SEND_MESSAGE;
-                    $param = "phone_number=" . $msisdn . "&message=" . $du_welcome_message;
-                    $result = $this->get_content_post($URL, $param);
-                    $send_array = array();
+                     // Du sending welcome message
+                     $du_welcome_message = "welcome to  ". $service_name ."  service";
+                     $du_welcome_message .= " Enjoy from   " . DU_Flatter_Link;
+                     $message_type = "Welcome Message" ;
+                    $this->du_send_message($service_name ,$msisdn,$du_welcome_message , $message_type);
 
-                    if ($result == "1") {
-                    $message_mean = "Du message sent success";
 
-                    } else {
-                    $message_mean = "Du message sent fail";
-                    }
-
-                    $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
-                    $send_array["du_sms_result"] = $result;
-                    $send_array["du_message_mean"] = $message_mean;
-                    $this->log('du '. $service_name .' sending welcome message', url('/activation'), $send_array);
                 }
 
                 return    $charge_renew_result  ;  // success
@@ -783,6 +774,34 @@ class UrlController extends Controller
         }
 
     }
+
+
+
+
+    public function du_send_message($service_name ,$msisdn,$message , $message_type)
+    {
+                    // Du sending welcome message
+                    $URL = DU_SMS_SEND_MESSAGE;
+                    $param = "phone_number=" . $msisdn . "&message=" .$message ;
+                    $result = $this->get_content_post($URL, $param);
+                    $send_array = array();
+
+                    if ($result == "1") {
+                    $message_mean = "Du message sent success";
+
+                    } else {
+                    $message_mean = "Du message sent fail";
+                    }
+
+                    $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
+                    $send_array["du_sms_result"] = $result;
+                    $send_array["du_message_mean"] = $message_mean;
+                    $this->log('du '. $service_name .' sending  '.$message_type.' ', url('/activation'), $send_array);
+
+                    return $result ;
+    }
+
+
 
     public function get_content_post($URL, $param)
     {
