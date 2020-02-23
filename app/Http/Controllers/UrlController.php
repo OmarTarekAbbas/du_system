@@ -327,6 +327,7 @@ class UrlController extends Controller
         $subscriber->final_status = 1;
         $subscriber->charging_cron = 0;
         $subscriber->save();
+        return $subscriber->id ;
 
         //$this->chargeSubs();
 
@@ -353,9 +354,17 @@ class UrlController extends Controller
 
 
                 if($activation->serviceid == 'flaterdaily' ||$activation->serviceid == 'flaterweekly' ){  // flatter daily , flater weekly
+                            // Du First Billing or new billing
+                            $serviceid =  $activation->serviceid ;
+                            $msisdn =  $activation->msisdn ;
 
-                    $charge_renew_result =   $this->du_charge_per_service($activation,$serviceid, $msisdn,$sub);
+                            $charge_renew_result =   $this->du_charge_per_service($activation,$serviceid, $msisdn,$sub,$send_welcome_message=Null) ;
+
                 }
+
+
+
+
 
                 if($charge_renew_result  == 1 ){  // renew charge success
 
@@ -414,7 +423,7 @@ class UrlController extends Controller
 
 
 
-    public function du_charge_per_service($activation,$serviceid, $msisdn,$sub)
+    public function du_charge_per_service($activation,$serviceid, $msisdn,$sub=Null,$send_welcome_message=Null)
     {
 
         $charge_renew_result = 0 ;
@@ -431,12 +440,13 @@ class UrlController extends Controller
             $client->soap_defencoding = 'UTF-8';
             $client->decode_utf8 = false;
 
-            if(isset($activation) && isset($serviceid) && isset($msisdn)  &&isset($sub)) {
+            if(isset($activation) && isset($serviceid) && isset($msisdn)) {
 
 
 
             if ($serviceid == "flaterdaily") {
 
+                $service_name = "Flatter Daily" ;
                 // header authentication
                 $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
                 $password = "P-7SYBYFVSWA-#1234";
@@ -507,30 +517,30 @@ class UrlController extends Controller
                 if ($statusCode->length != 0) { // find results
                     $status = $statusCode->item(0)->nodeValue;
                     $charge_renew_result = 1 ;
+
+                    // store new subscriber
+                    if( $status == 0){
+                        if($send_welcome_message != Null){ // billing for the first time so register new subscriber
+                            $sub_id =  $this->successfulSubs( $activation_id );
+                        }else{ // renew charging success
+                            $charge_renew_result = 1 ;
+                        }
+
+                    }
+
                 } elseif ($faultstring->length != 0) {
                     $status = $faultstring->item(0)->nodeValue ;
+                    $charge_renew_result = 0 ;
+                }else{
+                    $charge_renew_result = 0 ;
                 }
 
-                $data["charging_du_result"] = $status;
-                $data["serviceid"] = $serviceid;
-                $data["msisdn"] = $msisdn;
-                $data["charge_renew_result"] = $charge_renew_result;
 
-
-
-
-         // log new charge renew into DB
-            $Charge = new Charge;
-            $Charge->subscriber_id = $sub->id ;
-            $Charge->billing_request = $client->request;
-            $Charge->billing_response = $client->responseData;
-            $Charge->charging_date = $today ;
-            $Charge->status_code = $status  ;
-            $Charge->save() ;
 
 
 
             } elseif ($request->serviceid == "flaterweekly") {
+                $service_name = "Flatter Weekly" ;
                 // header authentication
                 $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
                 $password = "P-7SYBYFVSWA-#1234";
@@ -600,23 +610,96 @@ class UrlController extends Controller
                 if ($statusCode->length != 0) { // find results
                     $status = $statusCode->item(0)->nodeValue;
                     $charge_renew_result = 1 ;
+
+
+                     // store new subscriber
+                     if( $status == 0){
+                        if($send_welcome_message != Null){ // billing for the first time  so register new subscriber
+                            $sub_id =  $this->successfulSubs($activation_id);
+                        }else{ // renew charging success
+                            $charge_renew_result = 1 ;
+                        }
+
+                    }
+
                 } elseif ($faultstring->length != 0) {
                     $status = $faultstring->item(0)->nodeValue;
+                    $charge_renew_result =0 ;
+                }else{
+                    $charge_renew_result =0 ;
                 }
 
-                $data["charging_du_result"] = $status;
-                $data["serviceid"] = $serviceid;
-                $data["msisdn"] = $msisdn;
-                $data["charge_renew_result"] = $charge_renew_result;
+
 
             }
 
-            $this->log('Du '.serviceid.' charging renew', url('/du_charge_per_service'), $data);
 
+
+
+
+
+                // log new charge renew into DB
+                if($sub != Null){  // renew charging
+                $subscriber_id =$sub->id ;
+                }else{  // billing for the first time
+                $subscriber_id =  $sub_id ;
+                }
+
+                // log charging
+                $Charge = new Charge;
+                $Charge->subscriber_id =  $subscriber_id ;
+                $Charge->billing_request = $client->request;
+                $Charge->billing_response = $client->responseData;
+                $Charge->charging_date = $today ;
+                $Charge->status_code = $status  ;
+                $Charge->save() ;
+
+                  // renew charging log
+                  if($sub != Null ){
+                    $data["charging_du_result"] = $status;
+                    $data["serviceid"] = $serviceid;
+                    $data["msisdn"] = $msisdn;
+                    $data["charge_renew_result"] = $charge_renew_result;
+                    $this->log('Du '.serviceid.' charging renew', url('/du_charge_per_service'), $data);
+                    }
+
+
+                if($send_welcome_message != Null) {
+                    // log to DB + files
+                    $act = Activation::findOrFail($activation->id);
+                    $act->du_request = $client->request;
+                    $act->du_response = $client->responseData;
+                    $act->status_code =  $status;
+                    $act->save();
+                    $this->log('du '.serviceid.'  First Billing', url('/activation'), $data);
+
+
+
+                    // Du sending welcome message
+                    $du_welcome_message = "welcome to  ". $service_name ."  service";
+                    $du_welcome_message .= " Enjoy from   " . DU_Flatter_Link;
+                    $URL = DU_SMS_SEND_MESSAGE;
+                    $param = "phone_number=" . $msisdn . "&message=" . $du_welcome_message;
+                    $result = $this->get_content_post($URL, $param);
+                    $send_array = array();
+
+                    if ($result == "1") {
+                    $message_mean = "Du message sent success";
+
+                    } else {
+                    $message_mean = "Du message sent fail";
+                    }
+
+                    $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
+                    $send_array["du_sms_result"] = $result;
+                    $send_array["du_message_mean"] = $message_mean;
+                    $this->log('du '. $service_name .' sending welcome message', url('/activation'), $send_array);
+                }
+
+                return    $charge_renew_result  ;  // success
+        }else{
+                return 0   ;  // fail
         }
-
-            return $charge_renew_result ;
-
 
     }
 
@@ -676,7 +759,8 @@ class UrlController extends Controller
 
             $activation->save();
 
-            $activation_id = $activation->id;
+              $activation_id = $activation->id;
+              $activation = Activation::findOrFail($activation->id);
 
             $array = ["result" => "SUCCESS", "reason" => "The user has been successfully activated"];
 
@@ -684,230 +768,16 @@ class UrlController extends Controller
 
             $this->log('success', url('/activation'), $data);
 
-            // here make Du billing
-            // Config
-            $client = new \nusoap_client('du_integration/du-domain.wsdl', 'wsdl');
-            $client->soap_defencoding = 'UTF-8';
-            $client->decode_utf8 = false;
 
-            if ($request->serviceid == "flaterdaily") {
+            // Du First Billing or new billing
+            if($activation ){
+                $serviceid =  $activation->serviceid ;
+                $msisdn =  $activation->msisdn ;
+                $send_welcome_message = true ;
 
-                // header authentication
-                $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
-                $password = "P-7SYBYFVSWA-#1234";
-
-                // service parameters
-                //  $userId = "971529204634" ;
-                $userId = $request->msisdn;
-                $serviceId = "S-r5ZBYFVSWA-";
-                $premiumResourceType = "MP-PRT-IVAS-Flater-B2-D-Sub";
-                $productId = "Daily Flater B2 MP IVAS Sub";
-
-                $client->setCredentials($username, $password);
-                $error = $client->getError();
-
-                $purchaseMetas = array(
-                    "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
-                );
-
-                $billingMetas = array(
-                    array(
-                        "key" => "du:assetID",
-                        "value" => "A-cMShAk6_L13",
-
-                    ),
-                    array(
-
-                        "key" => "du:contentType",
-                        "value" => "mobileApp",
-
-                    ),
-                    array(
-
-                        "key" => "du:channel",
-                        "value" => "COMMERCE_API",
-
-                    ),
-
-                );
-
-                $usageMetas = array(
-                    "key" => "du:externalid",
-                    "value" => "X12345",
-                );
-
-                $result = $client->call("purchaseConsumeProduct", array(
-                    "userId" => $userId,
-                    "serviceId" => $serviceId,
-                    "premiumResourceType" => $premiumResourceType,
-                    "productId" => $productId,
-                    "purchaseMetas" => $purchaseMetas,
-                    "billingMetas" => $billingMetas,
-                    "usageMetas" => $usageMetas,
-
-                ));
-
-                // show soap request and response
-                // echo "<h2>Request</h2>";
-                // echo "<pre>" .$client->request. "</pre>";
-                // echo '<h2>Request</h2><pre>' . htmlspecialchars($client->request, ENT_QUOTES) . '</pre>';
-
-                // echo "<h2>Response</h2>";
-                // echo "<pre>" .$client->response. "</pre>";
-                // echo '<h2>Response</h2><pre>' . htmlspecialchars($client->responseData, ENT_QUOTES) . '</pre>';
-
-                $data["Date"] = Carbon::now()->format('Y-m-d H:i:s');
-                $data["Request"] = $client->request;
-                $data["Response"] = $client->responseData;
-
-                $doc = new \DOMDocument('1.0', 'utf-8');
-                $doc->loadXML($client->responseData);
-                $statusCode = $doc->getElementsByTagName("statusCode"); // success
-                $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
-
-                if ($statusCode->length != 0) { // find results
-                    $status = $statusCode->item(0)->nodeValue;
-                } elseif ($faultstring->length != 0) {
-                    $status = $faultstring->item(0)->nodeValue;
-                }
-
-                $data["statusCode"] = $status;
-
-                // log to DB + files
-                $act = Activation::findOrFail($activation->id);
-                $act->du_request = $client->request;
-                $act->du_response = $client->responseData;
-                $act->save();
-                $this->log('du Flatter Daily Billing', url('/activation'), $data);
-
-                // Du sending welcome message
-                $du_welcome_message = "welcome to daily flatter service";
-                $du_welcome_message .= " Enjoy from   " . DU_Flatter_Link;
-                $URL = DU_SMS_SEND_MESSAGE;
-                $param = "phone_number=" . $userId . "&message=" . $du_welcome_message;
-                $result = $this->get_content_post($URL, $param);
-                $send_array = array();
-
-                if ($result == "1") {
-                    $message_mean = "Du message sent success";
-
-                } else {
-                    $message_mean = "Du message sent fail";
-                }
-
-                $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
-                $send_array["du_sms_result"] = $result;
-                $send_array["du_message_mean"] = $message_mean;
-                $this->log('du Flatter daily sending welcome message', url('/activation'), $send_array);
-
-            } elseif ($request->serviceid == "flaterweekly") {
-                // header authentication
-                $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
-                $password = "P-7SYBYFVSWA-#1234";
-
-                // service parameters
-                //  $userId = "971529204634" ;
-                $userId = $request->msisdn;
-                $serviceId = "S-r5ZBYFVSWA-";
-                $premiumResourceType = "MP-PRT-IVAS-Flater-B14-W-Sub";
-                $productId = "Weekly Flater B14 MP IVAS Sub";
-
-                $client->setCredentials($username, $password);
-                $error = $client->getError();
-
-                $purchaseMetas = array(
-                    "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
-                );
-
-                $billingMetas = array(
-                    array(
-                        "key" => "du:assetID",
-                        "value" => "A-cMShAk6_L13",
-
-                    ),
-                    array(
-
-                        "key" => "du:contentType",
-                        "value" => "mobileApp",
-
-                    ),
-                    array(
-
-                        "key" => "du:channel",
-                        "value" => "COMMERCE_API",
-
-                    ),
-
-                );
-
-                $usageMetas = array(
-                    "key" => "du:externalid",
-                    "value" => "X12345",
-                );
-
-                $result = $client->call("purchaseConsumeProduct", array(
-                    "userId" => $userId,
-                    "serviceId" => $serviceId,
-                    "premiumResourceType" => $premiumResourceType,
-                    "productId" => $productId,
-                    "purchaseMetas" => $purchaseMetas,
-                    "billingMetas" => $billingMetas,
-                    "usageMetas" => $usageMetas,
-
-                ));
-
-                // show soap request and response
-                // echo "<h2>Request</h2>";
-                // echo "<pre>" .$client->request. "</pre>";
-                // echo '<h2>Request</h2><pre>' . htmlspecialchars($client->request, ENT_QUOTES) . '</pre>';
-
-                // echo "<h2>Response</h2>";
-                // echo "<pre>" .$client->response. "</pre>";
-                // echo '<h2>Response</h2><pre>' . htmlspecialchars($client->responseData, ENT_QUOTES) . '</pre>';
-
-                // log Du result Code   0 = mean success
-                /*
-                $doc = new \DOMDocument('1.0', 'utf-8');
-                $doc->loadXML( $client->responseData );
-                $XMLresults     = $doc->getElementsByTagName("statusCode");
-                $statusCode = $XMLresults->item(0)->nodeValue;
-                $data["statusCode"] =  $statusCode;
-
-                $act =   Activation::findOrFail($activation_id)  ;
-                $act->status_code =$statusCode ;
-                $act->save();
-                 */
-
-                // log to DB + files
-                $act = Activation::findOrFail($activation->id);
-                $act->du_request = $client->request;
-                $act->du_response = $client->responseData;
-                $act->save();
-                $this->log('du Flatter Weekly Billing ', url('/activation'), $data);
-
-                // Du sending welcome message
-                $du_welcome_message = "welcome to weekly flatter service";
-                $du_welcome_message .= " Enjoy from   " . DU_Flatter_Link;
-                $URL = DU_SMS_SEND_MESSAGE;
-                $param = "phone_number=" . $userId . "&message=" . $du_welcome_message;
-                $result = $this->get_content_post($URL, $param);
-                $send_array = array();
-
-                if ($result == "1") {
-                    $message_mean = "Du message sent success";
-
-                } else {
-                    $message_mean = "Du message sent fail";
-                }
-
-                $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
-                $send_array["du_sms_result"] = $result;
-                $send_array["du_message_mean"] = $message_mean;
-                $this->log('du Flatter weely sending welcome message', url('/activation'), $send_array);
-
+                $this->du_charge_per_service($activation,$serviceid, $msisdn,$sub=Null,$send_welcome_message=Null) ;
             }
+
 
             return json_encode($array);
         }
@@ -1044,6 +914,9 @@ class UrlController extends Controller
         $log->pushHandler(new StreamHandler(storage_path('logs/' . $date . '/' . $actionName . '/logFile.log', Logger::INFO)));
         $log->addInfo($URL, $parameters_arr);
     }
+
+
+
 
     /***************** */
 }
