@@ -527,6 +527,7 @@ class UrlController extends Controller
                             $sub_id =  $this->successfulSubs( $activation_id );
                         }else{ // renew charging success
                             $charge_renew_result = 1 ;
+                            $sub_id = "" ;
                         }
 
                     }
@@ -628,6 +629,7 @@ class UrlController extends Controller
                             $sub_id =  $this->successfulSubs($activation_id);
                         }else{ // renew charging success
                             $charge_renew_result = 1 ;
+                            $sub_id = "" ;
                         }
 
                     }
@@ -660,8 +662,8 @@ class UrlController extends Controller
                 // log new charge renew into DB
                 if($sub != Null){  // renew charging
                 $subscriber_id =$sub->id ;
-                }else{  // billing for the first time
-                $subscriber_id =  $sub_id ;
+                }elseif( $sub_id != ""){  // billing for the first time
+                       $subscriber_id =  $sub_id ;
 
                     // edit activition for the first time of billing
                     $act = Activation::findOrFail($activation->id);
@@ -669,16 +671,23 @@ class UrlController extends Controller
                     $act->du_response = $client->responseData;
                     $act->status_code = $status;
                     $act->save();
+                }else{
+                    $subscriber_id = "" ;
                 }
 
-                // log charging
-                $Charge = new Charge;
-                $Charge->subscriber_id =  $subscriber_id ;
-                $Charge->billing_request = $client->request;
-                $Charge->billing_response = $client->responseData;
-                $Charge->charging_date = $today ;
-                $Charge->status_code = $status  ;
-                $Charge->save() ;
+
+
+                // log charging for First Time Or renew
+                if($subscriber_id != "" ){
+                    $Charge = new Charge;
+                    $Charge->subscriber_id =  $subscriber_id ;
+                    $Charge->billing_request = $client->request;
+                    $Charge->billing_response = $client->responseData;
+                    $Charge->charging_date = $today ;
+                    $Charge->status_code = $status  ;
+                    $Charge->save() ;
+                }
+
 
                   // renew charging log
                   if($sub != Null ){
