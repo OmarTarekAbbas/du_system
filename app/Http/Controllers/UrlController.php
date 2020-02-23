@@ -626,7 +626,7 @@ class UrlController extends Controller
                   }
                 $this->log('Du '.$serviceid.' Billing '.$billing_message .' Log', url('/du_charge_per_service'), $data);
 
-            } elseif ($request->serviceid == "flaterweekly") {
+            } elseif ($serviceid== "flaterweekly") {
                 $service_name = "Flatter Weekly" ;
                 // header authentication
                 $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
