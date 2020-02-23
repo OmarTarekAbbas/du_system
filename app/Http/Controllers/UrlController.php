@@ -547,7 +547,7 @@ class UrlController extends Controller
                   }else{
                     $billing_message = "FirstTime" ;
                   }
-                $this->log('Du '.serviceid.' Billing '.$billing_message .' Log', url('/du_charge_per_service'), $data);
+                $this->log('Du '.$serviceid.' Billing '.$billing_message .' Log', url('/du_charge_per_service'), $data);
 
             } elseif ($request->serviceid == "flaterweekly") {
                 $service_name = "Flatter Weekly" ;
@@ -650,7 +650,7 @@ class UrlController extends Controller
                   }else{
                     $billing_message = "FirstTime" ;
                   }
-                $this->log('Du '.serviceid.' Billing '.$billing_message .' Log', url('/du_charge_per_service'), $data);
+                $this->log('Du '.$serviceid.' Billing '.$billing_message .' Log', url('/du_charge_per_service'), $data);
 
 
             }
@@ -697,7 +697,7 @@ class UrlController extends Controller
                     $act->du_response = $client->responseData;
                     $act->status_code =  $status;
                     $act->save();
-                    $this->log('du '.serviceid.'  First Billing', url('/activation'), $data);
+                    $this->log('Du '.$serviceid.'  First Billing', url('/activation'), $data);
 
 
 
@@ -819,7 +819,7 @@ class UrlController extends Controller
                     $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
                     $send_array["du_sms_result"] = $result;
                     $send_array["du_message_mean"] = $message_mean;
-                    $this->log('du '. $service_name .' sending  '.$message_type.' ', url('/activation'), $send_array);
+                    $this->log('Du '. $service_name .' sending  '.$message_type.' ', url('/activation'), $send_array);
 
                     return $result ;
     }
