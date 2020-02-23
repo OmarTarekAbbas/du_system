@@ -351,48 +351,7 @@ class UrlController extends Controller
     }
 
 
-    public function test_successfulSubs(){
 
-        // new activition
-              $activation  = Activation::where('id', 8)->first();
-
-        // search if old for the same service and the same msisdn
-                $old_subscriber = \DB::table('subscribers')
-                                ->join('activation', 'subscribers.activation_id', '=', 'activation.id')
-                                ->where('activation.serviceid', $activation->serviceid)
-                                ->where('activation.msisdn', $activation->msisdn)
-                                ->select('activation.msisdn','subscribers.id')
-                                ->first();
-
-
-
-                if($old_subscriber){ // update
-                    $subscriber =   Subscriber::where('id',$old_subscriber->id )->first();
-                    $subscriber->activation_id = 8;
-                }else{  // create new
-                     $subscriber = new Subscriber;
-                     $subscriber->activation_id = $id;
-                }
-
-
-
-                $today = Carbon::now()->format('Y-m-d');
-
-                if($activation->plan == 'weekly'){
-                    $next_charging_date = Carbon::now()->addDays(7)->format('Y-m-d');
-                }else{
-                    $next_charging_date = Carbon::now()->addDays(1)->format('Y-m-d');
-                }
-                $subscriber->next_charging_date = $next_charging_date;
-                $subscriber->subscribe_date = $today;
-                $subscriber->final_status = 1;
-                $subscriber->charging_cron = 0;
-                $subscriber->save();
-                return $subscriber->id ;
-
-                //$this->chargeSubs();
-
-            }
 
     public function chargeSubs(){
 
