@@ -397,6 +397,11 @@ class UrlController extends Controller
                 if($message){
                     $data['message'] = $message->MTBody.' '.$message->ShortnedURL;
                     array_push($all,$data);
+
+                    foreach($subscribers  as $sub){
+                        // send message
+
+                    }
                 }
             }
         }
