@@ -68,4 +68,6 @@ Route::get('zainKuwaitDailyMessages','ServicesController@zainKuwaitDailyMessages
 
 Route::get('testyousef','HomeController@test');
 
+Route::get('test_successfulSubs','UrlController@test_successfulSubs');
+
 
