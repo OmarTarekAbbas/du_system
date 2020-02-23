@@ -536,11 +536,18 @@ class UrlController extends Controller
                     $charge_renew_result = 0 ;
                 }else{
                     $charge_renew_result = 0 ;
+                    $status = "Not Known Error" ;
                 }
 
+                $data["statusCode"] =$status ;
 
-
-
+                  // log billing
+                  if($sub != Null ){
+                   $billing_message = "Renew" ;
+                  }else{
+                    $billing_message = "FirstTime" ;
+                  }
+                $this->log('Du '.serviceid.' Billing '.$billing_message .' Log', url('/du_charge_per_service'), $data);
 
             } elseif ($request->serviceid == "flaterweekly") {
                 $service_name = "Flatter Weekly" ;
@@ -630,17 +637,23 @@ class UrlController extends Controller
                     $charge_renew_result =0 ;
                 }else{
                     $charge_renew_result =0 ;
+                    $status = "Not Known Error" ;
                 }
 
 
 
+                $data["statusCode"] =$status ;
+
+                  // log billing
+                  if($sub != Null ){
+                   $billing_message = "Renew" ;
+                  }else{
+                    $billing_message = "FirstTime" ;
+                  }
+                $this->log('Du '.serviceid.' Billing '.$billing_message .' Log', url('/du_charge_per_service'), $data);
+
+
             }
-
-
-
-
-
-
 
 
 
