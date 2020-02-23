@@ -309,6 +309,8 @@ class UrlController extends Controller
 
     public function successfulSubs($id){//activation id
 
+
+
         $subscriber = new Subscriber;
 
         $subscriber->activation_id = $id;
@@ -530,14 +532,29 @@ class UrlController extends Controller
                             $sub_id = "" ;
                         }
 
+                    }else{
+                        $sub_id = "" ;
                     }
 
                 } elseif ($faultstring->length != 0) {
                     $status = $faultstring->item(0)->nodeValue ;
                     $charge_renew_result = 0 ;
+                    if($status == "503 - product already purchased!"){  // aready subscribe
+                        $Subscriber =   Subscriber::where('activation_id',$activation_id)->first() ;
+                        if(  $Subscriber) {
+                            $sub_id = $Subscriber->id;
+                        }else{ // create new one
+                            $sub_id =  $this->successfulSubs( $activation_id );
+                        }
+
+                    }else{
+                        $sub_id = "" ;
+                    }
+
                 }else{
                     $charge_renew_result = 0 ;
                     $status = "Not Known Error" ;
+                    $sub_id = "" ;
                 }
 
                 $data["statusCode"] =$status ;
@@ -635,13 +652,25 @@ class UrlController extends Controller
                     }
 
                 } elseif ($faultstring->length != 0) {
-                    $status = $faultstring->item(0)->nodeValue;
-                    $charge_renew_result =0 ;
-                }else{
-                    $charge_renew_result =0 ;
-                    $status = "Not Known Error" ;
-                }
+                    $status = $faultstring->item(0)->nodeValue ;
+                    $charge_renew_result = 0 ;
+                    if($status == "503 - product already purchased!"){  // aready subscribe
+                        $Subscriber =   Subscriber::where('activation_id',$activation_id)->first() ;
+                        if(  $Subscriber) {
+                            $sub_id = $Subscriber->id;
+                        }else{ // create new one
+                            $sub_id =  $this->successfulSubs( $activation_id );
+                        }
 
+                    }else{
+                        $sub_id = "" ;
+                    }
+
+                }else{
+                    $charge_renew_result = 0 ;
+                    $status = "Not Known Error" ;
+                    $sub_id = "" ;
+                }
 
 
                 $data["statusCode"] =$status ;
