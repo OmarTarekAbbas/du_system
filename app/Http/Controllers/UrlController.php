@@ -641,11 +641,21 @@ class UrlController extends Controller
 
 
 
+
+
+
                 // log new charge renew into DB
                 if($sub != Null){  // renew charging
                 $subscriber_id =$sub->id ;
                 }else{  // billing for the first time
                 $subscriber_id =  $sub_id ;
+
+                    // edit activition for the first time of billing
+                    $act = Activation::findOrFail($activation->id);
+                    $act->du_request =  $client->request;;
+                    $act->du_response = $client->responseData;
+                    $act->status_code = $status;
+                    $act->save();
                 }
 
                 // log charging
@@ -766,7 +776,7 @@ class UrlController extends Controller
                 $msisdn =  $activation->msisdn ;
                 $send_welcome_message = true ;
 
-                $this->du_charge_per_service($activation,$serviceid, $msisdn,$sub=Null,$send_welcome_message=Null) ;
+                $this->du_charge_per_service($activation,$serviceid, $msisdn,$sub=Null,$send_welcome_message) ;
             }
 
 
