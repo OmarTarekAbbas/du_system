@@ -26,6 +26,12 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('inspire')
                  ->hourly();
+
+
+                 $schedule->call('App\Http\Controllers\UrlController@chargeSubs')->dailyAt('08:00');  // our time is 8+2 = 10  // charging scheduling
+                 $schedule->call('App\Http\Controllers\UrlController@sendTodaySubMessage')->dailyAt('09:00');  // SMS
+
+
 /*
         $schedule->call('App\Http\Controllers\ServicesController@MTSchedule')->dailyAt('08:00');  // our time is 8+2 = 10
         $schedule->call('App\Http\Controllers\ServicesController@MTSchedule')->dailyAt('08:30');
@@ -62,6 +68,8 @@ class Kernel extends ConsoleKernel
       //  $schedule->call('App\Http\Controllers\ServicesController@TodayMessagesStatus')->dailyAt('08:40');  // our time is 10+2 = 12
       //  $schedule->call('App\Http\Controllers\ServicesController@toSendTomorrow')->dailyAt('08:45');
       //  $schedule->call('App\Http\Controllers\ServicesController@notSendTomrrow')->dailyAt('09:20');
+
+
     }
 
     /**

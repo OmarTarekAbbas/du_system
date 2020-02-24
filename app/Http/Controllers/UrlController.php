@@ -352,6 +352,12 @@ class UrlController extends Controller
 
     public function chargeSubs(){
 
+        $timeout = 60000000000;
+
+        $email =  "emad@ivas.com.eg" ;
+        $subject = "Charging Cron Schedule for ".Carbon::now()->format('Y-m-d') ;
+        $this->sendMail($subject, $email);
+
         $services = Activation::select('serviceid')->groupBy('serviceid')->get();
 
         $today = Carbon::now()->format('Y-m-d');
@@ -405,9 +411,37 @@ class UrlController extends Controller
         echo "Du Charging for toady ". $today. "Is Done" ;
     }
 
+
+    public function sendMail($subject, $email, $Message = NULL) {
+
+        // send mail
+        $message = '<!DOCTYPE html>
+					<html lang="en-US">
+						<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+						</head>
+						<body>
+							<h2>' . $subject . '</h2>
+
+
+
+						</body>
+					</html>';
+
+        $headers = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+        $headers .= 'From:  ' . $email;
+        @mail($email, $subject, $message, $headers);
+    }
+
     // get all subscriber with message
     public function sendTodaySubMessage()
     {
+        $timeout = 60000000000;
+
+        $email =  "emad@ivas.com.eg" ;
+        $subject = "SMS Cron Schedule sending for ".Carbon::now()->format('Y-m-d') ;
+        $this->sendMail($subject, $email);
+
         $all = [];
         $services = Service::all();
         $today = Carbon::now()->format('Y-m-d');
