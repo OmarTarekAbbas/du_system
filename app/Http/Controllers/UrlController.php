@@ -437,28 +437,6 @@ class UrlController extends Controller
     public function sendTodaySubMessage()
     {
 
-        $services = Service::all();
-        foreach ($services as $key => $service) {
-            echo $service->title ;
-            echo "<hr>" ;
-            echo "<hr>" ;
-
-            $subscribers =  Activation::join('subscribers', 'subscribers.activation_id', '=', 'activation.id')
-            ->where('activation.serviceid', $service->title)
-            ->select('activation.msisdn as msisdn','activation.serviceid as serviceid','subscribers.id as sub_id')
-            ->get();
-
-
-            foreach($subscribers  as $sub){
-                echo  $sub->sub_id ;
-                echo "<hr>" ;
-            }
-        }
-
-        die;
-
-
-
         $timeout = 60000000000;
 
         $email =  "emad@ivas.com.eg" ;
