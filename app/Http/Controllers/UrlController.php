@@ -450,7 +450,7 @@ class UrlController extends Controller
             $data['serviceId'] = $service->title;
             $subscribers =  Activation::join('subscribers', 'subscribers.activation_id', '=', 'activation.id')
                             ->where('activation.serviceid', $service->title)
-                            ->select('activation.msisdn')
+                            ->select('activation.msisdn','activation.serviceid as serviceid')
                             ->get();
             $data['msisdns'] = $subscribers;
             if($subscribers->count() > 0){
