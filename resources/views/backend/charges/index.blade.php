@@ -42,15 +42,15 @@
 
             <div class="col-md-2">
                 {!! Form::label('se', 'Service:') !!}
-                <div class='input-group date'>
-                    {!! Form::select('serviceid', $services , request()->get('service_id'), ['class'=>'form-control','id'=>'se','placeholder'=>'Select Services']) !!}
+                <div class=''>
+                    {!! Form::select('serviceid', $services , request()->get('serviceid'), ['class'=>'form-control','id'=>'se','placeholder'=>'Select Services']) !!}
                 </div>
             </div>
 
             <div class="col-md-2">
                 {!! Form::label('plan', 'Plan:') !!}
-                <div class='input-group date'>
-                    {!! Form::select('plan', ['daily'=>'daily' , 'weekly' => 'weekly'] , request()->get('service_id'), ['class'=>'form-control','id'=>'plan','placeholder'=>'Select Plan']) !!}
+                <div class=''>
+                    {!! Form::select('plan', ['daily'=>'daily' , 'weekly' => 'weekly'] , request()->get('plan'), ['class'=>'form-control','id'=>'plan','placeholder'=>'Select Plan']) !!}
                 </div>
             </div>
 
@@ -74,7 +74,7 @@
                 </div>
             </div>
 
-            @if(request()->get('to_date') || request()->get('from_date') || request()->get('msisdn'))
+            @if($without_paginate)
             <?php
             $sum = 0;
             foreach($charges as $charge){
@@ -146,7 +146,7 @@
 
             </div>
         </div>
-        @if(!(request()->get('to_date') || request()->get('from_date') || request()->get('msisdn') || request()->get('plan') || request()->get('serviceid')))
+        @if(!$without_paginate)
             {!! $charges->setPath('charges') !!}
         @endif
     </div>
