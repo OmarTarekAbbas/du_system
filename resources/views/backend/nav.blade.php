@@ -76,6 +76,7 @@
         </ul>
     </li>
     <li id="subc"><a href="{{ route('admin.subscribers.index') }}"><span class="glyphicon glyphicon-random"></span> Subscribers</a></li>
+    <li id="unsubc"><a href="{{ route('admin.unsubscribers.index') }}"><span class="glyphicon glyphicon-random"></span> UnSubscribers</a></li>
     <li id="charge"><a href="{{ route('admin.charges.index') }}"><span class="glyphicon glyphicon-random"></span> Charges</a></li>
     @endif
     <li role="presentation" class="divider"></li>
