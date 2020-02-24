@@ -445,7 +445,7 @@ class UrlController extends Controller
         $all = [];
         $services = Service::all();
         $today = Carbon::now()->format('Y-m-d');
-        $message_type = "Today Message for  ".$today ;
+        $message_type = "Today_Messages_Schedule";
         foreach ($services as $key => $service) {
             $data['serviceId'] = $service->title;
             $subscribers =  Activation::join('subscribers', 'subscribers.activation_id', '=', 'activation.id')
@@ -463,12 +463,17 @@ class UrlController extends Controller
 
                     foreach($subscribers  as $sub){
                            // Du sending welcome message
-                   $result = $this->du_send_message($sub>serviceid,$sub->msisdn,  $data['message'] ,$message_type  );
+                           $serviceid =  $sub->serviceid ;
+                           $msisdn =  $sub->msisdn ;
+                           $mes =  $data['message'];
+
+
+                  $result = $this->du_send_message($serviceid , $msisdn ,   $mes ,$message_type  );
 
                     }
 
-                    // update today message status
-                    if( $result == "1"){
+                   // update today message status
+                 //   if( $result == "1"){
                         $message->IsysResponse = 'OK' ;
                         $message->save() ;
 
@@ -479,11 +484,11 @@ class UrlController extends Controller
                         $send_array["message_id"] = $message->id;
                         $send_array["service"] = $service->title ;
                         $this->log('Du Today Send Message for '. $service->title .' service', url('/sendTodaySubMessage'), $send_array);
-                    }
+                 //   }
                 }
             }
         }
-        return $message_type."Is Send";
+        return $message_type." Is Send";
     }
 
     /*****************/
@@ -931,7 +936,7 @@ class UrlController extends Controller
                     $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
                     $send_array["du_sms_result"] = $result;
                     $send_array["du_message_mean"] = $message_mean;
-                    $this->log('Du '. $service_name .' sending  '.$message_type.' ', url('/activation'), $send_array);
+                    $this->log('Du Send Message', url('/du_send_message'), $send_array);
 
                     return $result ;
     }
@@ -1057,6 +1062,7 @@ class UrlController extends Controller
 
     public function log($actionName, $URL, $parameters_arr)
     {
+
         date_default_timezone_set("Africa/Cairo");
         $date = date("Y-m-d");
         $log = new Logger($actionName);
