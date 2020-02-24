@@ -781,13 +781,13 @@ class UrlController extends Controller
 
 
                   // renew charging log
-                  if($sub != Null ){
-                    $data["charging_du_result"] = $status;
-                    $data["serviceid"] = $serviceid;
-                    $data["msisdn"] = $msisdn;
-                    $data["charge_renew_result"] = $charge_renew_result;
-                    $this->log('Du '.$serviceid.' charging renew', url('/du_charge_per_service'), $data);
-                    }
+                //   if($sub != Null ){
+                //     $data["charging_du_result"] = $status;
+                //     $data["serviceid"] = $serviceid;
+                //     $data["msisdn"] = $msisdn;
+                //     $data["charge_renew_result"] = $charge_renew_result;
+                //     $this->log('Du '.$serviceid.' charging renew', url('/du_charge_per_service'), $data);
+                //     }
 
 
                 if($send_welcome_message != Null) {
