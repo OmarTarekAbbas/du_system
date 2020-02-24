@@ -450,8 +450,10 @@ class UrlController extends Controller
             $data['serviceId'] = $service->title;
             $subscribers =  Activation::join('subscribers', 'subscribers.activation_id', '=', 'activation.id')
                             ->where('activation.serviceid', $service->title)
-                            ->select('activation.msisdn','activation.serviceid as serviceid')
+                            ->select('activation.msisdn as msisdn','activation.serviceid as serviceid','subscribers.id as sub_id')
                             ->get();
+
+
             $data['msisdns'] = $subscribers;
             if($subscribers->count() > 0){
                 $message = \App\Message::where('service_id',$service->id)->where('date',$today)->first();
