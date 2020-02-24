@@ -742,7 +742,7 @@ class UrlController extends Controller
                     $data["serviceid"] = $serviceid;
                     $data["msisdn"] = $msisdn;
                     $data["charge_renew_result"] = $charge_renew_result;
-                    $this->log('Du '.serviceid.' charging renew', url('/du_charge_per_service'), $data);
+                    $this->log('Du '.$serviceid.' charging renew', url('/du_charge_per_service'), $data);
                     }
 
 
