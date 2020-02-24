@@ -26,7 +26,7 @@ Route::get('messages/{id}', 'MessageController@update');
 
 //=======================  Du routes  ======================//
 define('DU_SMS_SEND_MESSAGE','http://41.33.167.14:2080/~smsdu/du_send_message');
-define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');
+
 Route::post('activation', 'UrlController@activation');
 Route::post('test2','UrlController@test2');
 
@@ -37,6 +37,9 @@ Route::get('getTodayMessage/{id}','UrlController@getMessage');
 
 Route::post('unsub', 'Api\HomeController@msisdn');
 Route::post('test', 'Api\HomeController@msisdn');
+
+// welcome message --- here must get by ip
+define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');
 
 
 

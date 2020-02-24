@@ -817,10 +817,13 @@ class UrlController extends Controller
                     $this->log('Du '.$serviceid.'  First Billing', url('/activation'), $data);
 
 
+                 //  welcomemessage for each service
+                   $welcome_message = $this->getMessage($serviceid);
+
 
                      // Du sending welcome message
-                     $du_welcome_message = "welcome to  ". $service_name ."  service";
-                     $du_welcome_message .= " Enjoy from   " . DU_Flatter_Link;
+                     $du_welcome_message = "welcome to  ". $service_name ."  service ";
+                     $du_welcome_message .= $welcome_message;
                      $message_type = "Welcome Message" ;
                     $this->du_send_message($service_name ,$msisdn,$du_welcome_message , $message_type);
 
