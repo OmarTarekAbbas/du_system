@@ -439,6 +439,9 @@ class UrlController extends Controller
 
         $services = Service::all();
         foreach ($services as $key => $service) {
+            echo $service->title ;
+            echo "<hr>" ;
+            echo "<hr>" ;
 
             $subscribers =  Activation::join('subscribers', 'subscribers.activation_id', '=', 'activation.id')
             ->where('activation.serviceid', $service->title)
