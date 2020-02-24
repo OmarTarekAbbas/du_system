@@ -376,14 +376,14 @@ class UrlController extends Controller
                 $msisdn =    $activation->msisdn ;
 
 
-                if($activation->serviceid == 'flaterdaily' ||$activation->serviceid == 'flaterweekly' ){  // flatter daily , flater weekly
+            //    if($activation->serviceid == 'flaterdaily' ||$activation->serviceid == 'flaterweekly' ){  // flatter daily , flater weekly
                             // Du First Billing or new billing
                             $serviceid =  $activation->serviceid ;
                             $msisdn =  $activation->msisdn ;
 
                             $charge_renew_result =   $this->du_charge_per_service($activation,$serviceid, $msisdn,$sub,$send_welcome_message=Null) ;
 
-                }
+              //  }
 
 
 
