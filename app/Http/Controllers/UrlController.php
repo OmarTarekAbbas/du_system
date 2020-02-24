@@ -498,11 +498,11 @@ class UrlController extends Controller
         $today = Carbon::now()->format('Y-m-d');
         $service = Service::where('title',$id)->first();
         $message = \App\Message::where('service_id',$service->service_id)->where('date',$today)->first();
-        $data['message'] = '';
+        $today_message = '';
         if($message){
-            $data['message'] = $message->MTBody.' '.$message->ShortnedURL;
+            $today_message = $message->MTBody.' '.$message->ShortnedURL;
         }
-        return $data;
+        return    $today_message ;
     }
 
 
