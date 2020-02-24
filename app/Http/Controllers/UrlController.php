@@ -350,9 +350,6 @@ class UrlController extends Controller
 
     }
 
-
-
-
     public function chargeSubs(){
 
         $services = Activation::select('serviceid')->groupBy('serviceid')->get();
@@ -409,7 +406,7 @@ class UrlController extends Controller
     }
 
     // get all subscriber with message
-    public function getTodaySubMessage()
+    public function sendTodaySubMessage()
     {
         $all = [];
         $services = Service::all();
@@ -430,14 +427,27 @@ class UrlController extends Controller
 
                     foreach($subscribers  as $sub){
                            // Du sending welcome message
-                    $this->du_send_message($sub>serviceid,$sub->msisdn,  $data['message'] ,$message_type  );
+                   $result = $this->du_send_message($sub>serviceid,$sub->msisdn,  $data['message'] ,$message_type  );
+
+                    }
+
+                    // update today message status
+                    if( $result == "1"){
+                        $message->IsysResponse = 'OK' ;
+                        $message->save() ;
 
 
+                        $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
+                        $send_array["DU_send_message_result"] = $result;
+                        $send_array["message"] =  $data['message'];
+                        $send_array["message_id"] = $message->id;
+                        $send_array["service"] = $service->title ;
+                        $this->log('Du Today Send Message for '. $service->title .' service', url('/sendTodaySubMessage'), $send_array);
                     }
                 }
             }
         }
-        return $all;
+        return $message_type."Is Send";
     }
 
     /*****************/
