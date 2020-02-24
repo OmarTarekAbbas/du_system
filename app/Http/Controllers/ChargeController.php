@@ -63,7 +63,7 @@ class ChargeController extends Controller
         }else{
             $charges = $charges->paginate(10);
         }
-        return view('backend.charges.index',compact('charges','services'));
+        return view('backend.charges.index',compact('charges','services','without_paginate'));
     }
 
 }
