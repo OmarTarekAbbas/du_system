@@ -628,7 +628,8 @@ class UrlController extends Controller
                             $Subscriber->next_charging_date = date('Y-m-d',strtotime($Subscriber->next_charging_date  . "+1 day"));
                             $Subscriber->save();
                         }else{ // create new one
-                            $sub_id =  $this->successfulSubs( $activation_id );
+                            // $sub_id =  $this->successfulSubs( $activation_id );
+                            $sub_id = "" ;
                         }
 
                     }else{
