@@ -440,7 +440,7 @@ class UrlController extends Controller
     {
 
         $timeout = 60000000000;
-
+        $result = 0 ;
         $email =  "emad@ivas.com.eg" ;
         $subject = "SMS Cron Schedule sending for ".Carbon::now()->format('Y-m-d') ;
         $this->sendMail($subject, $email);
@@ -476,7 +476,7 @@ class UrlController extends Controller
                     }
 
                    // update today message status
-                 //   if( $result == "1"){
+                   if( $result == "1"){
                         $message->IsysResponse = 'OK' ;
                         $message->save() ;
 
@@ -487,7 +487,7 @@ class UrlController extends Controller
                         $send_array["message_id"] = $message->id;
                         $send_array["service"] = $service->title ;
                         $this->log('Du Today Send Message for '. $service->title .' service', url('/sendTodaySubMessage'), $send_array);
-                 //   }
+                    }
                 }
             }
         }
