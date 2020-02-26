@@ -625,6 +625,8 @@ class UrlController extends Controller
                         $Subscriber =   Subscriber::where('activation_id',$activation_id)->first() ;
                         if(  $Subscriber) {
                             $sub_id = $Subscriber->id;
+                            $Subscriber->next_charging_date = date('Y-m-d',strtotime($Subscriber->next_charging_date  . "+1 day"));
+                            $Subscriber->save();
                         }else{ // create new one
                             $sub_id =  $this->successfulSubs( $activation_id );
                         }
