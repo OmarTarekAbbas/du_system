@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
 
 
                  $schedule->call('App\Http\Controllers\UrlController@chargeSubs')->dailyAt('08:00');  // our time is 8+2 = 10  // charging scheduling
-                 $schedule->call('App\Http\Controllers\UrlController@sendTodaySubMessage')->dailyAt('09:00');  // SMS
+                 $schedule->call('App\Http\Controllers\UrlController@sendTodaySubMessage')->dailyAt('08:30');  // SMS
 
 
 /*
