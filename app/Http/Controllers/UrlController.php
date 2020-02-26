@@ -372,6 +372,7 @@ class UrlController extends Controller
             //dd($subscribers);
             foreach($subscribers as $sub){
                 $activation = Activation::findOrFail($sub->activation_id);
+                $old_sub = Subscriber::findOrFail($sub->id);
                 $serviceid = $activation->serviceid ;
                 $msisdn =    $activation->msisdn ;
 
@@ -392,15 +393,15 @@ class UrlController extends Controller
                 if($charge_renew_result  == 1 ){  // renew charge success
 
                     if($activation->plan == 'daily'){
-                        $sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 day"));
-                        $sub->save();
+                        $old_sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 day"));
+                        $old_sub->save();
                     }
                     elseif($activation->plan == 'weekly'){
-                        $sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 week"));
-                        $sub->save();
+                        $old_sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 week"));
+                        $old_sub->save();
                     }else{ // default is daily
-                        $sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 day"));
-                        $sub->save();
+                        $old_sub->next_charging_date = date('Y-m-d',strtotime($sub->next_charging_date  . "+1 day"));
+                        $old_sub->save();
                     }
 
                 }
