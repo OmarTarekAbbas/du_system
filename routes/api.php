@@ -36,7 +36,7 @@ Route::get('chargeSubs','UrlController@chargeSubs');
 Route::get('getTodayMessage/{id}','UrlController@getMessage');
 
 Route::post('unsub', 'Api\HomeController@msisdn');
-Route::post('test', 'Api\HomeController@msisdn');
+Route::post('checkSub', 'Api\HomeController@checkSub');
 
 // welcome message --- here must get by ip
 define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');

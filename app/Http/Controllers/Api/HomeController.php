@@ -33,4 +33,25 @@ class HomeController extends Controller
         return $output ;
 
     }
+
+
+
+    public function checkSub(Request $request)
+    {
+        $output = 0 ;
+        $result = Activation :: where("msisdn",$request->msisdn)->where("serviceid",$request->serviceid)->orderBy("created_at", "desc")->first(['id','msisdn','serviceid']);
+        if($request->msisdn == $result["msisdn"]){
+            $sub    = Subscriber :: where("activation_id",$result->id)->first();
+            if($sub ){
+                $output = 1 ;
+            }else{
+                $output = 0 ;
+            }
+
+        }else{
+            $output = 0 ;
+        }
+        return $output ;
+
+    }
 }
