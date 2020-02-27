@@ -501,11 +501,19 @@ class UrlController extends Controller
         $today = Carbon::now()->format('Y-m-d');
         $service = Service::where('title',$id)->first();
         $message = \App\Message::where('service_id',$service->service_id)->where('date',$today)->first();
+<<<<<<< HEAD
         $today_message = '';
         if($message){
             $today_message = $message->MTBody.' '.$message->ShortnedURL;
         }
         return    $today_message ;
+=======
+        $data['message'] = '';
+        if($message){
+            $data['message'] = $message->MTBody.' '.$message->ShortnedURL;
+        }
+        return $data;
+>>>>>>> origin/mohamed
     }
 
 
@@ -1085,7 +1093,40 @@ class UrlController extends Controller
     }
 
 
-
-
+     /**
+     * logMessage log message unsub and remove number from subscribe
+     *
+     * @param  mixed $request
+     *
+     * @return void
+     */
+    public function logMessage(Request $request)
+    {
+        $data['msisdn'] = $request->msisdn;
+        $data['message'] = $request->message;
+        $result = Activation ::where("msisdn",$request->msisdn);
+        if($request->message == 'unsub_fd'){
+            $result = $result->where('serviceid','flaterdaily');
+        }
+        elseif ($request->message == 'unsub_fw') {
+            $result = $result->where('serviceid','flaterweekly');
+        }
+        else{
+            $result = $result->where('serviceid',null);
+        }
+        $result = $result->latest("created_at")->first(['id','msisdn','serviceid']);
+        if($result){
+            $sub = Subscriber::where("activation_id",$result->id)->first();
+            if($sub){
+                $unsub  = new \App\Unsubscriber();
+                $unsub->activation_id = $sub->activation_id;
+                $unsub->save();
+                $sub->delete();
+                $data['unsub_id'] = $unsub->id;
+                $this->log('DU MO UNSUB Success', $request->fullUrl(), $data);
+            }
+        }
+        $this->log('DU MO UNSUB', $request->fullUrl(), $data);
+    }
     /***************** */
 }

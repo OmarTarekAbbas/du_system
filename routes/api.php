@@ -41,5 +41,5 @@ Route::post('checkSub', 'Api\HomeController@checkSub');
 // welcome message --- here must get by ip
 define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');
 
-
+Route::get('logmessage','UrlController@logMessage');
 
