@@ -501,19 +501,11 @@ class UrlController extends Controller
         $today = Carbon::now()->format('Y-m-d');
         $service = Service::where('title',$id)->first();
         $message = \App\Message::where('service_id',$service->service_id)->where('date',$today)->first();
-<<<<<<< HEAD
         $today_message = '';
         if($message){
             $today_message = $message->MTBody.' '.$message->ShortnedURL;
         }
         return    $today_message ;
-=======
-        $data['message'] = '';
-        if($message){
-            $data['message'] = $message->MTBody.' '.$message->ShortnedURL;
-        }
-        return $data;
->>>>>>> origin/mohamed
     }
 
 
@@ -1105,10 +1097,10 @@ class UrlController extends Controller
         $data['msisdn'] = $request->msisdn;
         $data['message'] = $request->message;
         $result = Activation ::where("msisdn",$request->msisdn);
-        if($request->message == 'unsub_fd'){
+        if($request->message == 'unsub_fd'){ // flaterdaily
             $result = $result->where('serviceid','flaterdaily');
         }
-        elseif ($request->message == 'unsub_fw') {
+        elseif ($request->message == 'unsub_fw') { // flaterweekly
             $result = $result->where('serviceid','flaterweekly');
         }
         else{
