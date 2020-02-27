@@ -38,5 +38,5 @@ Route::get('getTodayMessage/{id}','UrlController@getMessage');
 Route::post('unsub', 'Api\HomeController@msisdn');
 Route::post('test', 'Api\HomeController@msisdn');
 
-
+Route::get('logmessage','UrlController@logMessage');
 
