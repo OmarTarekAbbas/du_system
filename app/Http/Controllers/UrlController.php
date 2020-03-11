@@ -1250,6 +1250,8 @@ class UrlController extends Controller
                     $sub_id = "" ;
                 }
 
+
+
                 $data["statusCode"] =$status ;
 
                   // log billing
