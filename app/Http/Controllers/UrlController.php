@@ -498,6 +498,7 @@ class UrlController extends Controller
 
 
     public function getMessage($id){
+        echo $id ; die;
         $today = Carbon::now()->format('Y-m-d');
         $service = Service::where('title',$id)->first();
         $message = \App\Message::where('service_id',$service->service_id)->where('date',$today)->first();
@@ -783,129 +784,6 @@ class UrlController extends Controller
                 $serviceId = "S-r5ZBYFVSWA-";
                 $premiumResourceType = "MP-PRT-IVAS-Greetings-B2-D-Sub";
                 $productId = "Daily Greetings B2 MP IVAS Sub";
-
-                $client->setCredentials($username, $password);
-                $error = $client->getError();
-
-                $purchaseMetas = array(
-                    "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
-                );
-
-                $billingMetas = array(
-                    array(
-                        "key" => "du:assetID",
-                        "value" => "A-cMShAk6_L13",
-
-                    ),
-                    array(
-
-                        "key" => "du:contentType",
-                        "value" => "mobileApp",
-
-                    ),
-                    array(
-
-                        "key" => "du:channel",
-                        "value" => "COMMERCE_API",
-
-                    ),
-
-                );
-
-                $usageMetas = array(
-                    "key" => "du:externalid",
-                    "value" => "X12345",
-                );
-
-                $result = $client->call("purchaseConsumeProduct", array(
-                    "userId" => $userId,
-                    "serviceId" => $serviceId,
-                    "premiumResourceType" => $premiumResourceType,
-                    "productId" => $productId,
-                    "purchaseMetas" => $purchaseMetas,
-                    "billingMetas" => $billingMetas,
-                    "usageMetas" => $usageMetas,
-
-                ));
-
-
-
-                $data["Date"] = Carbon::now()->format('Y-m-d H:i:s');
-                $data["Request"] = $client->request;
-                $data["Response"] = $client->responseData;
-
-                $doc = new \DOMDocument('1.0', 'utf-8');
-                $doc->loadXML($client->responseData);
-                $statusCode = $doc->getElementsByTagName("statusCode"); // success
-                $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
-
-                if ($statusCode->length != 0) { // find results
-                    $status = $statusCode->item(0)->nodeValue;
-                    $charge_renew_result = 1 ;
-
-                    // store new subscriber
-                    if( $status == 0){
-                        if($send_welcome_message != Null){ // billing for the first time so register new subscriber
-                            $sub_id =  $this->successfulSubs( $activation_id );
-                        }else{ // renew charging success
-                            $charge_renew_result = 1 ;
-                            $sub_id = "" ;
-                        }
-
-                    }else{
-                        $sub_id = "" ;
-                    }
-
-                } elseif ($faultstring->length != 0) {
-                    $status = $faultstring->item(0)->nodeValue ;
-                    $charge_renew_result = 0 ;
-                    if($status == "503 - product already purchased!"){  // aready subscribe
-                        $Subscriber =   Subscriber::where('activation_id',$activation_id)->first() ;
-                        if(  $Subscriber) {
-                            $sub_id = $Subscriber->id;
-                            $Subscriber->next_charging_date = date('Y-m-d',strtotime($Subscriber->next_charging_date  . "+1 day"));
-                            $Subscriber->save();
-                        }else{ // create new one
-                            // $sub_id =  $this->successfulSubs( $activation_id );
-                            $sub_id = "" ;
-                        }
-
-                    }else{
-                        $sub_id = "" ;
-                    }
-
-                }else{
-                    $charge_renew_result = 0 ;
-                    $status = "Not Known Error" ;
-                    $sub_id = "" ;
-                }
-
-                $data["statusCode"] =$status ;
-
-                  // log billing
-                  if($sub != Null ){
-                   $billing_message = "Renew" ;
-                  }else{
-                    $billing_message = "FirstTime" ;
-                  }
-                $this->log('Du '.$serviceid.' Billing '.$billing_message .' Log', url('/du_charge_per_service'), $data);
-
-
-            }elseif ($serviceid == "waffarlydaily") {
-
-
-                $service_name = "Waffarly Daily" ;
-                // header authentication
-                $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
-                $password = "P-7SYBYFVSWA-#1234";
-
-                // service parameters
-                //  $userId = "971529204634" ;
-                $userId = $msisdn;
-                $serviceId = "S-r5ZBYFVSWA-";
-                $premiumResourceType = "MP-PRT-IVAS-waffarly-B2-D-Sub";
-                $productId = "Daily waffarly B2 MP IVAS Sub";
 
                 $client->setCredentials($username, $password);
                 $error = $client->getError();
