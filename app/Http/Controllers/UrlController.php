@@ -534,7 +534,7 @@ class UrlController extends Controller
 
             if ($serviceid == "flaterdaily") {
 
-                $service_name = "Flatter Daily" ;
+                $service_name = "Flatter" ;
                 // header authentication
                 $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
                 $password = "P-7SYBYFVSWA-#1234";
@@ -654,7 +654,7 @@ class UrlController extends Controller
                 $this->log('Du '.$serviceid.' Billing '.$billing_message .' Log', url('/du_charge_per_service'), $data);
 
             } elseif ($serviceid== "flaterweekly") {
-                $service_name = "Flatter Weekly" ;
+                $service_name = "Flatter" ;
                 // header authentication
                 $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
                 $password = "P-7SYBYFVSWA-#1234";
@@ -773,7 +773,7 @@ class UrlController extends Controller
             }elseif ($serviceid == "greetingsdaily") {
 
 
-                $service_name = "Greeting Daily" ;
+                $service_name = "Greeting" ;
                 // header authentication
                 $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
                 $password = "P-7SYBYFVSWA-#1234";
@@ -896,7 +896,7 @@ class UrlController extends Controller
             }elseif ($serviceid == "waffarlydaily") {
 
 
-                $service_name = "Waffarly Daily" ;
+                $service_name = "Waffarly" ;
                 // header authentication
                 $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
                 $password = "P-7SYBYFVSWA-#1234";
@@ -1019,7 +1019,7 @@ class UrlController extends Controller
             }elseif ($serviceid == "3laweindaily") {
 
 
-                $service_name = "3lawein Daily" ;
+                $service_name = "3lawein" ;
                 // header authentication
                 $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
                 $password = "P-7SYBYFVSWA-#1234";
@@ -1144,7 +1144,7 @@ class UrlController extends Controller
             }elseif ($serviceid == "flaterrotanadaily") {
 
 
-                $service_name = "Flater Rotana Daily" ;
+                $service_name = "Flater Rotana" ;
                 // header authentication
                 $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
                 $password = "P-7SYBYFVSWA-#1234";
@@ -1324,7 +1324,7 @@ class UrlController extends Controller
 
 
                      // Du sending welcome message
-                     $du_welcome_message = "welcome to  ". $service_name ."  service ";
+                     $du_welcome_message = "Welcome To ". $service_name ."  Service ";
                      $du_welcome_message .= $welcome_message;
                      $message_type = "Welcome Message" ;
                     $this->du_send_message($service_name ,$msisdn,$du_welcome_message , $message_type);
