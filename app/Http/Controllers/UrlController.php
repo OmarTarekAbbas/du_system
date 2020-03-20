@@ -1141,7 +1141,7 @@ class UrlController extends Controller
                 $this->log('Du '.$serviceid.' Billing '.$billing_message .' Log', url('/du_charge_per_service'), $data);
 
 
-            }elseif ($serviceid == "rotanadaily") {
+            }elseif ($serviceid == "flaterrotanadaily") {
 
 
                 $service_name = "Flater Rotana Daily" ;
