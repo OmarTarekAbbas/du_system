@@ -1453,7 +1453,7 @@ if($secure_D_Pincode_success  == secureD_Failed){
 }elseif($secure_D_Pincode_success  == secureD_Success){
     $array = ["result" => "SUCCESS", "reason" => "The user has been successfully activated"];
 }elseif($secure_D_Pincode_success  == secureD_product_already_purchased){
-    $array = ["result" => "Failed", "reason" => "The user alreday subscribed"];
+    $array = ["result" => "Failed", "reason" => "The user already subscribed"];
 }elseif($secure_D_Pincode_success  == secureD_Insufficient_funds){
     $array = ["result" => "Failed", "reason" => "The user has insufficient funds"];
 }else{
