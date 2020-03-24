@@ -513,9 +513,8 @@ class UrlController extends Controller
 
     public function du_charge_per_service($activation,$serviceid, $msisdn,$sub=Null,$send_welcome_message=Null)
     {
-
+        $secure_D_Pincode_success = secureD_Failed ;
         $charge_renew_result = 0 ;
-
         $date = date("Y-m-d h:i:sa");
         $today = date("Y-m-d");
 
@@ -610,6 +609,7 @@ class UrlController extends Controller
                     if( $status == 0){
                         if($send_welcome_message != Null){ // billing for the first time so register new subscriber
                             $sub_id =  $this->successfulSubs( $activation_id );
+                             $secure_D_Pincode_success = secureD_Success ;
                         }else{ // renew charging success
                             $charge_renew_result = 1 ;
                             $sub_id = "" ;
@@ -623,6 +623,7 @@ class UrlController extends Controller
                     $status = $faultstring->item(0)->nodeValue ;
                     $charge_renew_result = 0 ;
                     if($status == "503 - product already purchased!"){  // aready subscribe
+                        $secure_D_Pincode_success = secureD_product_already_purchased;
                         $Subscriber =   Subscriber::where('activation_id',$activation_id)->first() ;
                         if(  $Subscriber) {
                             $sub_id = $Subscriber->id;
@@ -633,6 +634,8 @@ class UrlController extends Controller
                             $sub_id = "" ;
                         }
 
+                    }elseif($status == "24 - Insufficient funds."){
+                        $secure_D_Pincode_success = secureD_Insufficient_funds ;
                     }else{
                         $sub_id = "" ;
                     }
@@ -730,6 +733,7 @@ class UrlController extends Controller
                      if( $status == 0){
                         if($send_welcome_message != Null){ // billing for the first time  so register new subscriber
                             $sub_id =  $this->successfulSubs($activation_id);
+                            $secure_D_Pincode_success = secureD_Success ;
                         }else{ // renew charging success
                             $charge_renew_result = 1 ;
                             $sub_id = "" ;
@@ -741,13 +745,19 @@ class UrlController extends Controller
                     $status = $faultstring->item(0)->nodeValue ;
                     $charge_renew_result = 0 ;
                     if($status == "503 - product already purchased!"){  // aready subscribe
+                        $secure_D_Pincode_success = secureD_product_already_purchased;
                         $Subscriber =   Subscriber::where('activation_id',$activation_id)->first() ;
                         if(  $Subscriber) {
                             $sub_id = $Subscriber->id;
+                            $Subscriber->next_charging_date = date('Y-m-d',strtotime($Subscriber->next_charging_date  . "+1 day"));
+                            $Subscriber->save();
                         }else{ // create new one
-                            $sub_id =  $this->successfulSubs( $activation_id );
+                            // $sub_id =  $this->successfulSubs( $activation_id );
+                            $sub_id = "" ;
                         }
 
+                    }elseif($status == "24 - Insufficient funds."){
+                        $secure_D_Pincode_success = secureD_Insufficient_funds ;
                     }else{
                         $sub_id = "" ;
                     }
@@ -849,6 +859,7 @@ class UrlController extends Controller
                     if( $status == 0){
                         if($send_welcome_message != Null){ // billing for the first time so register new subscriber
                             $sub_id =  $this->successfulSubs( $activation_id );
+                            $secure_D_Pincode_success = secureD_Success ;
                         }else{ // renew charging success
                             $charge_renew_result = 1 ;
                             $sub_id = "" ;
@@ -862,6 +873,7 @@ class UrlController extends Controller
                     $status = $faultstring->item(0)->nodeValue ;
                     $charge_renew_result = 0 ;
                     if($status == "503 - product already purchased!"){  // aready subscribe
+                        $secure_D_Pincode_success = secureD_product_already_purchased;
                         $Subscriber =   Subscriber::where('activation_id',$activation_id)->first() ;
                         if(  $Subscriber) {
                             $sub_id = $Subscriber->id;
@@ -872,6 +884,8 @@ class UrlController extends Controller
                             $sub_id = "" ;
                         }
 
+                    }elseif($status == "24 - Insufficient funds."){
+                        $secure_D_Pincode_success = secureD_Insufficient_funds ;
                     }else{
                         $sub_id = "" ;
                     }
@@ -972,6 +986,7 @@ class UrlController extends Controller
                     if( $status == 0){
                         if($send_welcome_message != Null){ // billing for the first time so register new subscriber
                             $sub_id =  $this->successfulSubs( $activation_id );
+                            $secure_D_Pincode_success = secureD_Success ;
                         }else{ // renew charging success
                             $charge_renew_result = 1 ;
                             $sub_id = "" ;
@@ -985,6 +1000,7 @@ class UrlController extends Controller
                     $status = $faultstring->item(0)->nodeValue ;
                     $charge_renew_result = 0 ;
                     if($status == "503 - product already purchased!"){  // aready subscribe
+                        $secure_D_Pincode_success = secureD_product_already_purchased;
                         $Subscriber =   Subscriber::where('activation_id',$activation_id)->first() ;
                         if(  $Subscriber) {
                             $sub_id = $Subscriber->id;
@@ -995,6 +1011,8 @@ class UrlController extends Controller
                             $sub_id = "" ;
                         }
 
+                    }elseif($status == "24 - Insufficient funds."){
+                        $secure_D_Pincode_success = secureD_Insufficient_funds ;
                     }else{
                         $sub_id = "" ;
                     }
@@ -1095,6 +1113,7 @@ class UrlController extends Controller
                     if( $status == 0){
                         if($send_welcome_message != Null){ // billing for the first time so register new subscriber
                             $sub_id =  $this->successfulSubs( $activation_id );
+                            $secure_D_Pincode_success = secureD_Success ;
                         }else{ // renew charging success
                             $charge_renew_result = 1 ;
                             $sub_id = "" ;
@@ -1108,6 +1127,7 @@ class UrlController extends Controller
                     $status = $faultstring->item(0)->nodeValue ;
                     $charge_renew_result = 0 ;
                     if($status == "503 - product already purchased!"){  // aready subscribe
+                        $secure_D_Pincode_success = secureD_product_already_purchased;
                         $Subscriber =   Subscriber::where('activation_id',$activation_id)->first() ;
                         if(  $Subscriber) {
                             $sub_id = $Subscriber->id;
@@ -1118,6 +1138,8 @@ class UrlController extends Controller
                             $sub_id = "" ;
                         }
 
+                    }elseif($status == "24 - Insufficient funds."){
+                        $secure_D_Pincode_success = secureD_Insufficient_funds ;
                     }else{
                         $sub_id = "" ;
                     }
@@ -1220,9 +1242,13 @@ class UrlController extends Controller
                     if( $status == 0){
                         if($send_welcome_message != Null){ // billing for the first time so register new subscriber
                             $sub_id =  $this->successfulSubs( $activation_id );
+                             $secure_D_Pincode_success = secureD_Success ;
+
                         }else{ // renew charging success
                             $charge_renew_result = 1 ;
                             $sub_id = "" ;
+
+
                         }
 
                     }else{
@@ -1233,6 +1259,7 @@ class UrlController extends Controller
                     $status = $faultstring->item(0)->nodeValue ;
                     $charge_renew_result = 0 ;
                     if($status == "503 - product already purchased!"){  // aready subscribe
+                        $secure_D_Pincode_success = secureD_product_already_purchased;
                         $Subscriber =   Subscriber::where('activation_id',$activation_id)->first() ;
                         if(  $Subscriber) {
                             $sub_id = $Subscriber->id;
@@ -1243,6 +1270,8 @@ class UrlController extends Controller
                             $sub_id = "" ;
                         }
 
+                    }elseif($status == "24 - Insufficient funds."){
+                        $secure_D_Pincode_success = secureD_Insufficient_funds ;
                     }else{
                         $sub_id = "" ;
                     }
@@ -1332,10 +1361,20 @@ class UrlController extends Controller
 
                 }
 
-                return    $charge_renew_result  ;  // success
+
+                 // success
+                 if( $activation_status_for_first_time == 1){
+                    $array = ["result" => "SUCCESS", "reason" => "The user has been successfully activated"];
+                 }else{
+                    $array = ["result" => "FAILED", "reason" => "Subscription failed"];
+                 }
         }else{
-                return 0   ;  // fail
+                 // fail
+                 $array = ["result" => "FAILED", "reason" => "Subscription failed"];
+
         }
+
+        return $array ;
 
     }
 

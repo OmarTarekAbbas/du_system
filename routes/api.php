@@ -43,3 +43,9 @@ define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');
 
 Route::get('logmessage','UrlController@logMessage');
 
+
+define('secureD_Failed',0);
+define('secureD_Success',1);
+define('secureD_product_already_purchased',2);
+define('secureD_Insufficient_funds',3);
+
