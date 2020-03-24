@@ -1449,15 +1449,15 @@ class UrlController extends Controller
 
 
 if($secure_D_Pincode_success  == secureD_Failed){
-    $array = ["result" => "Failed", "reason" => "subscription Failed"];
+    $array = ["result" => "FAIL", "reason" => "subscription Failed"];
 }elseif($secure_D_Pincode_success  == secureD_Success){
     $array = ["result" => "SUCCESS", "reason" => "The user has been successfully activated"];
 }elseif($secure_D_Pincode_success  == secureD_product_already_purchased){
-    $array = ["result" => "Failed", "reason" => "The user already subscribed"];
+    $array = ["result" => "FAIL", "reason" => "ALREADY SUBSCRIBED USER"];
 }elseif($secure_D_Pincode_success  == secureD_Insufficient_funds){
-    $array = ["result" => "Failed", "reason" => "The user has insufficient funds"];
+    $array = ["result" => "FAIL", "reason" => "The user has insufficient funds"];
 }else{
-    $array = ["result" => "Failed", "reason" => "subscription Failed"];
+    $array = ["result" => "FAIL", "reason" => "subscription Failed"];
 }
 
             $data = array_merge($data, (array) $request->all(), $array);
