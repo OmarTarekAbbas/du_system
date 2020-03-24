@@ -1362,19 +1362,16 @@ class UrlController extends Controller
                 }
 
 
-                 // success
-                 if( $activation_status_for_first_time == 1){
-                    $array = ["result" => "SUCCESS", "reason" => "The user has been successfully activated"];
-                 }else{
-                    $array = ["result" => "FAILED", "reason" => "Subscription failed"];
-                 }
+
         }else{
                  // fail
-                 $array = ["result" => "FAILED", "reason" => "Subscription failed"];
+                 $secure_D_Pincode_success  = secureD_Failed ;
 
         }
 
-        return $array ;
+
+
+        return  $secure_D_Pincode_success  ;
 
     }
 
@@ -1437,11 +1434,6 @@ class UrlController extends Controller
               $activation_id = $activation->id;
               $activation = Activation::findOrFail($activation->id);
 
-            $array = ["result" => "SUCCESS", "reason" => "The user has been successfully activated"];
-
-            $data = array_merge($data, (array) $request->all(), $array);
-
-            $this->log('success', url('/activation'), $data);
 
 
             // Du First Billing or new billing
@@ -1450,9 +1442,27 @@ class UrlController extends Controller
                 $msisdn =  $activation->msisdn ;
                 $send_welcome_message = true ;
 
-                $this->du_charge_per_service($activation,$serviceid, $msisdn,$sub=Null,$send_welcome_message) ;
+             $secure_D_Pincode_success   =    $this->du_charge_per_service($activation,$serviceid, $msisdn,$sub=Null,$send_welcome_message) ;
             }
 
+
+
+
+if($secure_D_Pincode_success  == secureD_Failed){
+    $array = ["result" => "Failed", "reason" => "subscription Failed"];
+}elseif($secure_D_Pincode_success  == secureD_Success){
+    $array = ["result" => "SUCCESS", "reason" => "The user has been successfully activated"];
+}elseif($secure_D_Pincode_success  == secureD_product_already_purchased){
+    $array = ["result" => "Failed", "reason" => "The user alreday subscribed"];
+}elseif($secure_D_Pincode_success  == secureD_Insufficient_funds){
+    $array = ["result" => "Failed", "reason" => "The user has insufficient funds"];
+}else{
+    $array = ["result" => "Failed", "reason" => "subscription Failed"];
+}
+
+            $data = array_merge($data, (array) $request->all(), $array);
+
+            $this->log('success', url('/activation'), $data);
 
             return json_encode($array);
         }
