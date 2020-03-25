@@ -630,8 +630,13 @@ class UrlController extends Controller
                             $Subscriber->next_charging_date = date('Y-m-d',strtotime($Subscriber->next_charging_date  . "+1 day"));
                             $Subscriber->save();
                         }else{ // create new one
-                            // $sub_id =  $this->successfulSubs( $activation_id );
-                            $sub_id = "" ;
+                            if($send_welcome_message != Null){
+                             $sub_id =  $this->successfulSubs( $activation_id );
+                            }else{
+                                $sub_id = "" ;
+                            }
+
+
                         }
 
                     }elseif($status == "24 - Insufficient funds."){
@@ -752,8 +757,13 @@ class UrlController extends Controller
                             $Subscriber->next_charging_date = date('Y-m-d',strtotime($Subscriber->next_charging_date  . "+1 day"));
                             $Subscriber->save();
                         }else{ // create new one
-                            // $sub_id =  $this->successfulSubs( $activation_id );
-                            $sub_id = "" ;
+                            if($send_welcome_message != Null){
+                             $sub_id =  $this->successfulSubs( $activation_id );
+                            }else{
+                                $sub_id = "" ;
+                            }
+
+
                         }
 
                     }elseif($status == "24 - Insufficient funds."){
@@ -880,8 +890,13 @@ class UrlController extends Controller
                             $Subscriber->next_charging_date = date('Y-m-d',strtotime($Subscriber->next_charging_date  . "+1 day"));
                             $Subscriber->save();
                         }else{ // create new one
-                            // $sub_id =  $this->successfulSubs( $activation_id );
-                            $sub_id = "" ;
+                            if($send_welcome_message != Null){
+                             $sub_id =  $this->successfulSubs( $activation_id );
+                            }else{
+                                $sub_id = "" ;
+                            }
+
+
                         }
 
                     }elseif($status == "24 - Insufficient funds."){
@@ -1007,8 +1022,13 @@ class UrlController extends Controller
                             $Subscriber->next_charging_date = date('Y-m-d',strtotime($Subscriber->next_charging_date  . "+1 day"));
                             $Subscriber->save();
                         }else{ // create new one
-                            // $sub_id =  $this->successfulSubs( $activation_id );
-                            $sub_id = "" ;
+                            if($send_welcome_message != Null){
+                             $sub_id =  $this->successfulSubs( $activation_id );
+                            }else{
+                                $sub_id = "" ;
+                            }
+
+
                         }
 
                     }elseif($status == "24 - Insufficient funds."){
@@ -1134,8 +1154,13 @@ class UrlController extends Controller
                             $Subscriber->next_charging_date = date('Y-m-d',strtotime($Subscriber->next_charging_date  . "+1 day"));
                             $Subscriber->save();
                         }else{ // create new one
-                            // $sub_id =  $this->successfulSubs( $activation_id );
-                            $sub_id = "" ;
+                            if($send_welcome_message != Null){
+                             $sub_id =  $this->successfulSubs( $activation_id );
+                            }else{
+                                $sub_id = "" ;
+                            }
+
+
                         }
 
                     }elseif($status == "24 - Insufficient funds."){
