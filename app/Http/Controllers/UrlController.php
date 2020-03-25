@@ -1462,7 +1462,7 @@ if($secure_D_Pincode_success  == secureD_Failed){
 
             $data = array_merge($data, (array) $request->all(), $array);
 
-            $this->log('success', url('/activation'), $data);
+            $this->log('SecureD Activaition Result', url('/activation'), $data);
 
             return json_encode($array);
         }
