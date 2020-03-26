@@ -641,6 +641,7 @@ class UrlController extends Controller
 
                     }elseif($status == "24 - Insufficient funds."){
                         $secure_D_Pincode_success = secureD_Insufficient_funds ;
+                        $sub_id = "" ;
                     }else{
                         $sub_id = "" ;
                     }
@@ -768,6 +769,7 @@ class UrlController extends Controller
 
                     }elseif($status == "24 - Insufficient funds."){
                         $secure_D_Pincode_success = secureD_Insufficient_funds ;
+                        $sub_id = "" ;
                     }else{
                         $sub_id = "" ;
                     }
@@ -901,6 +903,7 @@ class UrlController extends Controller
 
                     }elseif($status == "24 - Insufficient funds."){
                         $secure_D_Pincode_success = secureD_Insufficient_funds ;
+                        $sub_id = "" ;
                     }else{
                         $sub_id = "" ;
                     }
@@ -1033,6 +1036,7 @@ class UrlController extends Controller
 
                     }elseif($status == "24 - Insufficient funds."){
                         $secure_D_Pincode_success = secureD_Insufficient_funds ;
+                        $sub_id = "" ;
                     }else{
                         $sub_id = "" ;
                     }
@@ -1165,6 +1169,7 @@ class UrlController extends Controller
 
                     }elseif($status == "24 - Insufficient funds."){
                         $secure_D_Pincode_success = secureD_Insufficient_funds ;
+                        $sub_id = "" ;
                     }else{
                         $sub_id = "" ;
                     }
