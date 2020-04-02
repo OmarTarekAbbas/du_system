@@ -1391,7 +1391,14 @@ class UrlController extends Controller
                      // Du sending welcome message
                      $du_welcome_message = "Welcome To ". $service_name ."  Service ";
                      $du_welcome_message .= $welcome_message;
-                     $du_welcome_message .= " For Unsubcribe  https://bit.ly/2UB9wfs";
+                     if($serviceid == "flaterdaily"){
+                        $du_welcome_message .= " For Unsubcribe  https://bit.ly/2XawRXY";
+                     }elseif($serviceid == "greetingsdaily"){
+                        $du_welcome_message .= " For Unsubcribe  https://bit.ly/2V9MtbZ";
+                     }elseif($serviceid == "flaterrotanadaily"){
+                        $du_welcome_message .= " For Unsubcribe  https://bit.ly/2UB9wfs";
+                     }
+
                      $message_type = "Welcome Message" ;
                     $this->du_send_message($service_name ,$msisdn,$du_welcome_message , $message_type);
 
