@@ -1707,7 +1707,7 @@ if($secure_D_Pincode_success  == secureD_Failed){
                 $this->log('DU MO UNSUB Success', $request->fullUrl(), $data);
             }
         }
-        $this->log('DU MO UNSUB', $request->fullUrl(), $data);
+        $this->log('DU MO Notification', $request->fullUrl(), $data);
     }
     /***************** */
 }
