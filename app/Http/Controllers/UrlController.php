@@ -1341,7 +1341,7 @@ class UrlController extends Controller
                 //  $userId = "971529204634" ;
                 $userId = $msisdn;
                 $serviceId = "S-b6ZBYFVSWA-";
-                $premiumResourceType = "MP-PRT-IVAS-Rotana-Flater-B2-D-Sub";
+                $premiumResourceType = "MP-PRT-IVAS-Khatma-B2-D-Sub";
                 $productId = "Daily Khatma B2 MP IVAS Sub";
 
                 $client->setCredentials($username, $password);
