@@ -1744,18 +1744,17 @@ class UrlController extends Controller
         $data['message'] = $request->message;
         $result = Activation::where("msisdn", $request->msisdn);
 
-        if ($request->message == 'sub_1') {
+        if ($request->message == 'sub_1') {//sub to flater rotana
+            require('uuid/UUID.php');
+            $trxid = \UUID::v4();
             $URL = url('api/activation');
-            $param = "msisdn=" . $request->msisdn . "&trxid=&serviceid=flaterrotanadaily&plan=daily&price=";
+            $param = "msisdn=" . $request->msisdn . "&trxid=$trxid&serviceid=flaterrotanadaily&plan=daily&price=2";
             $result = $this->get_content_post($URL, $param);
-            $this->log('DU MO Notification', $request->fullUrl(), (array)$result);
+            $this->log('DU MO Subscription Notification', $request->fullUrl(), (array)$result);
             return $result;
         } else if ($request->message == 'unsub_1') {
-            $URL = url('api/unsub');
-            $param = "msisdn=" . $request->msisdn . "&serviceid=flaterrotanadaily";
-            $result = $this->get_content_post($URL, $param);
-            $this->log('DU MO Notification', $request->fullUrl(), (array)$result);
-            return $result;
+            // $param = "msisdn=" . $request->msisdn . "&serviceid=flaterrotanadaily";
+            // $this->log('DU MO unsub Notification', $request->fullUrl(), (array)$param);
         } else {
 
             if ($request->message == 'unsub_fd') { // flaterdaily
