@@ -492,7 +492,7 @@ class UrlController extends Controller
 
         $today = Carbon::now()->format('Y-m-d');
         $service = Service::where('title', $id)->first();
-        $message = \App\Message::where('service_id', $service->id)->where('date', $today)->first();
+        $message = Message::where('service_id', $service->id)->where('date', $today)->first();
         $today_message = '';
         if ($message) {
             $today_message = $message->MTBody . ' ' . $message->ShortnedURL;
