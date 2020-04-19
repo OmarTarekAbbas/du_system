@@ -5,6 +5,7 @@ use App\Charge;
 use App\Http\Controllers\Controller;
 use App\Service;
 use App\Subscriber;
+use App\Message;
 use App\Url;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
