@@ -33,13 +33,16 @@ class HomeController extends Controller
         }else{
             $output = 0 ;
         }
-        return $output ;
+
 
 
         $data["msisdn"] = $request->msisdn ;
         $data["serviceid"] = $request->serviceid ;
         $data["output"] = $output ;
         $this->log('DU Unsub Notification', $request->fullUrl(), $data);
+
+
+        return $output ;
 
     }
 
@@ -61,13 +64,15 @@ class HomeController extends Controller
         }else{
             $output = 0 ;
         }
-        return $output ;
+
 
 
         $data["msisdn"] = $request->msisdn ;
         $data["serviceid"] = $request->serviceid ;
         $data["output"] = $output ;
         $this->log('DU CheckSub Notification', $request->fullUrl(), $data);
+
+        return $output ;
 
     }
 
