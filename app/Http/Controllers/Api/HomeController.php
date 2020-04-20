@@ -8,6 +8,9 @@ use App\Subscriber;
 use App\Activation;
 use App\Unsubscriber;
 use Illuminate\Support\Facades\Session;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -32,6 +35,12 @@ class HomeController extends Controller
         }
         return $output ;
 
+
+        $data["msisdn"] = $request->msisdn ;
+        $data["serviceid"] = $request->serviceid ;
+        $data["output"] = $output ;
+        $this->log('DU Unsub Notification', $request->fullUrl(), $data);
+
     }
 
 
@@ -54,5 +63,26 @@ class HomeController extends Controller
         }
         return $output ;
 
+
+        $data["msisdn"] = $request->msisdn ;
+        $data["serviceid"] = $request->serviceid ;
+        $data["output"] = $output ;
+        $this->log('DU CheckSub Notification', $request->fullUrl(), $data);
+
+    }
+
+    public function log($actionName, $URL, $parameters_arr)
+    {
+
+        date_default_timezone_set("Africa/Cairo");
+        $date = date("Y-m-d");
+        $log = new Logger($actionName);
+        // to create new folder with current date  // if folder is not found create new one
+        if (!\File::exists(storage_path('logs/' . $date . '/' . $actionName))) {
+            \File::makeDirectory(storage_path('logs/' . $date . '/' . $actionName), 0775, true, true);
+        }
+
+        $log->pushHandler(new StreamHandler(storage_path('logs/' . $date . '/' . $actionName . '/logFile.log', Logger::INFO)));
+        $log->addInfo($URL, $parameters_arr);
     }
 }
