@@ -491,7 +491,7 @@ class UrlController extends Controller
     {
 
         $today = Carbon::now()->format('Y-m-d');
-        $service = Service::where('title', $id)->first();   
+        $service = Service::where('title', $id)->first();
         $message = Message::where('service_id', $service->id)->where('date', $today)->first();
         $today_message = '';
         if ($message) {
@@ -1473,6 +1473,8 @@ class UrlController extends Controller
                     $du_welcome_message .= " For Unsubcribe  https://bit.ly/2V9MtbZ";
                 } elseif ($serviceid == "flaterrotanadaily") {
                     $du_welcome_message .= " For Unsubcribe  https://bit.ly/2UB9wfs";
+                }elseif ($serviceid == "liveqarankhatma") {
+                    $du_welcome_message .= " https://bit.ly/3eFvmHY  For Unsubcribe  https://bit.ly/2UB9wfs";
                 }
 
                 $message_type = "Welcome Message";
@@ -1756,7 +1758,7 @@ class UrlController extends Controller
         } else if ($request->message == 'unsub1') {// unsub from quran live
 
             $result = $result->where('serviceid', 'liveqarankhatma');
-            
+
             // if ($request->message == 'unsub_fd') { // flaterdaily
             //     $result = $result->where('serviceid', 'flaterdaily');
             // } elseif ($request->message == 'unsub_fw') { // flaterweekly
@@ -1764,7 +1766,7 @@ class UrlController extends Controller
             // } else {
             //     $result = $result->where('serviceid', null);
             // }
-            
+
             $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
             if ($result) {
                 $sub = Subscriber::where("activation_id", $result->id)->first();
