@@ -1286,7 +1286,7 @@ class UrlController extends Controller
 
             } elseif ($serviceid == "liveqarankhatma") {
 
-                $service_name = "Live Qaran Khatma";
+                $service_name = "Live Quran Khatma";
                 // header authentication
                 $username = "P-wSYBYFVSWA-@S-b6ZBYFVSWA-";
                 $password = "P-wSYBYFVSWA-#1234";
@@ -1474,7 +1474,7 @@ class UrlController extends Controller
                 } elseif ($serviceid == "flaterrotanadaily") {
                     $du_welcome_message .= " For Unsubcribe  https://bit.ly/2UB9wfs";
                 }elseif ($serviceid == "liveqarankhatma") {
-                    $du_welcome_message .= " https://bit.ly/3eFvmHY ";
+                    $du_welcome_message .= " https://bit.ly/2XX83Dc ";
                 }
 
                 $message_type = "Welcome Message";
