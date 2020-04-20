@@ -1756,16 +1756,16 @@ class UrlController extends Controller
         } else if ($request->message == 'unsub1') {// unsub from quran live
 
             $result = $result->where('serviceid', 'liveqarankhatma');
-
-            if ($request->message == 'unsub_fd') { // flaterdaily
-            } elseif ($request->message == 'unsub_fw') { // flaterweekly
-                $result = $result->where('serviceid', 'flaterweekly');
-            } else {
-                $result = $result->where('serviceid', null);
-            }
+            
+            // if ($request->message == 'unsub_fd') { // flaterdaily
+            //     $result = $result->where('serviceid', 'flaterdaily');
+            // } elseif ($request->message == 'unsub_fw') { // flaterweekly
+            //     $result = $result->where('serviceid', 'flaterweekly');
+            // } else {
+            //     $result = $result->where('serviceid', null);
+            // }
             
             $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
-
             if ($result) {
                 $sub = Subscriber::where("activation_id", $result->id)->first();
                 if ($sub) {
