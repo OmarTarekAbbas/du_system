@@ -491,7 +491,7 @@ class UrlController extends Controller
     {
 
         $today = Carbon::now()->format('Y-m-d');
-        $service = Service::where('title', $id)->first();
+        $service = Service::where('title', $id)->first();   
         $message = Message::where('service_id', $service->id)->where('date', $today)->first();
         $today_message = '';
         if ($message) {
@@ -1745,27 +1745,27 @@ class UrlController extends Controller
         $data['message'] = $request->message;
         $result = Activation::where("msisdn", $request->msisdn);
 
-        if ($request->message == 'sub_1') {//sub to flater rotana
+        if ($request->message == '1') {//sub to quran live
             require('uuid/UUID.php');
             $trxid = \UUID::v4();
             $URL = url('api/activation');
-            $param = "msisdn=" . $request->msisdn . "&trxid=$trxid&serviceid=flaterrotanadaily&plan=daily&price=2";
+            $param = "msisdn=" . $request->msisdn . "&trxid=$trxid&serviceid=liveqarankhatma&plan=daily&price=2";
             $result = $this->get_content_post($URL, $param);
             $this->log('DU MO Subscription Notification', $request->fullUrl(), (array)$result);
             return $result;
-        } else if ($request->message == 'unsub_1') {
-            // $param = "msisdn=" . $request->msisdn . "&serviceid=flaterrotanadaily";
-            // $this->log('DU MO unsub Notification', $request->fullUrl(), (array)$param);
-        } else {
+        } else if ($request->message == 'unsub1') {// unsub from quran live
+
+            $result = $result->where('serviceid', 'liveqarankhatma');
 
             if ($request->message == 'unsub_fd') { // flaterdaily
-                $result = $result->where('serviceid', 'flaterdaily');
             } elseif ($request->message == 'unsub_fw') { // flaterweekly
                 $result = $result->where('serviceid', 'flaterweekly');
             } else {
                 $result = $result->where('serviceid', null);
             }
+            
             $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
+
             if ($result) {
                 $sub = Subscriber::where("activation_id", $result->id)->first();
                 if ($sub) {
