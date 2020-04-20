@@ -1474,7 +1474,7 @@ class UrlController extends Controller
                 } elseif ($serviceid == "flaterrotanadaily") {
                     $du_welcome_message .= " For Unsubcribe  https://bit.ly/2UB9wfs";
                 }elseif ($serviceid == "liveqarankhatma") {
-                    $du_welcome_message .= " https://bit.ly/3eFvmHY  For Unsubcribe  https://bit.ly/2UB9wfs";
+                    $du_welcome_message .= " https://bit.ly/3eFvmHY ";
                 }
 
                 $message_type = "Welcome Message";
@@ -1597,6 +1597,7 @@ class UrlController extends Controller
         $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
         $send_array["du_sms_result"] = $result;
         $send_array["du_message_mean"] = $message_mean;
+        $send_array["message"] = $message;
         $this->log('Du Send Message', url('/du_send_message'), $send_array);
 
         return $result;
