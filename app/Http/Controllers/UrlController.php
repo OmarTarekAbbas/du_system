@@ -1474,8 +1474,10 @@ class UrlController extends Controller
                 } elseif ($serviceid == "flaterrotanadaily") {
                     $du_welcome_message .= " For Unsubcribe  https://bit.ly/2UB9wfs";
                 }elseif ($serviceid == "liveqarankhatma") {
+                    $du_welcome_message= "Dear DU Subscribe Wishing you a very blessed Ramadan.Welcome to Alafasy Quran Live show, Daily Show Timing : 05:00 PM – 05:40 PM Thanks for Waiting";
                     $du_welcome_message .= " https://bit.ly/2XX83Dc ";
                 }
+
 
                 $message_type = "Welcome Message";
                 $this->du_send_message($service_name, $msisdn, $du_welcome_message, $message_type);
