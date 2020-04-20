@@ -36,6 +36,7 @@ class HomeController extends Controller
 
 
 
+
     public function checkSub(Request $request)
     {
         $output = 0 ;
