@@ -1756,26 +1756,16 @@ class UrlController extends Controller
         $data['message'] = $request->message;
         $result = Activation::where("msisdn", $request->msisdn);
 
-        if ($request->message == '1') {//sub to quran live
+        if ($request->message ==  "1" ||  $request->message == "A") {//sub to quran live
             require('uuid/UUID.php');
             $trxid = \UUID::v4();
             $URL = url('api/activation');
             $param = "msisdn=" . $request->msisdn . "&trxid=$trxid&serviceid=liveqarankhatma&plan=daily&price=2";
             $result = $this->get_content_post($URL, $param);
-            $this->log('DU MO Subscription Notification', $request->fullUrl(), (array)$result);
+            $this->log('DU MO Quran Live Subscription Notification', $request->fullUrl(), (array)$result);
             return $result;
-        } else if ($request->message == 'unsub1') {// unsub from quran live
-
+        } else if ($request->message == 'Stop1' ||  $request->message == 'stop1') {// unsub from quran live
             $result = $result->where('serviceid', 'liveqarankhatma');
-
-            // if ($request->message == 'unsub_fd') { // flaterdaily
-            //     $result = $result->where('serviceid', 'flaterdaily');
-            // } elseif ($request->message == 'unsub_fw') { // flaterweekly
-            //     $result = $result->where('serviceid', 'flaterweekly');
-            // } else {
-            //     $result = $result->where('serviceid', null);
-            // }
-
             $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
             if ($result) {
                 $sub = Subscriber::where("activation_id", $result->id)->first();
@@ -1785,11 +1775,14 @@ class UrlController extends Controller
                     $unsub->save();
                     $sub->delete();
                     $data['unsub_id'] = $unsub->id;
-                    $this->log('DU MO UNSUB Success', $request->fullUrl(), $data);
+                    $this->log('DU MO Quran Live UNSUB Notification', $request->fullUrl(), $data);
                 }
             }
-            $this->log('DU MO Notification', $request->fullUrl(), $data);
+
         }
+
+         // Log all Mo Notification
+        $this->log('DU MO All Notifications', $request->fullUrl(), $data);
     }
     /***************** */
 }
