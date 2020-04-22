@@ -1474,8 +1474,12 @@ class UrlController extends Controller
                 } elseif ($serviceid == "flaterrotanadaily") {
                     $du_welcome_message .= " For Unsubcribe  https://bit.ly/2UB9wfs";
                 }elseif ($serviceid == "liveqarankhatma") {
-                    $du_welcome_message= "Dear DU Subscribe Wishing you a very blessed Ramadan.Welcome to Alafasy Quran Live show, Daily Show Timing : 05:00 PM – 05:40 PM Thanks for Waiting";
-                    $du_welcome_message .= " https://bit.ly/2XX83Dc ";
+                    $du_welcome_message = "Hi,  Wishing you a very blessed Ramadan.Welcome to Alfasy Quran Live streaming service Live Timing : 05:00 PM – 05:40 PM Thanks for Waiting https://bit.ly/2XX83Dc Daily charges(2/-AED),to unsubscribe send Stop1 to 4971";
+                    $du_welcome_message .= "</br>";
+                    $du_welcome_message .= "</br>";
+                    $du_welcome_message .= "عزيزي مشترك دو كل عام وانتم بخير.  مرحبا بكم في البث المباشر  لختمة القرآن مع الشيخ مشاري راشد العفاسي توقيت العرض اليومي: الساعة الخامسة مساء (٢درهم/يومياً)";
+                    $du_welcome_message .= "</br>";
+                    $du_welcome_message .= " خلوكم معانا  https://bit.ly/2XX83Dc :  لالغاء الاشتراك ارسل Stop1  الى 4971";
                 }
 
 
