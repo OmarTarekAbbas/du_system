@@ -1752,6 +1752,7 @@ class UrlController extends Controller
         // sample link to subscribe by Mo :  By reply 1  to our shortcode 4971
         // https://du.notifications.digizone.com.kw/api/logmessage?msisdn=971555802322&message=1
         $data['msisdn'] = $request->msisdn;
+        $data['msisdn'] = str_replace('+', '', $request->msisdn); // remove +
         $data['message'] = $request->message;
         $result = Activation::where("msisdn", $request->msisdn);
 
