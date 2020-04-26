@@ -1480,7 +1480,7 @@ class UrlController extends Controller
                     $du_welcome_message .= " " ;
 
                     $du_welcome_message .= "عزيزي مشترك دو كل عام وانتم بخير." ;
-                    $du_welcome_message .= "مرحبا بكم في خدمة البث المباشر لختمة العفاسى قرآن " ;
+                    $du_welcome_message .= "مرحبا بكم في خدمة العفاسى لبث القران الكريم" ;
                     $du_welcome_message .= " اضغط على الرابط لسماعه مباشر" ;
                     $du_welcome_message .= " https://bit.ly/2XX83Dc " ;
                     $du_welcome_message .= "الاشتراك (٢درهم/يومياً) " ;
