@@ -1476,9 +1476,12 @@ class UrlController extends Controller
                 }elseif ($serviceid == "liveqarankhatma") {
                     $du_welcome_message = "Hi,  Wishing you a very blessed Ramadan.Welcome to Alfasy Quran streaming service  https://bit.ly/2XX83Dc Daily charges(2/-AED),to unsubscribe send Stop to 4971 ";
                     $du_welcome_message .= " ";
-                    $du_welcome_message .= "عزيزي مشترك دو كل عام وانتم بخير.مرحبا بكم في البث المباشر  لختمة القرآن مع الشيخ مشاري راشد العفاسي توقيت العرض اليومي الساعة الخامسة مساء يخصم ٢درهم/يومياً";
-                    $du_welcome_message .= " ";
-                    $du_welcome_message .= " خلوكم معانا  https://bit.ly/2XX83Dc لالغاء الاشتراك ارسل Stop1  الى 4971";
+                    $du_welcome_message .=  "عزيزي مشترك دو كل عام وانتم بخير.
+                    مرحبا بكم في ختمة القرآن مع الشيخ مشاري راشد العفاسي
+                      (٢درهم/يومياً)
+                     https://bit.ly/2XX83Dc
+                      لالغاء الاشتراك ارسل Stop  الى 4971
+                    ";
                 }
 
 
@@ -1757,7 +1760,7 @@ class UrlController extends Controller
         $result = Activation::where("msisdn", $request->msisdn);
 
         if ($request->message ==  "1" ||  $request->message == "A"   ||  $request->message == "Alafasy"
-        ||  $request->message == "alafasy" ||  $request->message == "AFASY"  ||  $request->message == "Afasy"    ||  $request->message == "العفاسي" ||  $request->message == "عفاسي"  ) {//sub to quran live
+        ||  $request->message == "alafasy" ||  $request->message == "AFASY"  ||  $request->message == "Afasy"    ||  $request->message == "العفاسي" ||  $request->message == "عفاسي" ||  $request->message == " " ) {//sub to quran live
             require('uuid/UUID.php');
             $trxid = \UUID::v4();
             $URL = url('api/activation');
@@ -1765,7 +1768,7 @@ class UrlController extends Controller
             $result = $this->get_content_post($URL, $param);
             $this->log('DU MO Quran Live Subscription Notification', $request->fullUrl(), (array)$result);
             return $result;
-        } else if ($request->message == 'Stop1' ||  $request->message == 'stop1') {// unsub from quran live
+        } else if ($request->message == 'Stop1' ||  $request->message == 'stop1'  ||  $request->message == 'stop'  ||  $request->message == 'Stop') {// unsub from quran live
             $result = $result->where('serviceid', 'liveqarankhatma');
             $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
             if ($result) {
