@@ -384,7 +384,7 @@ class UrlController extends Controller
 
             //  }
 
-            if ($charge_renew_result == 1) { // renew charge success
+         //   if ($charge_renew_result == 1) { // renew charge success
 
                 if ($activation->plan == 'daily') {
                     $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
@@ -397,7 +397,7 @@ class UrlController extends Controller
                     $old_sub->save();
                 }
 
-            }
+          //  }
 
         }
 
@@ -1358,6 +1358,8 @@ class UrlController extends Controller
                 if ($statusCode->length != 0) { // find results
                     $status = $statusCode->item(0)->nodeValue;
                     $charge_renew_result = 1;
+                    $secure_D_Pincode_success = secureD_Success;
+
 
                     // store new subscriber
                     if ($status == 0) {
