@@ -1472,14 +1472,21 @@ class UrlController extends Controller
                 } elseif ($serviceid == "flaterrotanadaily") {
                     $du_welcome_message .= " For Unsubcribe  https://bit.ly/2UB9wfs";
                 }elseif ($serviceid == "liveqarankhatma") {
-                    $du_welcome_message = "Hi,  Wishing you a very blessed Ramadan.Welcome to Alfasy Quran streaming service  https://bit.ly/2XX83Dc Daily charges(2/-AED),to unsubscribe send Stop to 4971 ";
-                    $du_welcome_message .= " ";
-                    $du_welcome_message .=  "عزيزي مشترك دو كل عام وانتم بخير.
-                    مرحبا بكم في ختمة القرآن مع الشيخ مشاري راشد العفاسي
-                      (٢درهم/يومياً)
-                     https://bit.ly/2XX83Dc
-                      لالغاء الاشتراك ارسل Stop  الى 4971
-                    ";
+
+                    $du_welcome_message = "Hi,  Wishing you a very blessed Ramadan." ;
+                    $du_welcome_message .= "Welcome to Alafasy Quran streaming service Your link to listen him live is here" ;
+                    $du_welcome_message .= " https://bit.ly/2XX83Dc " ;
+                    $du_welcome_message .= "Daily charges(2/-AED),to unsubscribe send Stop to 4971 " ;
+                    $du_welcome_message .= " " ;
+
+                    $du_welcome_message .= "عزيزي مشترك دو كل عام وانتم بخير." ;
+                    $du_welcome_message .= "مرحبا بكم في خدمة البث المباشر لختمة العفاسى قرآن " ;
+                    $du_welcome_message .= " اضغط على الرابط لسماعه مباشر" ;
+                    $du_welcome_message .= " https://bit.ly/2XX83Dc " ;
+                    $du_welcome_message .= "الاشتراك (٢درهم/يومياً) " ;
+                    $du_welcome_message .= "  لالغاء الاشتراك ارسل Stop  الى 4971" ;
+
+
                 }
 
 
