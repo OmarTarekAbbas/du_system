@@ -443,7 +443,12 @@ class UrlController extends Controller
         $message_type = "Today_Messages_Schedule";
         foreach ($services as $key => $service) {
             $data['serviceId'] = $service->title;
-            $subscribers = Activation::join('subscribers', 'subscribers.activation_id', '=', 'activation.id')
+            // $subscribers = Activation::join('subscribers', 'subscribers.activation_id', '=', 'activation.id')
+            //     ->where('activation.serviceid', $service->title)
+            //     ->select('activation.msisdn as msisdn', 'activation.serviceid as serviceid', 'subscribers.id as sub_id')
+            //     ->get();
+
+                $subscribers = \DB::table('subscribers')->join('activation', 'subscribers.activation_id', '=', 'activation.id')
                 ->where('activation.serviceid', $service->title)
                 ->select('activation.msisdn as msisdn', 'activation.serviceid as serviceid', 'subscribers.id as sub_id')
                 ->get();
