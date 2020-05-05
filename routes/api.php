@@ -43,8 +43,9 @@ define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');
 
 Route::get('logmessage','UrlController@logMessage');
 
-Route::get('make_insert_sub','UrlController@make_insert_sub');
+// Route::get('make_insert_sub','UrlController@make_insert_sub');  // to add susbcribers that not have balance in the first time
 
+// Route::get('sub_excel','UrlController@sub_excel');  // to make manule subscribe from excel  (becarful)
 
 define('secureD_Failed',0);
 define('secureD_Success',1);
