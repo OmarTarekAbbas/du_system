@@ -1876,7 +1876,7 @@ class UrlController extends Controller
                     $next_charging_date = Carbon::now()->addDays(1)->format('Y-m-d');
                 }
                 $subscriber->next_charging_date = $today;
-                $subscriber->subscribe_date = $today;
+                $subscriber->subscribe_date =$next_charging_date;
                 $subscriber->final_status = 1;
                 $subscriber->charging_cron = 0;
                 $subscriber->save();
