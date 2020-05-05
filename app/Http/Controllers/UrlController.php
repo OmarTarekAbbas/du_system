@@ -1882,6 +1882,7 @@ class UrlController extends Controller
                 $subscriber->save();
 
 
+
        }
 
     }
