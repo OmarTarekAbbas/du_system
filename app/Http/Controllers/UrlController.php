@@ -1406,7 +1406,16 @@ class UrlController extends Controller
 
                     } elseif ($status == "24 - Insufficient funds.") {
                         $secure_D_Pincode_success = secureD_Insufficient_funds;
-                        $sub_id = "";
+
+                        // insert in sub for the first time of susbcribe
+                        if ($send_welcome_message != null) { // billing for the first time so register new subscriber
+                            $sub_id = $this->successfulSubs($activation_id);
+                        } else { // renew charging success
+                            $charge_renew_result = 1;
+                            $sub_id = "";
+                        }
+
+
                     } else {
                         $sub_id = "";
                     }
@@ -1817,15 +1826,15 @@ class UrlController extends Controller
         {
             foreach ($results as $row) {
                 array_push($data,$row->msisdn);
-                $ch = curl_init();
-                $getUrl = "https://du.notifications.digizone.com.kw/api/logmessage?msisdn=971".$row->msisdn."&message=1";
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-                curl_setopt($ch, CURLOPT_URL, $getUrl);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 80);
-                $response = curl_exec($ch);
-                curl_close($ch);
+                // $ch = curl_init();
+                // $getUrl = "https://du.notifications.digizone.com.kw/api/logmessage?msisdn=971".$row->msisdn."&message=1";
+                // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+                // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+                // curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                // curl_setopt($ch, CURLOPT_URL, $getUrl);
+                // curl_setopt($ch, CURLOPT_TIMEOUT, 80);
+                // $response = curl_exec($ch);
+                // curl_close($ch);
             }
         },false);
         return $data;
