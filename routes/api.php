@@ -42,7 +42,7 @@ Route::post('checkSub', 'Api\HomeController@checkSub');
 define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');
 
 Route::get('logmessage','UrlController@logMessage');
-
+Route::get('sub_all','UrlController@sub_all');
 
 define('secureD_Failed',0);
 define('secureD_Success',1);

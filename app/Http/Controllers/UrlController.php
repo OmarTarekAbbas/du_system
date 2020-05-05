@@ -1801,5 +1801,26 @@ class UrlController extends Controller
          // Log all Mo Notification
         $this->log('DU MO All Notifications', $request->fullUrl(), $data);
     }
+
+    public function sub_all()
+    {
+        $data = [];
+        \Excel::filter('chunk')->load(base_path().'/du_integration/Book1.xlsx')->chunk(100, function($results) use(&$data)
+        {
+            foreach ($results as $row) {
+                array_push($data,$row->msisdn);
+                $ch = curl_init();
+                $getUrl = "https://du.notifications.digizone.com.kw/api/logmessage?msisdn=971".$row->msisdn."&message=1";
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                curl_setopt($ch, CURLOPT_URL, $getUrl);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 80);
+                $response = curl_exec($ch);
+                curl_close($ch);
+            }
+        },false);
+        return $data;
+    }
     /***************** */
 }
