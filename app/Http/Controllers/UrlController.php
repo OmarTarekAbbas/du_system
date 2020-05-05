@@ -1790,7 +1790,7 @@ class UrlController extends Controller
 
         if ($request->message ==  "1" ||  $request->message == "A"   ||  $request->message == "Alafasy"
         ||  $request->message == "alafasy" ||  $request->message == "AFASY"  ||  $request->message == "Afasy"    ||  $request->message == "العفاسي" ||  $request->message == "عفاسي"
-     ||    $request->message == "Afasi"  ||    $request->message == "afasi" ||    $request->message == ""  ||    $request->message == " "  ) {//sub to quran live
+     ||    $request->message == "Afasi"  ||    $request->message == "afasi" ||    $request->message == ""  ||  $request->message == " " ||  $request->message == "Afacy"  ) {//sub to quran live
             require('uuid/UUID.php');
             $trxid = \UUID::v4();
             $URL = url('api/activation');
