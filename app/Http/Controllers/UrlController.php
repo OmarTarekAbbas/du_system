@@ -1845,7 +1845,7 @@ class UrlController extends Controller
     public function make_insert_sub(Request $request)
     {
 
-       $activations = Activation::where('serviceid', "liveqarankhatma")->where('status_code', "24 - Insufficient funds.")->get();
+       $activations = Activation::where('serviceid', "liveqarankhatma")->where('status_code', "24 - Insufficient funds.")->where('created_at',"LIKE" ,"2020-05-05%")->get();
 
        foreach( $activations  as  $act ){
 
