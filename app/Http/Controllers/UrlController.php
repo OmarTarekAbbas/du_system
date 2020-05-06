@@ -1788,9 +1788,12 @@ class UrlController extends Controller
         $data['message'] = $request->message;
         $result = Activation::where("msisdn", $data['msisdn']);
 
+
+
         if ($request->message ==  "1" ||  $request->message == "A"   ||  $request->message == "Alafasy"
         ||  $request->message == "alafasy" ||  $request->message == "AFASY"  ||  $request->message == "Afasy"    ||  $request->message == "العفاسي" ||  $request->message == "عفاسي"
-     ||    $request->message == "Afasi"  ||    $request->message == "afasi" ||    $request->message == ""  ||  $request->message == " " ||  $request->message == "Afacy"  ||  $request->message == '"Afasy"'   ||  $request->message == 'Afsay'  ) {//sub to quran live
+     ||    $request->message == "Afasi"  ||    $request->message == "afasi" ||    $request->message == ""  ||  $request->message == " " ||  $request->message == "Afacy"
+     ||  $request->message == '" Afasy"'   ||  $request->message == 'Afsay'  ) {//sub to quran live
             require('uuid/UUID.php');
             $trxid = \UUID::v4();
             $URL = url('api/activation');
