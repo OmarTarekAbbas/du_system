@@ -355,7 +355,7 @@ class UrlController extends Controller
         $timeout = 60000000000;
 
         $email = "emad@ivas.com.eg";
-        $subject = "Charging Cron Schedule for " . Carbon::now()->format('Y-m-d');
+        $subject = "Charging Cron Run Schedule for " . Carbon::now()->format('Y-m-d');
         $this->sendMail($subject, $email);
 
         $services = Activation::select('serviceid')->groupBy('serviceid')->get();
@@ -1889,4 +1889,27 @@ class UrlController extends Controller
        }
 
     }
+
+
+    public function make_today_charging() {
+        $today = Carbon::now()->format('Y-m-d');
+        $email = "emad@ivas.com.eg";
+        $subject = "Charging Cron By Curl Schedule for " . Carbon::now()->format('Y-m-d');
+        $this->sendMail($subject, $email);
+
+        $ch = curl_init();
+        $getUrl = "https://du.notifications.digizone.com.kw/api/chargeSubs";
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_URL, $getUrl);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 800000);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        echo "Du Charging By Curl exec for  toady " . $today . "Is Done";
+
+    }
+
+
 }
