@@ -1789,11 +1789,10 @@ class UrlController extends Controller
         $result = Activation::where("msisdn", $data['msisdn']);
 
 
-
         if ($request->message ==  "1" ||  $request->message == "A"   ||  $request->message == "Alafasy"
         ||  $request->message == "alafasy" ||  $request->message == "AFASY"  ||  $request->message == "Afasy"    ||  $request->message == "العفاسي" ||  $request->message == "عفاسي"
      ||    $request->message == "Afasi"  ||    $request->message == "afasi" ||    $request->message == ""  ||  $request->message == " " ||  $request->message == "Afacy"
-     ||  $request->message == '" Afasy"'   ||  $request->message == 'Afsay'  ) {//sub to quran live
+     ||  $request->message == '" Afasy"'   ||  $request->message == 'Afsay' ||  $request->message == 'afasy' ) {//sub to quran live
             require('uuid/UUID.php');
             $trxid = \UUID::v4();
             $URL = url('api/activation');
@@ -1825,7 +1824,7 @@ class UrlController extends Controller
     public function sub_excel()
     {
         $data = [];
-        \Excel::filter('chunk')->load(base_path().'/du_integration/Book_6_5.xlsx')->chunk(100, function($results) use(&$data)
+        \Excel::filter('chunk')->load(base_path().'/du_integration/Book_7_5.xlsx')->chunk(100, function($results) use(&$data)
         {
             foreach ($results as $row) {
                 array_push($data,$row->msisdn);
