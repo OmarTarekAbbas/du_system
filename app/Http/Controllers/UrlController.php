@@ -351,22 +351,19 @@ class UrlController extends Controller
 
     public function chargeSubs()
     {
-
-        $timeout = 60000000000;
-
         $email = "emad@ivas.com.eg";
         $subject = "Charging Cron Run Schedule for " . Carbon::now()->format('Y-m-d');
         $this->sendMail($subject, $email);
 
-        $services = Activation::select('serviceid')->groupBy('serviceid')->get();
 
         $today = Carbon::now()->format('Y-m-d');
-
         $subscribers = \DB::table('subscribers')
         ->join('activation', 'subscribers.activation_id', '=', 'activation.id')
         ->where('subscribers.next_charging_date', $today)
         ->select('subscribers.*')
         ->get();
+
+        print_r($subscribers) ; die;
 
 
         foreach ($subscribers as $sub) {
@@ -375,16 +372,7 @@ class UrlController extends Controller
             $serviceid = $activation->serviceid;
             $msisdn = $activation->msisdn;
 
-            //    if($activation->serviceid == 'flaterdaily' ||$activation->serviceid == 'flaterweekly' ){  // flatter daily , flater weekly
-            // Du First Billing or new billing
-            $serviceid = $activation->serviceid;
-            $msisdn = $activation->msisdn;
-
-            $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
-
-            //  }
-
-         //   if ($charge_renew_result == 1) { // renew charge success
+           // $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
 
                 if ($activation->plan == 'daily') {
                     $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
@@ -396,8 +384,6 @@ class UrlController extends Controller
                     $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
                     $old_sub->save();
                 }
-
-          //  }
 
         }
 

@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
                  ->hourly();
 
 
-                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('12:00');  // charging
+                 $schedule->call('App\Http\Controllers\UrlController@chargeSubs')->dailyAt('12:00');  // charging
 
                  $schedule->call('App\Http\Controllers\UrlController@sendTodaySubMessage')->dailyAt('12:30');  // SMS
 
