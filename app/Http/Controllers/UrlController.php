@@ -413,8 +413,6 @@ class UrlController extends Controller
     // get all subscriber with message
     public function sendTodaySubMessage()
     {
-
-        $timeout = 60000000000;
         $result = 0;
         $email = "emad@ivas.com.eg";
         $subject = "SMS Cron Schedule sending for " . Carbon::now()->format('Y-m-d');
@@ -426,10 +424,6 @@ class UrlController extends Controller
         $message_type = "Today_Messages_Schedule";
         foreach ($services as $key => $service) {
             $data['serviceId'] = $service->title;
-            // $subscribers = Activation::join('subscribers', 'subscribers.activation_id', '=', 'activation.id')
-            //     ->where('activation.serviceid', $service->title)
-            //     ->select('activation.msisdn as msisdn', 'activation.serviceid as serviceid', 'subscribers.id as sub_id')
-            //     ->get();
 
                 $subscribers = \DB::table('subscribers')->join('activation', 'subscribers.activation_id', '=', 'activation.id')
                 ->where('activation.serviceid', $service->title)
@@ -1618,7 +1612,8 @@ class UrlController extends Controller
         $send_array["du_sms_result"] = $result;
         $send_array["du_message_mean"] = $message_mean;
         $send_array["message"] = $message;
-        $this->log('Du Send Message', url('/du_send_message'), $send_array);
+        $send_array["msisdn"] = $msisdn;
+        $this->log('Du Kannel Send Message '.service_name, url('/du_send_message'), $send_array);
 
         return $result;
     }
