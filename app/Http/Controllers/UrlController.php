@@ -359,7 +359,7 @@ class UrlController extends Controller
         $today = Carbon::now()->format('Y-m-d');
         $subscribers = \DB::table('subscribers')
         ->join('activation', 'subscribers.activation_id', '=', 'activation.id')
-        ->where('subscribers.next_charging_date', $today)
+        ->where('subscribers.next_charging_date', "2020-05-10")
         ->select('subscribers.*')
         ->get();
 
