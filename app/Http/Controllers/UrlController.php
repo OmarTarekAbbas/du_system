@@ -1891,10 +1891,10 @@ class UrlController extends Controller
 
 
     public function make_today_charging() {
-        $today = Carbon::now()->format('Y-m-d');
-        $email = "emad@ivas.com.eg";
-        $subject = "Charging Cron By Curl Schedule for " . Carbon::now()->format('Y-m-d');
-        $this->sendMail($subject, $email);
+        // $today = Carbon::now()->format('Y-m-d');
+        // $email = "emad@ivas.com.eg";
+        // $subject = "Charging Cron By Curl Schedule for " . Carbon::now()->format('Y-m-d');
+        // $this->sendMail($subject, $email);
 
         $ch = curl_init();
         $getUrl = "https://du.notifications.digizone.com.kw/api/chargeSubs";
