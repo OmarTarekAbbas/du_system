@@ -355,15 +355,12 @@ class UrlController extends Controller
         $subject = "Charging Cron Run Schedule for " . Carbon::now()->format('Y-m-d');
         $this->sendMail($subject, $email);
 
-
         $today = Carbon::now()->format('Y-m-d');
         $subscribers = \DB::table('subscribers')
         ->join('activation', 'subscribers.activation_id', '=', 'activation.id')
-        ->where('subscribers.next_charging_date', "2020-05-10")
+        ->where('subscribers.next_charging_date', $today)
         ->select('subscribers.*')
         ->get();
-
-        print_r($subscribers) ; die;
 
 
         foreach ($subscribers as $sub) {
@@ -372,7 +369,7 @@ class UrlController extends Controller
             $serviceid = $activation->serviceid;
             $msisdn = $activation->msisdn;
 
-           // $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
+            $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
 
                 if ($activation->plan == 'daily') {
                     $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
