@@ -1765,8 +1765,10 @@ class UrlController extends Controller
         $data['msisdn'] = $request->msisdn;
         $data['msisdn'] = str_replace('+', '', $request->msisdn); // remove +
         $data['message'] = $request->message;
+        $data['message'] = str_replace("“", '', $request->message); // remove “
+        $data['message'] = str_replace("”", '',  $data['message'] ); // remove ”
+        $request->message =  $data['message'];
         $result = Activation::where("msisdn", $data['msisdn']);
-
 
         if ($request->message ==  "1" ||  $request->message == "A"   ||  $request->message == "Alafasy"
         ||  $request->message == "alafasy" ||  $request->message == "AFASY"  ||  $request->message == "Afasy"    ||  $request->message == "العفاسي" ||  $request->message == "عفاسي"
@@ -1889,7 +1891,7 @@ class UrlController extends Controller
 
     }
 
-    public function Log_message()
+    public function du_kannel_send_messages_log()
     {
         $serviceid    = 'flatterdaily' ;
         $msisdn       = '967552121212';

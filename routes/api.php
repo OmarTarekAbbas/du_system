@@ -32,7 +32,7 @@ Route::post('test2','UrlController@test2');
 
 Route::get('sendTodaySubMessage','UrlController@sendTodaySubMessage');
 Route::get('chargeSubs','UrlController@chargeSubs');
-// Route::get('make_today_charging','UrlController@make_today_charging');
+ Route::get('make_today_charging','UrlController@make_today_charging');
 
 Route::get('getTodayMessage/{id}','UrlController@getMessage');
 
@@ -48,7 +48,7 @@ Route::get('make_insert_sub','UrlController@make_insert_sub');  // to add susbcr
 
 Route::get('sub_excel','UrlController@sub_excel');  // to make manule subscribe from excel  (becarful)
 
-Route::get('logMessage','UrlController@Log_message');
+Route::get('du_kannel_send_messages_log','UrlController@du_kannel_log');
 
 define('secureD_Failed',0);
 define('secureD_Success',1);
