@@ -48,7 +48,7 @@ Route::get('make_insert_sub','UrlController@make_insert_sub');  // to add susbcr
 
 Route::get('sub_excel','UrlController@sub_excel');  // to make manule subscribe from excel  (becarful)
 
-Route::get('du_kannel_send_messages_log','UrlController@du_kannel_log');
+Route::get('du_kannel_send_messages_log','UrlController@du_kannel_send_messages_log');
 
 define('secureD_Failed',0);
 define('secureD_Success',1);

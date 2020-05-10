@@ -433,7 +433,8 @@ class UrlController extends Controller
 
             $data['msisdns'] = $subscribers;
             if ($subscribers->count() > 0) {
-                $message = \App\Message::where('service_id', $service->id)->where('date', $today)->first();
+                $message = \App\Message::where('service_id', $service->id)->where('date', $today)->where('IsysResponse',"!=" ,"OK")->first();
+                echo  $message->id ; die;
                 if ($message) {
                     $data['message'] = $message->MTBody . ' ' . $message->ShortnedURL;
                     array_push($all, $data);
@@ -1616,6 +1617,9 @@ class UrlController extends Controller
         $send_array["msisdn"] = $msisdn;
         $this->log('Du Kannel Send Message '.$service_name, url('/du_send_message'), $send_array);
 
+        // save log to DB
+        $this->saveLogMessage($service_name, $msisdn, $message, $message_type);
+
         return $result;
     }
 
@@ -1908,6 +1912,6 @@ class UrlController extends Controller
         $logmes->message       = $mes;
         $logmes->message_type  = $message_type;
         $logmes->save();
-        return 'saved';
+
     }
 }
