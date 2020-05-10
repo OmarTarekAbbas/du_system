@@ -1614,7 +1614,7 @@ class UrlController extends Controller
         $send_array["du_message_mean"] = $message_mean;
         $send_array["message"] = $message;
         $send_array["msisdn"] = $msisdn;
-        $this->log('Du Kannel Send Message '.service_name, url('/du_send_message'), $send_array);
+        $this->log('Du Kannel Send Message '.$service_name, url('/du_send_message'), $send_array);
 
         return $result;
     }
