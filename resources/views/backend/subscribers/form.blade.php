@@ -7,7 +7,7 @@
     }
 </style>
 <div class="col-lg-12">
-    <h1 class="page-header"> <?= $service ? 'Edit' : 'Add' ?> Service</h1>
+    <h1 class="page-header">  Subscribe Excel </h1>
 </div>
 <div class="row">
     <div class="panel panel-default">
@@ -22,14 +22,8 @@
             </div>
             @endif
             <div class="canvas-wrapper col-lg-12">
-
-                @if($service)
-                {!! Form::model($service,["url"=>"admin/services/$service->id","method"=>"patch"]) !!}
-                @include('backend.services.input',['buttonAction'=>'Edit'])
-                @else
-                {!! Form::open(["url"=>"admin/services/","method"=>"POST"]) !!}
-                @include('backend.services.input',['buttonAction'=>'Save'])
-                @endif
+                {!! Form::open(["url"=>"admin/subscribe/excel","method"=>"POST" , "enctype" => "multipart/form-data"]) !!}
+                @include('backend.subscribers.input',['buttonAction'=>'Save'])
                 {!! Form::close() !!}
             </div>
         </div>
@@ -37,6 +31,5 @@
 </div>
 @include('backend.footer')
 <script type="text/javascript">
-    $('#sub-item-2').addClass('collapse in');
-    $('#sub-item-2').parent().addClass('active').siblings().removeClass('active');
+    $('#excel').addClass('active').siblings().removeClass('active');
 </script>

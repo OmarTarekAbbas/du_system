@@ -7,6 +7,7 @@ use App\Service;
 use App\Subscriber;
 use App\Message;
 use App\Url;
+use App\LogMessage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -1888,5 +1889,23 @@ class UrlController extends Controller
 
     }
 
+    public function Log_message()
+    {
+        $serviceid    = 'flatterdaily' ;
+        $msisdn       = '967552121212';
+        $mes          = 'hello';
+        $message_type = 'daily';
+        return $this->saveLogMessage($serviceid, $msisdn, $mes, $message_type);
+    }
 
+    public function saveLogMessage($serviceid, $msisdn, $mes, $message_type)
+    {
+        $logmes = new LogMessage();
+        $logmes->service       = $serviceid;
+        $logmes->msisdn        = $msisdn;
+        $logmes->message       = $mes;
+        $logmes->message_type  = $message_type;
+        $logmes->save();
+        return 'saved';
+    }
 }

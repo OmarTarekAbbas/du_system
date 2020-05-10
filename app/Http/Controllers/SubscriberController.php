@@ -54,4 +54,45 @@ class SubscriberController extends Controller
         }
         return view('backend.subscribers.index',compact('subscribers','services','without_paginate'));
     }
+
+    public function getExcel()
+    {
+        return view('backend.subscribers.form');
+    }
+
+    public function subscribe_excel(Request $request)
+    {
+        ini_set('max_execution_time', 60000000000);
+        ini_set('memory_limit', -1);
+        $data = [];
+        if ($request->hasFile('file')) {
+            $ext =  $request->file('file')->getClientOriginalExtension();
+            if ($ext != 'xls' && $ext != 'xlsx' && $ext != 'csv') {
+                $request->session()->flash('failed', 'File must be excel');
+                return back();
+            }
+
+            $file = $request->file('file');
+            $filename = time().'_'.$file->getClientOriginalName();
+            if(!$file->move(base_path().'/du_integration/'.date('Y-m-d').'/excel',  $filename) ){
+                return back();
+            }
+        }
+        \Excel::filter('chunk')->load(base_path().'/du_integration/'.date('Y-m-d').'/excel/'.$filename)->chunk(100, function($results) use(&$data)
+        {
+            foreach ($results as $row) {
+                array_push($data,$row->msisdn);
+                // $ch = curl_init();
+                // $getUrl = "https://du.notifications.digizone.com.kw/api/logmessage?msisdn=971".$row->msisdn."&message=1";
+                // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+                // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+                // curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                // curl_setopt($ch, CURLOPT_URL, $getUrl);
+                // curl_setopt($ch, CURLOPT_TIMEOUT, 80);
+                // $response = curl_exec($ch);
+                // curl_close($ch);
+            }
+        },false);
+        return $data;
+    }
 }
