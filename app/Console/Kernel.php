@@ -27,7 +27,12 @@ class Kernel extends ConsoleKernel
         $schedule->command('inspire')
                  ->hourly();
 
-                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('12:00');  // charging
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('06:00');  // charging
+
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('07:00');  // charging
+
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('08:00');  // charging
+
                  $schedule->call('App\Http\Controllers\UrlController@sendTodaySubMessage')->dailyAt('12:30');  // SMS sending at 2.30 Egypt time
 
     }
