@@ -78,6 +78,7 @@
     <li id="subc"><a href="{{ route('admin.subscribers.index') }}"><span class="glyphicon glyphicon-random"></span> Subscribers</a></li>
     <li id="unsubc"><a href="{{ route('admin.unsubscribers.index') }}"><span class="glyphicon glyphicon-random"></span> UnSubscribers</a></li>
     <li id="charge"><a href="{{ route('admin.charges.index') }}"><span class="glyphicon glyphicon-random"></span> Charges</a></li>
+    <li id="excel"><a href="{{ url('admin/subscribe/excel') }}"><span class="glyphicon glyphicon-list"></span> Subscribe Excel </a></li>
     @endif
     <li role="presentation" class="divider"></li>
     <li><a href="{{ url('service') }}"><span class="glyphicon glyphicon-random"></span> Change service</a></li>
