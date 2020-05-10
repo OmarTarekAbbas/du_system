@@ -433,7 +433,7 @@ class UrlController extends Controller
 
             $data['msisdns'] = $subscribers;
             if ($subscribers->count() > 0) {
-                $message = \App\Message::where('service_id', $service->id)->where('date', $today)->where('IsysResponse',"!=" ,"OK")->first();
+                $message = \App\Message::where('service_id', $service->id)->where('date', $today)>whereNull('IsysResponse')->first();
                 echo  $message->id ; die;
                 if ($message) {
                     $data['message'] = $message->MTBody . ' ' . $message->ShortnedURL;
