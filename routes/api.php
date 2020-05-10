@@ -32,6 +32,7 @@ Route::post('test2','UrlController@test2');
 
 Route::get('sendTodaySubMessage','UrlController@sendTodaySubMessage');
 Route::get('chargeSubs','UrlController@chargeSubs');
+// Route::get('make_today_charging','UrlController@make_today_charging');
 
 Route::get('getTodayMessage/{id}','UrlController@getMessage');
 
@@ -42,7 +43,10 @@ Route::post('checkSub', 'Api\HomeController@checkSub');
 define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');
 
 Route::get('logmessage','UrlController@logMessage');
-Route::get('sub_all','UrlController@sub_all');
+
+ Route::get('make_insert_sub','UrlController@make_insert_sub');  // to add susbcribers that not have balance in the first time
+
+  Route::get('sub_excel','UrlController@sub_excel');  // to make manule subscribe from excel  (becarful)
 
 define('secureD_Failed',0);
 define('secureD_Success',1);

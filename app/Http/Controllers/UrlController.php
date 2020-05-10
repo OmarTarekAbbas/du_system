@@ -351,17 +351,11 @@ class UrlController extends Controller
 
     public function chargeSubs()
     {
-
-        $timeout = 60000000000;
-
         $email = "emad@ivas.com.eg";
-        $subject = "Charging Cron Schedule for " . Carbon::now()->format('Y-m-d');
+        $subject = "Charging Cron Run Schedule for " . Carbon::now()->format('Y-m-d');
         $this->sendMail($subject, $email);
 
-        $services = Activation::select('serviceid')->groupBy('serviceid')->get();
-
         $today = Carbon::now()->format('Y-m-d');
-
         $subscribers = \DB::table('subscribers')
         ->join('activation', 'subscribers.activation_id', '=', 'activation.id')
         ->where('subscribers.next_charging_date', $today)
@@ -375,16 +369,7 @@ class UrlController extends Controller
             $serviceid = $activation->serviceid;
             $msisdn = $activation->msisdn;
 
-            //    if($activation->serviceid == 'flaterdaily' ||$activation->serviceid == 'flaterweekly' ){  // flatter daily , flater weekly
-            // Du First Billing or new billing
-            $serviceid = $activation->serviceid;
-            $msisdn = $activation->msisdn;
-
             $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
-
-            //  }
-
-         //   if ($charge_renew_result == 1) { // renew charge success
 
                 if ($activation->plan == 'daily') {
                     $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
@@ -396,8 +381,6 @@ class UrlController extends Controller
                     $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
                     $old_sub->save();
                 }
-
-          //  }
 
         }
 
@@ -430,8 +413,6 @@ class UrlController extends Controller
     // get all subscriber with message
     public function sendTodaySubMessage()
     {
-
-        $timeout = 60000000000;
         $result = 0;
         $email = "emad@ivas.com.eg";
         $subject = "SMS Cron Schedule sending for " . Carbon::now()->format('Y-m-d');
@@ -443,10 +424,6 @@ class UrlController extends Controller
         $message_type = "Today_Messages_Schedule";
         foreach ($services as $key => $service) {
             $data['serviceId'] = $service->title;
-            // $subscribers = Activation::join('subscribers', 'subscribers.activation_id', '=', 'activation.id')
-            //     ->where('activation.serviceid', $service->title)
-            //     ->select('activation.msisdn as msisdn', 'activation.serviceid as serviceid', 'subscribers.id as sub_id')
-            //     ->get();
 
                 $subscribers = \DB::table('subscribers')->join('activation', 'subscribers.activation_id', '=', 'activation.id')
                 ->where('activation.serviceid', $service->title)
@@ -627,7 +604,15 @@ class UrlController extends Controller
 
                     } elseif ($status == "24 - Insufficient funds.") {
                         $secure_D_Pincode_success = secureD_Insufficient_funds;
-                        $sub_id = "";
+
+                         // insert in sub for the first time of susbcribe
+                        if ($send_welcome_message != null) { // billing for the first time so register new subscriber
+                            $sub_id = $this->successfulSubs($activation_id);
+                        } else { // renew charging success
+                            $charge_renew_result = 1;
+                            $sub_id = "";
+                        }
+
                     } else {
                         $sub_id = "";
                     }
@@ -1398,7 +1383,16 @@ class UrlController extends Controller
 
                     } elseif ($status == "24 - Insufficient funds.") {
                         $secure_D_Pincode_success = secureD_Insufficient_funds;
-                        $sub_id = "";
+
+                        // insert in sub for the first time of susbcribe
+                        if ($send_welcome_message != null) { // billing for the first time so register new subscriber
+                            $sub_id = $this->successfulSubs($activation_id);
+                        } else { // renew charging success
+                            $charge_renew_result = 1;
+                            $sub_id = "";
+                        }
+
+
                     } else {
                         $sub_id = "";
                     }
@@ -1618,7 +1612,8 @@ class UrlController extends Controller
         $send_array["du_sms_result"] = $result;
         $send_array["du_message_mean"] = $message_mean;
         $send_array["message"] = $message;
-        $this->log('Du Send Message', url('/du_send_message'), $send_array);
+        $send_array["msisdn"] = $msisdn;
+        $this->log('Du Kannel Send Message '.service_name, url('/du_send_message'), $send_array);
 
         return $result;
     }
@@ -1769,11 +1764,13 @@ class UrlController extends Controller
         $data['msisdn'] = $request->msisdn;
         $data['msisdn'] = str_replace('+', '', $request->msisdn); // remove +
         $data['message'] = $request->message;
-        $result = Activation::where("msisdn", $request->msisdn);
+        $result = Activation::where("msisdn", $data['msisdn']);
+
 
         if ($request->message ==  "1" ||  $request->message == "A"   ||  $request->message == "Alafasy"
-        ||  $request->message == "alafasy" ||  $request->message == "AFASY"  ||  $request->message == "Afasy"    ||  $request->message == "العفاسي" ||  $request->message == "عفاسي" ||  $request->message == " "
-     ||    $request->message == "Afasi"  ||    $request->message == "afasi"   ) {//sub to quran live
+        ||  $request->message == "alafasy" ||  $request->message == "AFASY"  ||  $request->message == "Afasy"    ||  $request->message == "العفاسي" ||  $request->message == "عفاسي"
+     ||    $request->message == "Afasi"  ||    $request->message == "afasi" ||    $request->message == ""  ||  $request->message == " " ||  $request->message == "Afacy"
+     ||  $request->message == '" Afasy"'   ||  $request->message == 'Afsay' ||  $request->message == 'afasy' ) {//sub to quran live
             require('uuid/UUID.php');
             $trxid = \UUID::v4();
             $URL = url('api/activation');
@@ -1781,7 +1778,7 @@ class UrlController extends Controller
             $result = $this->get_content_post($URL, $param);
             $this->log('DU MO Quran Live Subscription Notification', $request->fullUrl(), (array)$result);
             return $result;
-        } else if ($request->message == 'Stop1' ||  $request->message == 'stop1'  ||  $request->message == 'stop'  ||  $request->message == 'Stop') {// unsub from quran live
+        } else if ($request->message == 'Stop1' ||  $request->message == 'stop1'  ||  $request->message == 'stop'  ||  $request->message == 'Stop' ) {// unsub from quran live
             $result = $result->where('serviceid', 'liveqarankhatma');
             $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
             if ($result) {
@@ -1802,10 +1799,10 @@ class UrlController extends Controller
         $this->log('DU MO All Notifications', $request->fullUrl(), $data);
     }
 
-    public function sub_all()
+    public function sub_excel()
     {
         $data = [];
-        \Excel::filter('chunk')->load(base_path().'/du_integration/Book1.xlsx')->chunk(100, function($results) use(&$data)
+        \Excel::filter('chunk')->load(base_path().'/du_integration/Book_7_5.xlsx')->chunk(100, function($results) use(&$data)
         {
             foreach ($results as $row) {
                 array_push($data,$row->msisdn);
@@ -1823,4 +1820,73 @@ class UrlController extends Controller
         return $data;
     }
     /***************** */
+
+
+    public function make_insert_sub(Request $request)
+    {
+
+       $activations = Activation::where('serviceid', "liveqarankhatma")->where('status_code', "24 - Insufficient funds.")->where('created_at',"LIKE" ,"2020-05-05%")->get();
+
+       foreach( $activations  as  $act ){
+
+        $activation = Activation::where('id', $act->id)->first();
+
+        // search if old for the same service and the same msisdn
+
+                $old_subscriber = \DB::table('subscribers')
+                    ->join('activation', 'subscribers.activation_id', '=', 'activation.id')
+                    ->where('activation.serviceid', $activation->serviceid)
+                    ->where('activation.msisdn', $activation->msisdn)
+                    ->select('activation.msisdn', 'subscribers.id')
+                    ->first();
+
+                if ($old_subscriber) { // update
+                    $subscriber = Subscriber::where('id', $old_subscriber->id)->first();
+                    $subscriber->activation_id = $act->id;
+                } else { // create new
+                    $subscriber = new Subscriber;
+                    $subscriber->activation_id = $act->id;
+                }
+
+                $today = Carbon::now()->format('Y-m-d');
+
+                if ($activation->plan == 'weekly') {
+                    $next_charging_date = Carbon::now()->addDays(7)->format('Y-m-d');
+                } else {
+                    $next_charging_date = Carbon::now()->addDays(1)->format('Y-m-d');
+                }
+                $subscriber->next_charging_date =$next_charging_date ;
+                $subscriber->subscribe_date =$today;
+                $subscriber->final_status = 1;
+                $subscriber->charging_cron = 0;
+                $subscriber->save();
+
+
+
+       }
+
+    }
+
+
+    public function make_today_charging() {
+        // $today = Carbon::now()->format('Y-m-d');
+        // $email = "emad@ivas.com.eg";
+        // $subject = "Charging Cron By Curl Schedule for " . Carbon::now()->format('Y-m-d');
+        // $this->sendMail($subject, $email);
+
+        $ch = curl_init();
+        $getUrl = "https://du.notifications.digizone.com.kw/api/chargeSubs";
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_URL, $getUrl);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 800000);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        echo "Du Charging By Curl exec for  toady " . $today . "Is Done";
+
+    }
+
+
 }
