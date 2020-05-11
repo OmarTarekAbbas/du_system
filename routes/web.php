@@ -63,6 +63,7 @@ Route::resource('admin/services','AdminServicesController');
 Route::resource('admin/subscribers','SubscriberController',['as' => 'admin']);
 Route::resource('admin/unsubscribers','UnSubscriberController',['as' => 'admin']);
 Route::resource('admin/charges','ChargeController',['as' => 'admin']);
+Route::resource('admin/activations','ActivationController',['as' => 'admin']);
 
 Route::get('admin/subscribe/excel','SubscriberController@getExcel');
 Route::post('admin/subscribe/excel','SubscriberController@subscribe_excel');
