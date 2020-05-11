@@ -49,6 +49,12 @@
             <button class="btn btn-labeled btn-info filter" type="submit"><span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Filter</button>
         </div>
 
+        <div class="col-md-1">
+            {!! Form::label('date', 'Count :') !!}
+            <div class='input-group date'>
+                <span dir="rtl" class="btn btn-success">{{ count($unsubscribers) }} </span>
+            </div>
+        </div>
         {!! Form::close() !!}
     </div>
 

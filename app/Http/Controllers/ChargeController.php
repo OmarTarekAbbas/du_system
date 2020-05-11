@@ -53,6 +53,15 @@ class ChargeController extends Controller
             $without_paginate = 1;
         }
 
+        if($request->has('status') && $request->status != '' ){
+            if($request->status == 'fail'){
+                $charges = $charges->whereNotIn('charges.status_code',['503 - product already purchased!','0','24 - Insufficient funds.']);
+            }else{
+                $charges = $charges->where('charges.status_code',$request->status);
+            }
+            $without_paginate = 1;
+        }
+
         if($request->has('serviceid') && $request->serviceid != ''){
             $charges = $charges->where('activation.serviceid',$request->serviceid);
             $without_paginate = 1;
@@ -66,4 +75,26 @@ class ChargeController extends Controller
         return view('backend.charges.index',compact('charges','services','without_paginate'));
     }
 
+    public function faildTodayCharge(Request $request)
+    {
+        $subscriber_ids = Charge::where('charging_date',date('Y-m-d'))->groupBy('subscriber_id')->pluck('subscriber_id')->toArray();
+        $active_ids = Subscriber::whereNotIN('id',$subscriber_ids)->where('next_charging_date',date('Y-m-d'))->pluck('activation_id')->toArray();
+        $services = Service::pluck('service','title');
+        $failds = \App\Activation::whereIn('id',$active_ids);
+        if($request->has('msisdn') && $request->msisdn != ''){
+            $failds = $failds->where('activation.msisdn',$request->msisdn);
+        }
+
+        if($request->has('plan') && $request->plan != ''){
+            $failds = $failds->where('activation.plan',$request->plan);
+        }
+
+        if($request->has('serviceid') && $request->serviceid != ''){
+            $failds = $failds->where('activation.serviceid',$request->serviceid);
+        }
+        $failds = $failds->get();
+
+        // return $failds;
+        return view('backend.faildTodayCharge.index',compact('failds','services'));
+    }
 }

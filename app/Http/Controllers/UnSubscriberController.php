@@ -43,6 +43,11 @@ class UnSubscriberController extends Controller
             $without_paginate = 1;
         }
 
+        if($request->has('activation_id') && $request->activation_id != ''){
+            $unsubscribers = $unsubscribers->where('unsubscribers.activation_id',$request->activation_id);
+            $without_paginate = 1;
+        }
+
         if($without_paginate){
             $unsubscribers = $unsubscribers->get();
         }else{

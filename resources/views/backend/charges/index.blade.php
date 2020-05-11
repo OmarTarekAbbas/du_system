@@ -44,6 +44,13 @@
         </div>
 
         <div class="col-md-2">
+            {!! Form::label('Status', 'Status:') !!}
+            <div class=''>
+                {!! Form::select('status', ['0' => '0' ,'503 - product already purchased!'=>'503 - product already purchased' , '24 - Insufficient funds.' => '24 - Insufficient funds','fail' => 'Failed'] , request()->get('status'), ['class'=>'form-control','id'=>'plan','placeholder'=>'Select Status']) !!}
+            </div>
+        </div>
+
+        <div class="col-md-2">
             {!! Form::label('date', 'Select From  Date :') !!}
             <div class='input-group date' id='datetimepicker'>
                 <input type='text' class="form-control" value="{{request()->get('from_date')}}" name="from_date" id="date" />
@@ -52,6 +59,8 @@
                 </span>
             </div>
         </div>
+
+
 
         <div class="col-md-2">
             {!! Form::label('date1', 'Select To  Date :') !!}
@@ -83,6 +92,13 @@
         <div class="col-md-1">
             <br>
             <button class="btn btn-labeled btn-info filter" type="submit"><span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Filter</button>
+        </div>
+
+        <div class="col-md-1">
+            {!! Form::label('date', 'Count :') !!}
+            <div class='input-group date'>
+                <span dir="rtl" class="btn btn-success">{{ count($charges) }} </span>
+            </div>
         </div>
 
         {!! Form::close() !!}

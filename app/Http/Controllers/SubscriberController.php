@@ -37,6 +37,11 @@ class SubscriberController extends Controller
             $without_paginate = 1;
         }
 
+        if($request->has('activation_id') && $request->activation_id != ''){
+            $subscribers = $subscribers->where('subscribers.activation_id',$request->activation_id);
+            $without_paginate = 1;
+        }
+
         if($request->has('plan') && $request->plan != ''){
             $subscribers = $subscribers->where('activation.plan',$request->plan);
             $without_paginate = 1;
