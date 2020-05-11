@@ -27,12 +27,19 @@ class Kernel extends ConsoleKernel
         $schedule->command('inspire')
                  ->hourly();
 
+                 /* charging from 3 AM to 12 PM  */
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('01:00');  // charging
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('02:00');  // charging
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('03:00');  // charging
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('04:00');  // charging
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('05:00');  // charging
                  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('06:00');  // charging
-
                  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('07:00');  // charging
-
                  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('08:00');  // charging
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('09:00');  // charging
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('10:00');  // charging
 
+                 /*  SMS at 2.30 Egy  = 4.30 Emirates times */
                  $schedule->call('App\Http\Controllers\UrlController@sendTodaySubMessage')->dailyAt('12:30');  // SMS sending at 2.30 Egypt time
 
     }
