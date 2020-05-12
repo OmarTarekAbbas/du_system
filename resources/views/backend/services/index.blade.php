@@ -54,6 +54,7 @@
                             <td class="row">
                                 @if(Auth::user()->admin == true)
                                 <a class="btn btn-sm btn-default" title="Edit" href='{{url("admin/services/$service->id/edit")}}'><span class="glyphicon glyphicon-pencil"></span></a> 
+                                <a class="btn btn-sm btn-success" title="Show Count" href='{{url("admin/services/$service->id/show")}}'><span class="glyphicon glyphicon-cog"></span></a>
                                 @endif
                             </td>
                         </tr>

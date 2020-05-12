@@ -59,6 +59,7 @@ Route::get('admin/notSendTomrrow','ServicesController@notSendTomrrow');
 
 
 Route::resource('admin/services','AdminServicesController');
+Route::get('admin/services/{id}/show','AdminServicesController@show');
 
 Route::resource('admin/subscribers','SubscriberController',['as' => 'admin']);
 Route::resource('admin/unsubscribers','UnSubscriberController',['as' => 'admin']);
