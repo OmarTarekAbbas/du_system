@@ -388,6 +388,39 @@ class UrlController extends Controller
         echo "Du Charging for toady " . $today . "Is Done";
     }
 
+    public function chargeSubs2()
+    {
+        $email = "emad@ivas.com.eg";
+        $subject = "Charging Cron Run Schedule for " . Carbon::now()->format('Y-m-d');
+        $this->sendMail($subject, $email);
+
+        $today = Carbon::now()->format('Y-m-d');
+        $subscriber_ids = Charge::where('charging_date',date('Y-m-d'))->groupBy('subscriber_id')->pluck('subscriber_id')->toArray();
+        $subscribers = Subscriber::whereNotIN('id',$subscriber_ids)->where('next_charging_date',date('Y-m-d'))->get();
+        foreach ($subscribers as $sub) {
+            $activation = Activation::findOrFail($sub->activation_id);
+            $old_sub = Subscriber::findOrFail($sub->id);
+            $serviceid = $activation->serviceid;
+            $msisdn = $activation->msisdn;
+            $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
+
+            if ($activation->plan == 'daily') {
+                $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
+                $old_sub->save();
+            } elseif ($activation->plan == 'weekly') {
+                $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 week"));
+                $old_sub->save();
+            } else { // default is daily
+                $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
+                $old_sub->save();
+            }
+
+        }
+
+        echo "Du Charging for toady " . $today . "Is Done";
+    }
+
+
     public function sendMail($subject, $email, $Message = null)
     {
 
