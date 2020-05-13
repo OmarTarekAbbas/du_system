@@ -1,7 +1,7 @@
 @include('backend.header')
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Count Services</h1>
+        <h1 class="page-header">Services Statistics</h1>
     </div>
 </div><!--/.row-->
 
@@ -29,6 +29,10 @@
                         <tr>
                             <th>Subscriber Number</th>
                             <th> {{ $subscribers}}</th>
+                        </tr>
+                        <tr>
+                            <th>Today's Messages Number</th>
+                            <th> {{ $msgs}}</th>
                         </tr>
                         <tr>
                             <th>UnSubscribers Number</th>

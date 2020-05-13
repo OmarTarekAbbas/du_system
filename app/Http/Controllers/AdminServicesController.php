@@ -132,9 +132,9 @@ class AdminServicesController extends Controller
             ->where('charges.charging_date','=',Carbon::now()->toDateString())
             ->where('activation.serviceid',$service->title)->count();
 
+        $msgs = $service->messages()->where('date', date('yy-m-d'))->count();
 
-
-        return view('backend.services.show', compact('service', 'activations','subscribers','unsubscribers','charges','charge_date','charge_status_0','charge_status_503','charge_status_24','failed'));
+        return view('backend.services.show', compact('service', 'msgs', 'activations','subscribers','unsubscribers','charges','charge_date','charge_status_0','charge_status_503','charge_status_24','failed'));
     }
 
     /**
