@@ -105,6 +105,8 @@ class AdminServicesController extends Controller
             ->where('charges.charging_date','=',Carbon::now()->toDateString())
             ->where('activation.serviceid',$service->title)->groupBy('charges.subscriber_id')->count();
 
+
+
         $charge_status_0 = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
