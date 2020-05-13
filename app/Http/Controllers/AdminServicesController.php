@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Activation;
 use App\Charge;
 use App\Subscriber;
+use App\LogMessage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -133,8 +134,9 @@ class AdminServicesController extends Controller
             ->where('activation.serviceid',$service->title)->groupBy('charges.subscriber_id')->count();
 
 
+        $msgs = LogMessage::where('service',$service->title)->where('created_at','LIKE',date("Y-m-d")."%")->count() ;
 
-        return view('backend.services.show', compact('service', 'activations','subscribers','unsubscribers','charge_date','charge_status_0','charge_status_503','charge_status_24','failed'));
+        return view('backend.services.show', compact('service', 'msgs', 'activations','subscribers','unsubscribers','charge_date','charge_status_0','charge_status_503','charge_status_24','failed'));
     }
 
     /**
