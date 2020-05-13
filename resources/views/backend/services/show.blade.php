@@ -56,7 +56,7 @@
                         </tr>
                         <tr>
                             <th>Status Code Failed</th>
-                            <th> {{ $charge_status_200}}</th>
+                            <th> {{ $failed}}</th>
                         </tr>
                     </tbody>
                 </table>

@@ -56,6 +56,12 @@
             </div>
         </div>
         {!! Form::close() !!}
+        <div class="col-md-1">
+            <br>
+            <a href="{{ route('admin.chargeSubs2') }}">
+                <button class="btn btn-warning">execute</button>
+            </a>
+        </div>
     </div>
 
     <div class="col-xs-12">

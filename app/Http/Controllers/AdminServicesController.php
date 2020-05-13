@@ -125,16 +125,16 @@ class AdminServicesController extends Controller
             ->where('charges.charging_date','=',Carbon::now()->toDateString())
             ->where('activation.serviceid',$service->title)->count();
 
-        $charge_status_200 = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
+        $failed = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
-            ->where('charges.status_code','200 - Request failed - internal error!!')
+            ->whereNotIn('charges.status_code',['503 - product already purchased!','0','24 - Insufficient funds.'])
             ->where('charges.charging_date','=',Carbon::now()->toDateString())
             ->where('activation.serviceid',$service->title)->count();
 
 
 
-        return view('backend.services.show', compact('service', 'activations','subscribers','unsubscribers','charges','charge_date','charge_status_0','charge_status_503','charge_status_24','charge_status_200'));
+        return view('backend.services.show', compact('service', 'activations','subscribers','unsubscribers','charges','charge_date','charge_status_0','charge_status_503','charge_status_24','failed'));
     }
 
     /**
