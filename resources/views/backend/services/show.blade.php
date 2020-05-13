@@ -34,10 +34,7 @@
                             <th>UnSubscribers Number</th>
                             <th> {{ $unsubscribers}}</th>
                         </tr>
-                        <tr>
-                            <th>All Charges</th>
-                            <th> {{ $charges}}</th>
-                        </tr>
+
                         <tr>
                             <th>Today Charges</th>
                             <th> {{ $charge_date}}</th>
