@@ -1481,13 +1481,23 @@ class UrlController extends Controller
 
             // log charging for First Time Or renew
             if ($subscriber_id != "") {
-                $Charge = new Charge;
+
+
+
+
+        $today_charging = Charge::where("subscriber_id",$subscriber_id)->where("charging_date",$today)->first();
+
+        if(empty($today_charging )){  // insert today charging
+            $Charge = new Charge;
                 $Charge->subscriber_id = $subscriber_id;
                 $Charge->billing_request = $client->request;
                 $Charge->billing_response = $client->responseData;
                 $Charge->charging_date = $today;
                 $Charge->status_code = $status;
                 $Charge->save();
+        }
+
+
             }
 
             // renew charging log
