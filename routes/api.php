@@ -32,6 +32,8 @@ Route::post('test2','UrlController@test2');
 
 Route::get('sendTodaySubMessage','UrlController@sendTodaySubMessage');
 Route::get('chargeSubs','UrlController@chargeSubs');
+Route::get('chargeSubs2','UrlController@chargeSubs2');
+
  Route::get('make_today_charging','UrlController@make_today_charging');
 
 Route::get('getTodayMessage/{id}','UrlController@getMessage');
