@@ -55,7 +55,7 @@
                             <th> {{ $charge_status_24}}</th>
                         </tr>
                         <tr>
-                            <th>Status Code 200 - Request failed - internal error!!.</th>
+                            <th>Status Code Failed</th>
                             <th> {{ $charge_status_200}}</th>
                         </tr>
                     </tbody>

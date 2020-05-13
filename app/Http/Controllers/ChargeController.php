@@ -97,4 +97,12 @@ class ChargeController extends Controller
         // return $failds;
         return view('backend.faildTodayCharge.index',compact('failds','services'));
     }
+
+    public function faildCharge(Request $request)
+    {
+        $subscriber_ids = Charge::where('charging_date',date('Y-m-d'))->groupBy('subscriber_id')->pluck('subscriber_id')->toArray();
+        $subscribers = Subscriber::whereNotIN('id',$subscriber_ids)->where('next_charging_date',date('Y-m-d'))->get();
+        return $subscribers;
+
+    }
 }

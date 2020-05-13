@@ -78,7 +78,7 @@
     <li id="subc"><a href="{{ route('admin.subscribers.index') }}"><span class="glyphicon glyphicon-random"></span> Subscribers</a></li>
     <li id="unsubc"><a href="{{ route('admin.unsubscribers.index') }}"><span class="glyphicon glyphicon-random"></span> UnSubscribers</a></li>
     <li id="charge"><a href="{{ route('admin.charges.index') }}"><span class="glyphicon glyphicon-random"></span> Charges</a></li>
-    <li id="charge"><a href="{{ route('admin.faild.charge.get') }}"><span class="glyphicon glyphicon-random"></span> Faild Today Charges</a></li>
+    <li id="faild"><a href="{{ route('admin.faild.charge.get') }}"><span class="glyphicon glyphicon-random"></span> Faild Today Charges</a></li>
     <li id="activations"><a href="{{ route('admin.activations.index') }}"><span class="glyphicon glyphicon-random"></span> Activations</a></li>
     <li id="excel"><a href="{{ url('admin/subscribe/excel') }}"><span class="glyphicon glyphicon-list"></span> Subscribe Excel </a></li>
     @endif

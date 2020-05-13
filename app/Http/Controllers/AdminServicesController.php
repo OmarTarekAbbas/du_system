@@ -108,24 +108,28 @@ class AdminServicesController extends Controller
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
             ->where('charges.status_code',0)
+            ->where('charges.charging_date','=',Carbon::now()->toDateString())
             ->where('activation.serviceid',$service->title)->count();
 
         $charge_status_503 = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
             ->where('charges.status_code','503 - product already purchased!')
+            ->where('charges.charging_date','=',Carbon::now()->toDateString())
             ->where('activation.serviceid',$service->title)->count();
 
         $charge_status_24 = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
             ->where('charges.status_code','24 - Insufficient funds.')
+            ->where('charges.charging_date','=',Carbon::now()->toDateString())
             ->where('activation.serviceid',$service->title)->count();
 
         $charge_status_200 = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
             ->where('charges.status_code','200 - Request failed - internal error!!')
+            ->where('charges.charging_date','=',Carbon::now()->toDateString())
             ->where('activation.serviceid',$service->title)->count();
 
 
