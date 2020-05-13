@@ -93,48 +93,48 @@ class AdminServicesController extends Controller
             ->join('unsubscribers','unsubscribers.activation_id','=','activation.id')
             ->where('activation.serviceid', $service->title)->count();
 
-        $charges = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
+        /*$charges = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
-            ->where('activation.serviceid',$service->title)->count();
+            ->where('activation.serviceid',$service->title)->count();*/
 
         $charge_date = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
             ->where('charges.charging_date','=',Carbon::now()->toDateString())
-            ->where('activation.serviceid',$service->title)->count();
+            ->where('activation.serviceid',$service->title)->groupBy('charges.subscriber_id')->count();
 
         $charge_status_0 = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
             ->where('charges.status_code',0)
             ->where('charges.charging_date','=',Carbon::now()->toDateString())
-            ->where('activation.serviceid',$service->title)->count();
+            ->where('activation.serviceid',$service->title)->groupBy('charges.subscriber_id')->count();
 
         $charge_status_503 = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
             ->where('charges.status_code','503 - product already purchased!')
             ->where('charges.charging_date','=',Carbon::now()->toDateString())
-            ->where('activation.serviceid',$service->title)->count();
+            ->where('activation.serviceid',$service->title)->groupBy('charges.subscriber_id')->count();
 
         $charge_status_24 = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
             ->where('charges.status_code','24 - Insufficient funds.')
             ->where('charges.charging_date','=',Carbon::now()->toDateString())
-            ->where('activation.serviceid',$service->title)->count();
+            ->where('activation.serviceid',$service->title)->groupBy('charges.subscriber_id')->count();
 
         $failed = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
             ->whereNotIn('charges.status_code',['503 - product already purchased!','0','24 - Insufficient funds.'])
             ->where('charges.charging_date','=',Carbon::now()->toDateString())
-            ->where('activation.serviceid',$service->title)->count();
+            ->where('activation.serviceid',$service->title)->groupBy('charges.subscriber_id')->count();
 
 
 
-        return view('backend.services.show', compact('service', 'activations','subscribers','unsubscribers','charges','charge_date','charge_status_0','charge_status_503','charge_status_24','failed'));
+        return view('backend.services.show', compact('service', 'activations','subscribers','unsubscribers','charge_date','charge_status_0','charge_status_503','charge_status_24','failed'));
     }
 
     /**
