@@ -596,77 +596,83 @@ class UrlController extends Controller
                 $data["Response"] = $client->responseData;
 
                 $doc = new \DOMDocument('1.0', 'utf-8');
-                $doc->loadXML($client->responseData);
-                $statusCode = $doc->getElementsByTagName("statusCode"); // success
-                $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
+                if(isset($client->responseData)   &&  $client->responseData !="" ){  // as sometimes xml load emty
+                    $doc->loadXML($client->responseData);
+                    $statusCode = $doc->getElementsByTagName("statusCode"); // success
+                    $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
 
-                if ($statusCode->length != 0) { // find results
-                    $status = $statusCode->item(0)->nodeValue;
-                    $charge_renew_result = 1;
+                    if ($statusCode->length != 0) { // find results
+                        $status = $statusCode->item(0)->nodeValue;
+                        $charge_renew_result = 1;
 
-                    // store new subscriber
-                    if ($status == 0) {
-                        if ($send_welcome_message != null) { // billing for the first time so register new subscriber
-                            $sub_id = $this->successfulSubs($activation_id);
-                            $secure_D_Pincode_success = secureD_Success;
-                        } else { // renew charging success
-                            $charge_renew_result = 1;
-                            $sub_id = "";
-                        }
-
-                    } else {
-                        $sub_id = "";
-                    }
-
-                } elseif ($faultstring->length != 0) {
-                    $status = $faultstring->item(0)->nodeValue;
-                    $charge_renew_result = 0;
-                    if ($status == "503 - product already purchased!") { // aready subscribe
-                        $secure_D_Pincode_success = secureD_product_already_purchased;
-                        $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                        if ($Subscriber) {
-                            $sub_id = $Subscriber->id;
-                            $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                            $Subscriber->save();
-                        } else { // create new one
-                            if ($send_welcome_message != null) {
+                        // store new subscriber
+                        if ($status == 0) {
+                            if ($send_welcome_message != null) { // billing for the first time so register new subscriber
                                 $sub_id = $this->successfulSubs($activation_id);
-                            } else {
+                                $secure_D_Pincode_success = secureD_Success;
+                            } else { // renew charging success
+                                $charge_renew_result = 1;
                                 $sub_id = "";
                             }
 
+                        } else {
+                            $sub_id = "";
                         }
 
-                    } elseif ($status == "24 - Insufficient funds.") {
-                        $secure_D_Pincode_success = secureD_Insufficient_funds;
+                    } elseif ($faultstring->length != 0) {
+                        $status = $faultstring->item(0)->nodeValue;
+                        $charge_renew_result = 0;
+                        if ($status == "503 - product already purchased!") { // aready subscribe
+                            $secure_D_Pincode_success = secureD_product_already_purchased;
+                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
+                            if ($Subscriber) {
+                                $sub_id = $Subscriber->id;
+                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
+                                $Subscriber->save();
+                            } else { // create new one
+                                if ($send_welcome_message != null) {
+                                    $sub_id = $this->successfulSubs($activation_id);
+                                } else {
+                                    $sub_id = "";
+                                }
 
-                         // insert in sub for the first time of susbcribe
-                        if ($send_welcome_message != null) { // billing for the first time so register new subscriber
-                            $sub_id = $this->successfulSubs($activation_id);
-                        } else { // renew charging success
-                            $charge_renew_result = 1;
+                            }
+
+                        } elseif ($status == "24 - Insufficient funds.") {
+                            $secure_D_Pincode_success = secureD_Insufficient_funds;
+
+                            // insert in sub for the first time of susbcribe
+                            if ($send_welcome_message != null) { // billing for the first time so register new subscriber
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else { // renew charging success
+                                $charge_renew_result = 1;
+                                $sub_id = "";
+                            }
+
+                        } else {
                             $sub_id = "";
                         }
 
                     } else {
+                        $charge_renew_result = 0;
+                        $status = "Not Known Error";
                         $sub_id = "";
                     }
 
-                } else {
+                    $data["statusCode"] = $status;
+
+                    // log billing
+                    if ($sub != null) {
+                        $billing_message = "Renew";
+                    } else {
+                        $billing_message = "FirstTime";
+                    }
+                    $this->log('Du ' . $serviceid . ' Billing ' . $billing_message . ' Log', url('/du_charge_per_service'), $data);
+                }else {
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
                 }
-
-                $data["statusCode"] = $status;
-
-                // log billing
-                if ($sub != null) {
-                    $billing_message = "Renew";
-                } else {
-                    $billing_message = "FirstTime";
-                }
-                $this->log('Du ' . $serviceid . ' Billing ' . $billing_message . ' Log', url('/du_charge_per_service'), $data);
 
             } elseif ($serviceid == "flaterweekly") {
                 $service_name = "Flatter";
@@ -731,67 +737,79 @@ class UrlController extends Controller
                 $data["Response"] = $client->responseData;
 
                 $doc = new \DOMDocument('1.0', 'utf-8');
-                $doc->loadXML($client->responseData);
-                $statusCode = $doc->getElementsByTagName("statusCode"); // success
-                $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
+                if(isset($client->responseData)   &&  $client->responseData !="" ){  // as sometimes xml load emty
+                    $doc->loadXML($client->responseData);
+                    $statusCode = $doc->getElementsByTagName("statusCode"); // success
+                    $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
 
-                if ($statusCode->length != 0) { // find results
-                    $status = $statusCode->item(0)->nodeValue;
-                    $charge_renew_result = 1;
+                    if ($statusCode->length != 0) { // find results
+                        $status = $statusCode->item(0)->nodeValue;
+                        $charge_renew_result = 1;
 
-                    // store new subscriber
-                    if ($status == 0) {
-                        if ($send_welcome_message != null) { // billing for the first time  so register new subscriber
-                            $sub_id = $this->successfulSubs($activation_id);
-                            $secure_D_Pincode_success = secureD_Success;
-                        } else { // renew charging success
-                            $charge_renew_result = 1;
-                            $sub_id = "";
-                        }
-
-                    }
-
-                } elseif ($faultstring->length != 0) {
-                    $status = $faultstring->item(0)->nodeValue;
-                    $charge_renew_result = 0;
-                    if ($status == "503 - product already purchased!") { // aready subscribe
-                        $secure_D_Pincode_success = secureD_product_already_purchased;
-                        $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                        if ($Subscriber) {
-                            $sub_id = $Subscriber->id;
-                            $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                            $Subscriber->save();
-                        } else { // create new one
-                            if ($send_welcome_message != null) {
+                        // store new subscriber
+                        if ($status == 0) {
+                            if ($send_welcome_message != null) { // billing for the first time  so register new subscriber
                                 $sub_id = $this->successfulSubs($activation_id);
-                            } else {
+                                $secure_D_Pincode_success = secureD_Success;
+                            } else { // renew charging success
+                                $charge_renew_result = 1;
                                 $sub_id = "";
                             }
 
                         }
 
-                    } elseif ($status == "24 - Insufficient funds.") {
-                        $secure_D_Pincode_success = secureD_Insufficient_funds;
-                        $sub_id = "";
+                    } elseif ($faultstring->length != 0) {
+                        $status = $faultstring->item(0)->nodeValue;
+                        $charge_renew_result = 0;
+                        if ($status == "503 - product already purchased!") { // aready subscribe
+                            $secure_D_Pincode_success = secureD_product_already_purchased;
+                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
+                            if ($Subscriber) {
+                                $sub_id = $Subscriber->id;
+                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
+                                $Subscriber->save();
+                            } else { // create new one
+                                if ($send_welcome_message != null) {
+                                    $sub_id = $this->successfulSubs($activation_id);
+                                } else {
+                                    $sub_id = "";
+                                }
+
+                            }
+
+                        } elseif ($status == "24 - Insufficient funds.") {
+                            $secure_D_Pincode_success = secureD_Insufficient_funds;
+                            // insert in sub for the first time of susbcribe
+                            if ($send_welcome_message != null) { // billing for the first time so register new subscriber
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else { // renew charging success
+                                $charge_renew_result = 1;
+                                $sub_id = "";
+                            }
+                        } else {
+                            $sub_id = "";
+                        }
+
                     } else {
+                        $charge_renew_result = 0;
+                        $status = "Not Known Error";
                         $sub_id = "";
                     }
 
-                } else {
+                    $data["statusCode"] = $status;
+
+                    // log billing
+                    if ($sub != null) {
+                        $billing_message = "Renew";
+                    } else {
+                        $billing_message = "FirstTime";
+                    }
+                    $this->log('Du ' . $serviceid . ' Billing ' . $billing_message . ' Log', url('/du_charge_per_service'), $data);
+                }else{
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
                 }
-
-                $data["statusCode"] = $status;
-
-                // log billing
-                if ($sub != null) {
-                    $billing_message = "Renew";
-                } else {
-                    $billing_message = "FirstTime";
-                }
-                $this->log('Du ' . $serviceid . ' Billing ' . $billing_message . ' Log', url('/du_charge_per_service'), $data);
 
             } elseif ($serviceid == "greetingsdaily") {
 
@@ -857,69 +875,81 @@ class UrlController extends Controller
                 $data["Response"] = $client->responseData;
 
                 $doc = new \DOMDocument('1.0', 'utf-8');
-                $doc->loadXML($client->responseData);
-                $statusCode = $doc->getElementsByTagName("statusCode"); // success
-                $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
+                if(isset($client->responseData)   &&  $client->responseData !="" ){  // as sometimes xml load emty
+                    $doc->loadXML($client->responseData);
+                    $statusCode = $doc->getElementsByTagName("statusCode"); // success
+                    $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
 
-                if ($statusCode->length != 0) { // find results
-                    $status = $statusCode->item(0)->nodeValue;
-                    $charge_renew_result = 1;
+                    if ($statusCode->length != 0) { // find results
+                        $status = $statusCode->item(0)->nodeValue;
+                        $charge_renew_result = 1;
 
-                    // store new subscriber
-                    if ($status == 0) {
-                        if ($send_welcome_message != null) { // billing for the first time so register new subscriber
-                            $sub_id = $this->successfulSubs($activation_id);
-                            $secure_D_Pincode_success = secureD_Success;
-                        } else { // renew charging success
-                            $charge_renew_result = 1;
+                        // store new subscriber
+                        if ($status == 0) {
+                            if ($send_welcome_message != null) { // billing for the first time so register new subscriber
+                                $sub_id = $this->successfulSubs($activation_id);
+                                $secure_D_Pincode_success = secureD_Success;
+                            } else { // renew charging success
+                                $charge_renew_result = 1;
+                                $sub_id = "";
+                            }
+
+                        } else {
+                            $sub_id = "";
+                        }
+
+                    } elseif ($faultstring->length != 0) {
+                        $status = $faultstring->item(0)->nodeValue;
+                        $charge_renew_result = 0;
+                        if ($status == "503 - product already purchased!") { // aready subscribe
+                            $secure_D_Pincode_success = secureD_product_already_purchased;
+                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
+                            if ($Subscriber) {
+                                $sub_id = $Subscriber->id;
+                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
+                                $Subscriber->save();
+                            } else { // create new one
+                                if ($send_welcome_message != null) {
+                                    $sub_id = $this->successfulSubs($activation_id);
+                                } else {
+                                    $sub_id = "";
+                                }
+
+                            }
+
+                        } elseif ($status == "24 - Insufficient funds.") {
+                            $secure_D_Pincode_success = secureD_Insufficient_funds;
+                            // insert in sub for the first time of susbcribe
+                            if ($send_welcome_message != null) { // billing for the first time so register new subscriber
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else { // renew charging success
+                                $charge_renew_result = 1;
+                                $sub_id = "";
+                            }
+                        } else {
                             $sub_id = "";
                         }
 
                     } else {
+                        $charge_renew_result = 0;
+                        $status = "Not Known Error";
                         $sub_id = "";
                     }
 
-                } elseif ($faultstring->length != 0) {
-                    $status = $faultstring->item(0)->nodeValue;
-                    $charge_renew_result = 0;
-                    if ($status == "503 - product already purchased!") { // aready subscribe
-                        $secure_D_Pincode_success = secureD_product_already_purchased;
-                        $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                        if ($Subscriber) {
-                            $sub_id = $Subscriber->id;
-                            $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                            $Subscriber->save();
-                        } else { // create new one
-                            if ($send_welcome_message != null) {
-                                $sub_id = $this->successfulSubs($activation_id);
-                            } else {
-                                $sub_id = "";
-                            }
+                    $data["statusCode"] = $status;
 
-                        }
-
-                    } elseif ($status == "24 - Insufficient funds.") {
-                        $secure_D_Pincode_success = secureD_Insufficient_funds;
-                        $sub_id = "";
+                    // log billing
+                    if ($sub != null) {
+                        $billing_message = "Renew";
                     } else {
-                        $sub_id = "";
+                        $billing_message = "FirstTime";
                     }
-
-                } else {
+                    $this->log('Du ' . $serviceid . ' Billing ' . $billing_message . ' Log', url('/du_charge_per_service'), $data);
+                }else{
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
                 }
-
-                $data["statusCode"] = $status;
-
-                // log billing
-                if ($sub != null) {
-                    $billing_message = "Renew";
-                } else {
-                    $billing_message = "FirstTime";
-                }
-                $this->log('Du ' . $serviceid . ' Billing ' . $billing_message . ' Log', url('/du_charge_per_service'), $data);
 
             } elseif ($serviceid == "waffarlydaily") {
 
@@ -985,69 +1015,81 @@ class UrlController extends Controller
                 $data["Response"] = $client->responseData;
 
                 $doc = new \DOMDocument('1.0', 'utf-8');
-                $doc->loadXML($client->responseData);
-                $statusCode = $doc->getElementsByTagName("statusCode"); // success
-                $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
+                if(isset($client->responseData)   &&  $client->responseData !="" ){  // as sometimes xml load emty
+                    $doc->loadXML($client->responseData);
+                    $statusCode = $doc->getElementsByTagName("statusCode"); // success
+                    $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
 
-                if ($statusCode->length != 0) { // find results
-                    $status = $statusCode->item(0)->nodeValue;
-                    $charge_renew_result = 1;
+                    if ($statusCode->length != 0) { // find results
+                        $status = $statusCode->item(0)->nodeValue;
+                        $charge_renew_result = 1;
 
-                    // store new subscriber
-                    if ($status == 0) {
-                        if ($send_welcome_message != null) { // billing for the first time so register new subscriber
-                            $sub_id = $this->successfulSubs($activation_id);
-                            $secure_D_Pincode_success = secureD_Success;
-                        } else { // renew charging success
-                            $charge_renew_result = 1;
+                        // store new subscriber
+                        if ($status == 0) {
+                            if ($send_welcome_message != null) { // billing for the first time so register new subscriber
+                                $sub_id = $this->successfulSubs($activation_id);
+                                $secure_D_Pincode_success = secureD_Success;
+                            } else { // renew charging success
+                                $charge_renew_result = 1;
+                                $sub_id = "";
+                            }
+
+                        } else {
+                            $sub_id = "";
+                        }
+
+                    } elseif ($faultstring->length != 0) {
+                        $status = $faultstring->item(0)->nodeValue;
+                        $charge_renew_result = 0;
+                        if ($status == "503 - product already purchased!") { // aready subscribe
+                            $secure_D_Pincode_success = secureD_product_already_purchased;
+                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
+                            if ($Subscriber) {
+                                $sub_id = $Subscriber->id;
+                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
+                                $Subscriber->save();
+                            } else { // create new one
+                                if ($send_welcome_message != null) {
+                                    $sub_id = $this->successfulSubs($activation_id);
+                                } else {
+                                    $sub_id = "";
+                                }
+
+                            }
+
+                        } elseif ($status == "24 - Insufficient funds.") {
+                            $secure_D_Pincode_success = secureD_Insufficient_funds;
+                            // insert in sub for the first time of susbcribe
+                            if ($send_welcome_message != null) { // billing for the first time so register new subscriber
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else { // renew charging success
+                                $charge_renew_result = 1;
+                                $sub_id = "";
+                            }
+                        } else {
                             $sub_id = "";
                         }
 
                     } else {
+                        $charge_renew_result = 0;
+                        $status = "Not Known Error";
                         $sub_id = "";
                     }
 
-                } elseif ($faultstring->length != 0) {
-                    $status = $faultstring->item(0)->nodeValue;
-                    $charge_renew_result = 0;
-                    if ($status == "503 - product already purchased!") { // aready subscribe
-                        $secure_D_Pincode_success = secureD_product_already_purchased;
-                        $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                        if ($Subscriber) {
-                            $sub_id = $Subscriber->id;
-                            $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                            $Subscriber->save();
-                        } else { // create new one
-                            if ($send_welcome_message != null) {
-                                $sub_id = $this->successfulSubs($activation_id);
-                            } else {
-                                $sub_id = "";
-                            }
+                    $data["statusCode"] = $status;
 
-                        }
-
-                    } elseif ($status == "24 - Insufficient funds.") {
-                        $secure_D_Pincode_success = secureD_Insufficient_funds;
-                        $sub_id = "";
+                    // log billing
+                    if ($sub != null) {
+                        $billing_message = "Renew";
                     } else {
-                        $sub_id = "";
+                        $billing_message = "FirstTime";
                     }
-
-                } else {
+                    $this->log('Du ' . $serviceid . ' Billing ' . $billing_message . ' Log', url('/du_charge_per_service'), $data);
+                }else{
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
                 }
-
-                $data["statusCode"] = $status;
-
-                // log billing
-                if ($sub != null) {
-                    $billing_message = "Renew";
-                } else {
-                    $billing_message = "FirstTime";
-                }
-                $this->log('Du ' . $serviceid . ' Billing ' . $billing_message . ' Log', url('/du_charge_per_service'), $data);
 
             } elseif ($serviceid == "3laweindaily") {
 
@@ -1113,69 +1155,81 @@ class UrlController extends Controller
                 $data["Response"] = $client->responseData;
 
                 $doc = new \DOMDocument('1.0', 'utf-8');
-                $doc->loadXML($client->responseData);
-                $statusCode = $doc->getElementsByTagName("statusCode"); // success
-                $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
+                if(isset($client->responseData) && $client->responseData != ''){
+                    $doc->loadXML($client->responseData);
+                    $statusCode = $doc->getElementsByTagName("statusCode"); // success
+                    $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
 
-                if ($statusCode->length != 0) { // find results
-                    $status = $statusCode->item(0)->nodeValue;
-                    $charge_renew_result = 1;
+                    if ($statusCode->length != 0) { // find results
+                        $status = $statusCode->item(0)->nodeValue;
+                        $charge_renew_result = 1;
 
-                    // store new subscriber
-                    if ($status == 0) {
-                        if ($send_welcome_message != null) { // billing for the first time so register new subscriber
-                            $sub_id = $this->successfulSubs($activation_id);
-                            $secure_D_Pincode_success = secureD_Success;
-                        } else { // renew charging success
-                            $charge_renew_result = 1;
+                        // store new subscriber
+                        if ($status == 0) {
+                            if ($send_welcome_message != null) { // billing for the first time so register new subscriber
+                                $sub_id = $this->successfulSubs($activation_id);
+                                $secure_D_Pincode_success = secureD_Success;
+                            } else { // renew charging success
+                                $charge_renew_result = 1;
+                                $sub_id = "";
+                            }
+
+                        } else {
+                            $sub_id = "";
+                        }
+
+                    } elseif ($faultstring->length != 0) {
+                        $status = $faultstring->item(0)->nodeValue;
+                        $charge_renew_result = 0;
+                        if ($status == "503 - product already purchased!") { // aready subscribe
+                            $secure_D_Pincode_success = secureD_product_already_purchased;
+                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
+                            if ($Subscriber) {
+                                $sub_id = $Subscriber->id;
+                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
+                                $Subscriber->save();
+                            } else { // create new one
+                                if ($send_welcome_message != null) {
+                                    $sub_id = $this->successfulSubs($activation_id);
+                                } else {
+                                    $sub_id = "";
+                                }
+
+                            }
+
+                        } elseif ($status == "24 - Insufficient funds.") {
+                            $secure_D_Pincode_success = secureD_Insufficient_funds;
+                            // insert in sub for the first time of susbcribe
+                            if ($send_welcome_message != null) { // billing for the first time so register new subscriber
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else { // renew charging success
+                                $charge_renew_result = 1;
+                                $sub_id = "";
+                            }
+                        } else {
                             $sub_id = "";
                         }
 
                     } else {
+                        $charge_renew_result = 0;
+                        $status = "Not Known Error";
                         $sub_id = "";
                     }
 
-                } elseif ($faultstring->length != 0) {
-                    $status = $faultstring->item(0)->nodeValue;
-                    $charge_renew_result = 0;
-                    if ($status == "503 - product already purchased!") { // aready subscribe
-                        $secure_D_Pincode_success = secureD_product_already_purchased;
-                        $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                        if ($Subscriber) {
-                            $sub_id = $Subscriber->id;
-                            $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                            $Subscriber->save();
-                        } else { // create new one
-                            if ($send_welcome_message != null) {
-                                $sub_id = $this->successfulSubs($activation_id);
-                            } else {
-                                $sub_id = "";
-                            }
+                    $data["statusCode"] = $status;
 
-                        }
-
-                    } elseif ($status == "24 - Insufficient funds.") {
-                        $secure_D_Pincode_success = secureD_Insufficient_funds;
-                        $sub_id = "";
+                    // log billing
+                    if ($sub != null) {
+                        $billing_message = "Renew";
                     } else {
-                        $sub_id = "";
+                        $billing_message = "FirstTime";
                     }
-
-                } else {
+                    $this->log('Du ' . $serviceid . ' Billing ' . $billing_message . ' Log', url('/du_charge_per_service'), $data);
+                }else{
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
                 }
-
-                $data["statusCode"] = $status;
-
-                // log billing
-                if ($sub != null) {
-                    $billing_message = "Renew";
-                } else {
-                    $billing_message = "FirstTime";
-                }
-                $this->log('Du ' . $serviceid . ' Billing ' . $billing_message . ' Log', url('/du_charge_per_service'), $data);
 
             } elseif ($serviceid == "flaterrotanadaily") {
 
@@ -1241,71 +1295,83 @@ class UrlController extends Controller
                 $data["Response"] = $client->responseData;
 
                 $doc = new \DOMDocument('1.0', 'utf-8');
-                $doc->loadXML($client->responseData);
-                $statusCode = $doc->getElementsByTagName("statusCode"); // success
-                $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
+                if(isset($client->responseData)   &&  $client->responseData !="" ){  // as sometimes xml load emty
+                    $doc->loadXML($client->responseData);
+                    $statusCode = $doc->getElementsByTagName("statusCode"); // success
+                    $faultstring = $doc->getElementsByTagName("faultstring"); // insufficient or alreday subscribe
 
-                if ($statusCode->length != 0) { // find results
-                    $status = $statusCode->item(0)->nodeValue;
-                    $charge_renew_result = 1;
+                    if ($statusCode->length != 0) { // find results
+                        $status = $statusCode->item(0)->nodeValue;
+                        $charge_renew_result = 1;
 
-                    // store new subscriber
-                    if ($status == 0) {
-                        if ($send_welcome_message != null) { // billing for the first time so register new subscriber
-                            $sub_id = $this->successfulSubs($activation_id);
-                            $secure_D_Pincode_success = secureD_Success;
-
-                        } else { // renew charging success
-                            $charge_renew_result = 1;
-                            $sub_id = "";
-
-                        }
-
-                    } else {
-                        $sub_id = "";
-                    }
-
-                } elseif ($faultstring->length != 0) {
-                    $status = $faultstring->item(0)->nodeValue;
-                    $charge_renew_result = 0;
-                    if ($status == "503 - product already purchased!") { // aready subscribe
-                        $secure_D_Pincode_success = secureD_product_already_purchased;
-                        $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                        if ($Subscriber) {
-                            $sub_id = $Subscriber->id;
-                            $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                            $Subscriber->save();
-                        } else { // create new one
-                            if ($send_welcome_message != null) {
+                        // store new subscriber
+                        if ($status == 0) {
+                            if ($send_welcome_message != null) { // billing for the first time so register new subscriber
                                 $sub_id = $this->successfulSubs($activation_id);
-                            } else {
+                                $secure_D_Pincode_success = secureD_Success;
+
+                            } else { // renew charging success
+                                $charge_renew_result = 1;
                                 $sub_id = "";
+
                             }
 
+                        } else {
+                            $sub_id = "";
                         }
 
-                    } elseif ($status == "24 - Insufficient funds.") {
-                        $secure_D_Pincode_success = secureD_Insufficient_funds;
-                        $sub_id = "";
+                    } elseif ($faultstring->length != 0) {
+                        $status = $faultstring->item(0)->nodeValue;
+                        $charge_renew_result = 0;
+                        if ($status == "503 - product already purchased!") { // aready subscribe
+                            $secure_D_Pincode_success = secureD_product_already_purchased;
+                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
+                            if ($Subscriber) {
+                                $sub_id = $Subscriber->id;
+                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
+                                $Subscriber->save();
+                            } else { // create new one
+                                if ($send_welcome_message != null) {
+                                    $sub_id = $this->successfulSubs($activation_id);
+                                } else {
+                                    $sub_id = "";
+                                }
+
+                            }
+
+                        } elseif ($status == "24 - Insufficient funds.") {
+                            $secure_D_Pincode_success = secureD_Insufficient_funds;
+                            // insert in sub for the first time of susbcribe
+                            if ($send_welcome_message != null) { // billing for the first time so register new subscriber
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else { // renew charging success
+                                $charge_renew_result = 1;
+                                $sub_id = "";
+                            }
+                        } else {
+                            $sub_id = "";
+                        }
+
                     } else {
+                        $charge_renew_result = 0;
+                        $status = "Not Known Error";
                         $sub_id = "";
                     }
 
-                } else {
+                    $data["statusCode"] = $status;
+
+                    // log billing
+                    if ($sub != null) {
+                        $billing_message = "Renew";
+                    } else {
+                        $billing_message = "FirstTime";
+                    }
+                    $this->log('Du ' . $serviceid . ' Billing ' . $billing_message . ' Log', url('/du_charge_per_service'), $data);
+                }else{
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
                 }
-
-                $data["statusCode"] = $status;
-
-                // log billing
-                if ($sub != null) {
-                    $billing_message = "Renew";
-                } else {
-                    $billing_message = "FirstTime";
-                }
-                $this->log('Du ' . $serviceid . ' Billing ' . $billing_message . ' Log', url('/du_charge_per_service'), $data);
 
             } elseif ($serviceid == "liveqarankhatma") {
 
@@ -1525,11 +1591,11 @@ class UrlController extends Controller
                 $du_welcome_message = "Welcome To " . $service_name . "  Service ";
                 $du_welcome_message .= $welcome_message;
                 if ($serviceid == "flaterdaily") {
-                    $du_welcome_message .= " For Unsubcribe  https://bit.ly/2XawRXY";
+                    $du_welcome_message = "Welcome To " . $service_name ." For Unsubcribe please send stopf to 4971 or click this link https://bit.ly/2XawRXY";
                 } elseif ($serviceid == "greetingsdaily") {
                     $du_welcome_message .= " For Unsubcribe  https://bit.ly/2V9MtbZ";
                 } elseif ($serviceid == "flaterrotanadaily") {
-                    $du_welcome_message .= " For Unsubcribe  https://bit.ly/2UB9wfs";
+                    $du_welcome_message = "Welcome To " . $service_name ." For Unsubcribe please send stopr to 4971 or click this link https://bit.ly/2UB9wfs";
                 }elseif ($serviceid == "liveqarankhatma") {
 
                     $du_welcome_message = "Hi,  Wishing you a very blessed Ramadan." ;
@@ -1855,7 +1921,50 @@ class UrlController extends Controller
                     $this->log('DU MO Quran Live UNSUB Notification', $request->fullUrl(), $data);
                 }
             }
-
+        } else if ($request->message == 'F' ||  $request->message == 'f' ) {// unsub from quran live
+                require('uuid/UUID.php');
+                $trxid = \UUID::v4();
+                $URL = url('api/activation');
+                $param = "msisdn=" . $request->msisdn . "&trxid=$trxid&serviceid=flaterdaily&plan=daily&price=2";
+                $result = $this->get_content_post($URL, $param);
+                $this->log('DU MO Flatter Daily Subscription Notification', $request->fullUrl(), (array)$result);
+                return $result;
+        } else if ($request->message == 'StopF' ||  $request->message == 'stopf') {// unsub from quran live
+            $result = $result->where('serviceid', 'flaterdaily');
+            $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
+            if ($result) {
+                $sub = Subscriber::where("activation_id", $result->id)->first();
+                if ($sub) {
+                    $unsub = new \App\Unsubscriber();
+                    $unsub->activation_id = $sub->activation_id;
+                    $unsub->save();
+                    $sub->delete();
+                    $data['unsub_id'] = $unsub->id;
+                    $this->log('DU MO Flatter Daily UNSUB Notification', $request->fullUrl(), $data);
+                }
+            }
+        } else if ($request->message == 'R' ||  $request->message == 'r' ) {// unsub from quran live
+            require('uuid/UUID.php');
+            $trxid = \UUID::v4();
+            $URL = url('api/activation');
+            $param = "msisdn=" . $request->msisdn . "&trxid=$trxid&serviceid=flaterrotanadaily&plan=daily&price=2";
+            $result = $this->get_content_post($URL, $param);
+            $this->log('DU MO Rotana Flatter  Subscription Notification', $request->fullUrl(), (array)$result);
+            return $result;
+        } else if ($request->message == 'StopR' ||  $request->message == 'stopr') {// unsub from quran live
+            $result = $result->where('serviceid', 'flaterrotanadaily');
+            $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
+            if ($result) {
+                $sub = Subscriber::where("activation_id", $result->id)->first();
+                if ($sub) {
+                    $unsub = new \App\Unsubscriber();
+                    $unsub->activation_id = $sub->activation_id;
+                    $unsub->save();
+                    $sub->delete();
+                    $data['unsub_id'] = $unsub->id;
+                    $this->log('DU MO Rotana Flatter UNSUB Notification', $request->fullUrl(), $data);
+                }
+            }
         }
 
          // Log all Mo Notification
