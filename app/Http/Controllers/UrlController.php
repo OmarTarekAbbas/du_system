@@ -362,8 +362,11 @@ class UrlController extends Controller
         ->select('subscribers.*')
         ->orderBy('id', 'ASC')
         ->get();
-
-        print_r($subscribers); die;
+        foreach ($subscribers as $sub) {
+            echo $sub->id ;
+            echo "<hr>" ;
+        }
+              die;
 
 
         foreach ($subscribers as $sub) {
