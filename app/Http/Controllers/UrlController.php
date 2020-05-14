@@ -357,6 +357,7 @@ class UrlController extends Controller
         $this->sendMail($subject, $email);
 
         $today = Carbon::now()->format('Y-m-d');
+        $today = "2020-05-15";
         $subscribers = Subscriber::where('subscribers.next_charging_date', $today)
         ->select('subscribers.*')
         ->orderBy('id', 'ASC')
