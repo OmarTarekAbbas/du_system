@@ -357,16 +357,10 @@ class UrlController extends Controller
         $this->sendMail($subject, $email);
 
         $today = Carbon::now()->format('Y-m-d');
-        $today = "2020-05-15";
         $subscribers = Subscriber::where('subscribers.next_charging_date', $today)
         ->select('subscribers.*')
         ->orderBy('id', 'ASC')
         ->get();
-        foreach ($subscribers as $sub) {
-            echo $sub->id ;
-            echo "<hr>" ;
-        }
-              die;
 
 
         foreach ($subscribers as $sub) {
@@ -377,7 +371,9 @@ class UrlController extends Controller
 
             $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
 
-                if ($activation->plan == 'daily') {
+            if($activation->next_charging_date == $today){ // to prevent multi changes on subscribers table
+
+                if ($activation->plan == 'daily' ) {
                     $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
                     $old_sub->save();
                 } elseif ($activation->plan == 'weekly') {
@@ -387,6 +383,9 @@ class UrlController extends Controller
                     $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
                     $old_sub->save();
                 }
+
+            }
+
 
         }
 
@@ -401,7 +400,10 @@ class UrlController extends Controller
 
         $today = Carbon::now()->format('Y-m-d');
         $subscriber_ids = Charge::where('charging_date',date('Y-m-d'))->groupBy('subscriber_id')->pluck('subscriber_id')->toArray();
-        $subscribers = Subscriber::whereNotIN('id',$subscriber_ids)->where('next_charging_date',date('Y-m-d'))->get();
+        $subscribers = Subscriber::whereNotIN('id',$subscriber_ids)
+        ->where('next_charging_date',date('Y-m-d'))
+        ->orderBy('id', 'ASC')
+        ->get();
         foreach ($subscribers as $sub) {
             $activation = Activation::findOrFail($sub->activation_id);
             $old_sub = Subscriber::findOrFail($sub->id);
@@ -409,15 +411,20 @@ class UrlController extends Controller
             $msisdn = $activation->msisdn;
             $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
 
-            if ($activation->plan == 'daily') {
-                $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
-                $old_sub->save();
-            } elseif ($activation->plan == 'weekly') {
-                $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 week"));
-                $old_sub->save();
-            } else { // default is daily
-                $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
-                $old_sub->save();
+
+            if($activation->next_charging_date == $today){ // to prevent multi changes on subscribers table
+
+                if ($activation->plan == 'daily') {
+                    $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
+                    $old_sub->save();
+                } elseif ($activation->plan == 'weekly') {
+                    $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 week"));
+                    $old_sub->save();
+                } else { // default is daily
+                    $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
+                    $old_sub->save();
+                }
+
             }
 
         }
@@ -629,19 +636,14 @@ class UrlController extends Controller
                         $charge_renew_result = 0;
                         if ($status == "503 - product already purchased!") { // aready subscribe
                             $secure_D_Pincode_success = secureD_product_already_purchased;
-                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                            if ($Subscriber) {
-                                $sub_id = $Subscriber->id;
-                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                                $Subscriber->save();
-                            } else { // create new one
-                                if ($send_welcome_message != null) {
-                                    $sub_id = $this->successfulSubs($activation_id);
-                                } else {
-                                    $sub_id = "";
-                                }
 
+                            if ($send_welcome_message != null) {
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else {
+                                $sub_id = "";
                             }
+
+
 
                         } elseif ($status == "24 - Insufficient funds.") {
                             $secure_D_Pincode_success = secureD_Insufficient_funds;
@@ -768,18 +770,11 @@ class UrlController extends Controller
                         $charge_renew_result = 0;
                         if ($status == "503 - product already purchased!") { // aready subscribe
                             $secure_D_Pincode_success = secureD_product_already_purchased;
-                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                            if ($Subscriber) {
-                                $sub_id = $Subscriber->id;
-                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                                $Subscriber->save();
-                            } else { // create new one
-                                if ($send_welcome_message != null) {
-                                    $sub_id = $this->successfulSubs($activation_id);
-                                } else {
-                                    $sub_id = "";
-                                }
 
+                            if ($send_welcome_message != null) {
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else {
+                                $sub_id = "";
                             }
 
                         } elseif ($status == "24 - Insufficient funds.") {
@@ -908,18 +903,11 @@ class UrlController extends Controller
                         $charge_renew_result = 0;
                         if ($status == "503 - product already purchased!") { // aready subscribe
                             $secure_D_Pincode_success = secureD_product_already_purchased;
-                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                            if ($Subscriber) {
-                                $sub_id = $Subscriber->id;
-                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                                $Subscriber->save();
-                            } else { // create new one
-                                if ($send_welcome_message != null) {
-                                    $sub_id = $this->successfulSubs($activation_id);
-                                } else {
-                                    $sub_id = "";
-                                }
 
+                            if ($send_welcome_message != null) {
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else {
+                                $sub_id = "";
                             }
 
                         } elseif ($status == "24 - Insufficient funds.") {
@@ -1048,18 +1036,11 @@ class UrlController extends Controller
                         $charge_renew_result = 0;
                         if ($status == "503 - product already purchased!") { // aready subscribe
                             $secure_D_Pincode_success = secureD_product_already_purchased;
-                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                            if ($Subscriber) {
-                                $sub_id = $Subscriber->id;
-                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                                $Subscriber->save();
-                            } else { // create new one
-                                if ($send_welcome_message != null) {
-                                    $sub_id = $this->successfulSubs($activation_id);
-                                } else {
-                                    $sub_id = "";
-                                }
 
+                            if ($send_welcome_message != null) {
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else {
+                                $sub_id = "";
                             }
 
                         } elseif ($status == "24 - Insufficient funds.") {
@@ -1188,21 +1169,14 @@ class UrlController extends Controller
                         $charge_renew_result = 0;
                         if ($status == "503 - product already purchased!") { // aready subscribe
                             $secure_D_Pincode_success = secureD_product_already_purchased;
-                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                            if ($Subscriber) {
-                                $sub_id = $Subscriber->id;
-                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                                $Subscriber->save();
-                            } else { // create new one
-                                if ($send_welcome_message != null) {
-                                    $sub_id = $this->successfulSubs($activation_id);
-                                } else {
-                                    $sub_id = "";
-                                }
 
+                            if ($send_welcome_message != null) {
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else {
+                                $sub_id = "";
                             }
 
-                        } elseif ($status == "24 - Insufficient funds.") {
+                        }elseif ($status == "24 - Insufficient funds.") {
                             $secure_D_Pincode_success = secureD_Insufficient_funds;
                             // insert in sub for the first time of susbcribe
                             if ($send_welcome_message != null) { // billing for the first time so register new subscriber
@@ -1330,18 +1304,11 @@ class UrlController extends Controller
                         $charge_renew_result = 0;
                         if ($status == "503 - product already purchased!") { // aready subscribe
                             $secure_D_Pincode_success = secureD_product_already_purchased;
-                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                            if ($Subscriber) {
-                                $sub_id = $Subscriber->id;
-                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                                $Subscriber->save();
-                            } else { // create new one
-                                if ($send_welcome_message != null) {
-                                    $sub_id = $this->successfulSubs($activation_id);
-                                } else {
-                                    $sub_id = "";
-                                }
 
+                            if ($send_welcome_message != null) {
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else {
+                                $sub_id = "";
                             }
 
                         } elseif ($status == "24 - Insufficient funds.") {
@@ -1475,18 +1442,11 @@ class UrlController extends Controller
                         $charge_renew_result = 0;
                         if ($status == "503 - product already purchased!") { // aready subscribe
                             $secure_D_Pincode_success = secureD_product_already_purchased;
-                            $Subscriber = Subscriber::where('activation_id', $activation_id)->first();
-                            if ($Subscriber) {
-                                $sub_id = $Subscriber->id;
-                                $Subscriber->next_charging_date = date('Y-m-d', strtotime($Subscriber->next_charging_date . "+1 day"));
-                                $Subscriber->save();
-                            } else { // create new one
-                                if ($send_welcome_message != null) {
-                                    $sub_id = $this->successfulSubs($activation_id);
-                                } else {
-                                    $sub_id = "";
-                                }
 
+                            if ($send_welcome_message != null) {
+                                $sub_id = $this->successfulSubs($activation_id);
+                            } else {
+                                $sub_id = "";
                             }
 
                         } elseif ($status == "24 - Insufficient funds.") {
@@ -1552,9 +1512,6 @@ class UrlController extends Controller
 
             // log charging for First Time Or renew
             if ($subscriber_id != "") {
-
-
-
 
         $today_charging = Charge::where("subscriber_id",$subscriber_id)->where("charging_date",$today)->first();
 
