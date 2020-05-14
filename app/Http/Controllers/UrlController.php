@@ -1890,10 +1890,13 @@ class UrlController extends Controller
         // https://du.notifications.digizone.com.kw/api/logmessage?msisdn=971555802322&message=1
         $data['msisdn'] = $request->msisdn;
         $data['msisdn'] = str_replace('+', '', $request->msisdn); // remove +
+        $request->msisdn =  $data['msisdn'];
+
         $data['message'] = $request->message;
         $data['message'] = str_replace("“", '', $request->message); // remove “
         $data['message'] = str_replace("”", '',  $data['message'] ); // remove ”
         $request->message =  $data['message'];
+
         $result = Activation::where("msisdn", $data['msisdn']);
 
         if ($request->message ==  "1" ||  $request->message == "A"   ||  $request->message == "Alafasy"
@@ -1921,7 +1924,7 @@ class UrlController extends Controller
                     $this->log('DU MO Quran Live UNSUB Notification', $request->fullUrl(), $data);
                 }
             }
-        } else if ($request->message == 'F' ||  $request->message == 'f' ) {// unsub from quran live
+        } else if ($request->message == 'F' ||  $request->message == 'f' ) {// Sub Keywords for Flatter
                 require('uuid/UUID.php');
                 $trxid = \UUID::v4();
                 $URL = url('api/activation');
@@ -1929,7 +1932,7 @@ class UrlController extends Controller
                 $result = $this->get_content_post($URL, $param);
                 $this->log('DU MO Flatter Daily Subscription Notification', $request->fullUrl(), (array)$result);
                 return $result;
-        } else if ($request->message == 'StopF' ||  $request->message == 'stopf') {// unsub from quran live
+        } else if ($request->message == 'StopF' ||  $request->message == 'stopf') {// unsub from Flatter
             $result = $result->where('serviceid', 'flaterdaily');
             $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
             if ($result) {
@@ -1943,7 +1946,7 @@ class UrlController extends Controller
                     $this->log('DU MO Flatter Daily UNSUB Notification', $request->fullUrl(), $data);
                 }
             }
-        } else if ($request->message == 'R' ||  $request->message == 'r' ) {// unsub from quran live
+        } else if ($request->message == 'R' ||  $request->message == 'r' ) {// Sub to Rotana Flatter
             require('uuid/UUID.php');
             $trxid = \UUID::v4();
             $URL = url('api/activation');
@@ -1951,7 +1954,7 @@ class UrlController extends Controller
             $result = $this->get_content_post($URL, $param);
             $this->log('DU MO Rotana Flatter  Subscription Notification', $request->fullUrl(), (array)$result);
             return $result;
-        } else if ($request->message == 'StopR' ||  $request->message == 'stopr') {// unsub from quran live
+        } else if ($request->message == 'StopR' ||  $request->message == 'stopr') {// unsub from Rotana Flatter
             $result = $result->where('serviceid', 'flaterrotanadaily');
             $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
             if ($result) {
