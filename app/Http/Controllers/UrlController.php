@@ -357,11 +357,12 @@ class UrlController extends Controller
         $this->sendMail($subject, $email);
 
         $today = Carbon::now()->format('Y-m-d');
-        $subscribers = \DB::table('subscribers')
-        ->join('activation', 'subscribers.activation_id', '=', 'activation.id')
-        ->where('subscribers.next_charging_date', $today)
+        $subscribers = Subscriber::where('subscribers.next_charging_date', $today)
         ->select('subscribers.*')
+        ->orderBy('id', 'ASC')
         ->get();
+
+        print_r($subscribers); die;
 
 
         foreach ($subscribers as $sub) {
