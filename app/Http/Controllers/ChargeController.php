@@ -53,11 +53,14 @@ class ChargeController extends Controller
             $without_paginate = 1;
         }
 
+
+
         if($request->has('status') && $request->status != '' ){
             if($request->status == 'fail'){
-                $charges = $charges->whereNotIn('charges.status_code',['503 - product already purchased!','0','24 - Insufficient funds.']);
+                $charges = $charges->whereNotIn('charges.status_code',['503 - product already purchased!',0,'24 - Insufficient funds.']);
             }else{
-                $charges = $charges->where('charges.status_code',$request->status);
+                if($request->status == "0")   $request->status = 0 ;  //  as it read "0"
+                $charges = $charges->where('charges.status_code',"=",$request->status);
             }
             $without_paginate = 1;
         }
@@ -66,6 +69,8 @@ class ChargeController extends Controller
             $charges = $charges->where('activation.serviceid',$request->serviceid);
             $without_paginate = 1;
         }
+
+
 
         if($without_paginate){
             $charges = $charges->get();

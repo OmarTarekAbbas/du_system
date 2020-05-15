@@ -46,7 +46,7 @@
         <div class="col-md-2">
             {!! Form::label('Status', 'Status:') !!}
             <div class=''>
-                {!! Form::select('status', ['0' => '0' ,'503 - product already purchased!'=>'503 - product already purchased' , '24 - Insufficient funds.' => '24 - Insufficient funds','fail' => 'Failed'] , request()->get('status'), ['class'=>'form-control','id'=>'plan','placeholder'=>'Select Status']) !!}
+                {!! Form::select('status', [0 => 0 ,'503 - product already purchased!'=>'503 - product already purchased' , '24 - Insufficient funds.' => '24 - Insufficient funds','fail' => 'Failed'] , request()->get('status'), ['class'=>'form-control','id'=>'plan','placeholder'=>'Select Status']) !!}
             </div>
         </div>
 

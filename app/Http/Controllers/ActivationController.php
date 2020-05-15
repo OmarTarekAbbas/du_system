@@ -46,6 +46,7 @@ class ActivationController extends Controller
             if($request->status == 'fail'){
                 $activations = $activations->whereNotIn('activation.status_code',['503 - product already purchased!','0','24 - Insufficient funds.']);
             }else{
+                if($request->status == "0")   $request->status = 0 ;  //  as it read "0"
                 $activations = $activations->where('activation.status_code',$request->status);
             }
             $without_paginate = 1;
