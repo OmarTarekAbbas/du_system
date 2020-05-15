@@ -371,22 +371,6 @@ class UrlController extends Controller
 
             $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
 
-            if($activation->next_charging_date == $today){ // to prevent multi changes on subscribers table
-
-                if ($activation->plan == 'daily' ) {
-                    $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
-                    $old_sub->save();
-                } elseif ($activation->plan == 'weekly') {
-                    $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 week"));
-                    $old_sub->save();
-                } else { // default is daily
-                    $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
-                    $old_sub->save();
-                }
-
-            }
-
-
         }
 
         echo "Du Charging for toady " . $today . "Is Done";
@@ -409,23 +393,11 @@ class UrlController extends Controller
             $old_sub = Subscriber::findOrFail($sub->id);
             $serviceid = $activation->serviceid;
             $msisdn = $activation->msisdn;
+
+
             $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
 
-
-            if($activation->next_charging_date == $today){ // to prevent multi changes on subscribers table
-
-                if ($activation->plan == 'daily') {
-                    $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
-                    $old_sub->save();
-                } elseif ($activation->plan == 'weekly') {
-                    $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 week"));
-                    $old_sub->save();
-                } else { // default is daily
-                    $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
-                    $old_sub->save();
-                }
-
-            }
+            $today_charging = Charge::where("subscriber_id",$sub->id)->where("charging_date",$today)->first();
 
         }
 
@@ -1523,19 +1495,27 @@ class UrlController extends Controller
                 $Charge->charging_date = $today;
                 $Charge->status_code = $status;
                 $Charge->save();
+
+
+                // update subscriber after charging today
+                    $old_sub = Subscriber::findOrFail($subscriber_id );
+
+                    if ($activation->plan == 'daily' ) {
+                        $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
+                        $old_sub->save();
+                    } elseif ($activation->plan == 'weekly') {
+                        $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 week"));
+                        $old_sub->save();
+                    } else { // default is daily
+                        $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
+                        $old_sub->save();
+                    }
         }
 
 
             }
 
-            // renew charging log
-            //   if($sub != Null ){
-            //     $data["charging_du_result"] = $status;
-            //     $data["serviceid"] = $serviceid;
-            //     $data["msisdn"] = $msisdn;
-            //     $data["charge_renew_result"] = $charge_renew_result;
-            //     $this->log('Du '.$serviceid.' charging renew', url('/du_charge_per_service'), $data);
-            //     }
+
 
             if ($send_welcome_message != null) {
                 // log to DB + files
