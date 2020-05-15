@@ -381,10 +381,10 @@ class UrlController extends Controller
 
             }
 
-            echo "Du Charging for toady " . $today . "Is Done";
+            echo "Du Charging for toady " . $today . " Is Done";
 
         }else{
-            echo "There is no  Charging for toady " . $today . "Is Done";
+            echo "There is no  Charging for toady " . $today ;
 
         }
 
@@ -428,11 +428,11 @@ class UrlController extends Controller
 
             }
 
-            echo "Du Charging for toady " . $today . "Is Done";
+            echo "Du Charging for toady " . $today . " Is Done";
 
 
         }else{
-            echo "There is no  Charging for toady " . $today . "Is Done";
+            echo "There is no  Charging for toady " . $today;
 
         }
 
