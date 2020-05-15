@@ -352,9 +352,6 @@ class UrlController extends Controller
 
     public function chargeSubs()
     {
-        $email = "emad@ivas.com.eg";
-        $subject = "Charging Cron Run Schedule for " . Carbon::now()->format('Y-m-d');
-        $this->sendMail($subject, $email);
 
         $today = Carbon::now()->format('Y-m-d');
         $subscribers = Subscriber::where('subscribers.next_charging_date', $today)
@@ -363,24 +360,40 @@ class UrlController extends Controller
         ->get();
 
 
-        foreach ($subscribers as $sub) {
-            $activation = Activation::findOrFail($sub->activation_id);
-            $old_sub = Subscriber::findOrFail($sub->id);
-            $serviceid = $activation->serviceid;
-            $msisdn = $activation->msisdn;
+        $subscribers_count = Subscriber::where('subscribers.next_charging_date', $today)
+        ->orderBy('id', 'ASC')
+        ->count();
 
-            $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
+
+        if( $subscribers_count > 0 ){  // run
+
+            $email = "emad@ivas.com.eg";
+            $subject = "Charging Cron Run Schedule for " . Carbon::now()->format('Y-m-d');
+            $this->sendMail($subject, $email);
+
+            foreach ($subscribers as $sub) {
+                $activation = Activation::findOrFail($sub->activation_id);
+                $old_sub = Subscriber::findOrFail($sub->id);
+                $serviceid = $activation->serviceid;
+                $msisdn = $activation->msisdn;
+
+                $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
+
+            }
+
+            echo "Du Charging for toady " . $today . "Is Done";
+
+        }else{
+            echo "There is no  Charging for toady " . $today . "Is Done";
 
         }
 
-        echo "Du Charging for toady " . $today . "Is Done";
+
+
     }
 
     public function chargeSubs2()
     {
-        $email = "emad@ivas.com.eg";
-        $subject = "Charging Cron Run Schedule for " . Carbon::now()->format('Y-m-d');
-        $this->sendMail($subject, $email);
 
         $today = Carbon::now()->format('Y-m-d');
         $subscriber_ids = Charge::where('charging_date',date('Y-m-d'))->groupBy('subscriber_id')->pluck('subscriber_id')->toArray();
@@ -388,20 +401,42 @@ class UrlController extends Controller
         ->where('next_charging_date',date('Y-m-d'))
         ->orderBy('id', 'ASC')
         ->get();
-        foreach ($subscribers as $sub) {
-            $activation = Activation::findOrFail($sub->activation_id);
-            $old_sub = Subscriber::findOrFail($sub->id);
-            $serviceid = $activation->serviceid;
-            $msisdn = $activation->msisdn;
+
+        $subscribers_count = Subscriber::whereNotIN('id',$subscriber_ids)
+        ->where('next_charging_date',date('Y-m-d'))
+        ->orderBy('id', 'ASC')
+        ->count();
 
 
-            $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
+        if( $subscribers_count > 0 ){  // run
 
-            $today_charging = Charge::where("subscriber_id",$sub->id)->where("charging_date",$today)->first();
+            $email = "emad@ivas.com.eg";
+            $subject = "Charging Cron Run Schedule for " . Carbon::now()->format('Y-m-d');
+            $this->sendMail($subject, $email);
+
+
+            foreach ($subscribers as $sub) {
+                $activation = Activation::findOrFail($sub->activation_id);
+                $old_sub = Subscriber::findOrFail($sub->id);
+                $serviceid = $activation->serviceid;
+                $msisdn = $activation->msisdn;
+
+
+                $charge_renew_result = $this->du_charge_per_service($activation, $serviceid, $msisdn, $sub, $send_welcome_message = null);
+
+                $today_charging = Charge::where("subscriber_id",$sub->id)->where("charging_date",$today)->first();
+
+            }
+
+            echo "Du Charging for toady " . $today . "Is Done";
+
+
+        }else{
+            echo "There is no  Charging for toady " . $today . "Is Done";
 
         }
 
-        echo "Du Charging for toady " . $today . "Is Done";
+
     }
 
 
