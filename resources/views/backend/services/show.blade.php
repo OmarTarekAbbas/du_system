@@ -65,7 +65,7 @@
                             <th>All Status calculate</th>
                             <th> {{ $charge_status_0 +  $charge_status_503 +$charge_status_24 + $failed}}
 
-                                  $nbsp;   $nbsp;   $nbsp;  /   $nbsp;
+                                   /
                                 {{ $charge_status_0 +  $charge_status_503 +$charge_status_24 + $failed == $charge_date ? "Correct" : "Not Correct"}}
                             </th>
                         </tr>
