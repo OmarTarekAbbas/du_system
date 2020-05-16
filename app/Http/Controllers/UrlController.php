@@ -1522,6 +1522,7 @@ class UrlController extends Controller
 
         $today_charging = Charge::where("subscriber_id",$subscriber_id)->where("charging_date",$today)->first();
 
+        //  $status = "Not Known Error" // mean not each to du servers
         if(empty($today_charging )  &&   $status != "Not Known Error"  ){  // insert today charging
             $Charge = new Charge;
                 $Charge->subscriber_id = $subscriber_id;
