@@ -59,6 +59,12 @@
                             <th>Status Code Failed</th>
                             <th> {{ $failed}}</th>
                         </tr>
+
+
+                        <tr>
+                            <th>All Status calculate</th>
+                            <th> {{ $charge_status_0 +  $charge_status_503 +$charge_status_24 + $failed}}</th>
+                        </tr>
                     </tbody>
                 </table>
 
