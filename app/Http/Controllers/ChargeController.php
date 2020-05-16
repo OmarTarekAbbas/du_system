@@ -59,7 +59,7 @@ class ChargeController extends Controller
             if($request->status == 'fail'){
                 $charges = $charges->whereNotIn('charges.status_code',['503 - product already purchased!',0,'24 - Insufficient funds.']);
             }else{
-                if($request->status == "0")   $request->status = 0 ;  //  as it read "0"
+               // if($request->status == "0")   $request->status = 0 ;  //  as it read "0"
                 $charges = $charges->where('charges.status_code',"=",$request->status);
             }
             $without_paginate = 1;

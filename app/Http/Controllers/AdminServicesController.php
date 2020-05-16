@@ -134,7 +134,7 @@ class AdminServicesController extends Controller
         $failed = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
-            ->whereNotIn('charges.status_code',['503 - product already purchased!',0,'24 - Insufficient funds.'])
+            ->whereNotIn('charges.status_code',['503 - product already purchased!','0','24 - Insufficient funds.'])
             ->where('charges.charging_date','=',Carbon::now()->toDateString())
             ->where('activation.serviceid',$service->title)->groupBy('charges.subscriber_id')->get()->count();
 
