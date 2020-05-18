@@ -32,9 +32,11 @@ Route::post('test2','UrlController@test2');
 
 Route::get('sendTodaySubMessage','UrlController@sendTodaySubMessage');
 Route::get('chargeSubs','UrlController@chargeSubs');
-Route::get('chargeSubs2','UrlController@chargeSubs2')->name('admin.chargeSubs2');
+Route::get('chargeSubs_for_failed','UrlController@chargeSubs_for_failed')->name('admin.chargeSubs2');
 
  Route::get('make_today_charging','UrlController@make_today_charging');
+ Route::get('make_today_charging_for_failed','UrlController@make_today_charging_for_failed');
+
 
 Route::get('getTodayMessage/{id}','UrlController@getMessage');
 

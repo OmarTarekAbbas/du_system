@@ -392,7 +392,7 @@ class UrlController extends Controller
 
     }
 
-    public function chargeSubs2()
+    public function chargeSubs_for_failed()
     {
 
         $today = Carbon::now()->format('Y-m-d');
@@ -686,6 +686,9 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+
+                     // Billing Empty Response Lo
+                     $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
                 }
 
             } elseif ($serviceid == "flaterweekly") {
@@ -816,6 +819,9 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+
+                     // Billing Empty Response Lo
+                     $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
                 }
 
             } elseif ($serviceid == "greetingsdaily") {
@@ -949,6 +955,9 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+
+                     // Billing Empty Response Lo
+                     $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
                 }
 
             } elseif ($serviceid == "waffarlydaily") {
@@ -1082,6 +1091,9 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+
+                     // Billing Empty Response Lo
+                     $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
                 }
 
             } elseif ($serviceid == "3laweindaily") {
@@ -1215,6 +1227,9 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+
+                     // Billing Empty Response Lo
+                     $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
                 }
 
             } elseif ($serviceid == "flaterrotanadaily") {
@@ -1350,6 +1365,8 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+                     // Billing Empty Response Lo
+                     $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
                 }
 
             } elseif ($serviceid == "liveqarankhatma") {
@@ -1494,6 +1511,9 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+                      // Billing Empty Response Lo
+                    $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
+
                 }
 
 
@@ -2038,6 +2058,28 @@ class UrlController extends Controller
         curl_close($ch);
 
         echo "Du Charging By Curl exec for  toady " . $today . "Is Done";
+
+    }
+
+
+
+    public function make_today_charging_for_failed() {
+        // $today = Carbon::now()->format('Y-m-d');
+        // $email = "emad@ivas.com.eg";
+        // $subject = "Charging Cron By Curl Schedule for " . Carbon::now()->format('Y-m-d');
+        // $this->sendMail($subject, $email);
+
+        $ch = curl_init();
+        $getUrl = "https://du.notifications.digizone.com.kw/api/chargeSubs_for_failed";
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_URL, $getUrl);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 800000);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        echo "Du Charging for failed  By Curl exec for  today " . $today . "Is Done";
 
     }
 

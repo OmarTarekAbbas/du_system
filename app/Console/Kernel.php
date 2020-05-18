@@ -34,6 +34,10 @@ class Kernel extends ConsoleKernel
                 //  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('04:00');  // charging
                   $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('05:00');
                  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('06:00');
+
+                 // failed charging for empty response
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging_for_failed')->dailyAt('07:00');
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging_for_failed')->dailyAt('08:00');
                  //  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('07:00');
                 //  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('08:00');
                 //  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('09:00');
