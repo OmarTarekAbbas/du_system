@@ -1950,6 +1950,12 @@ class UrlController extends Controller
 
          // Log all Mo Notification
         $this->log('DU MO All Notifications', $request->fullUrl(), $data);
+
+        $DuMo = DuMo::create([
+            'link' => url()->current(),
+            'msisdn' => $request->msisdn,
+            'message' => $request->message
+        ]);
     }
 
     public function sub_excel()
