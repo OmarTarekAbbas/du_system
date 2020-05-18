@@ -7,6 +7,7 @@ use App\Service;
 use App\Subscriber;
 use App\Message;
 use App\Url;
+use App\DuMo;
 use App\LogMessage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -1952,7 +1953,7 @@ class UrlController extends Controller
         $this->log('DU MO All Notifications', $request->fullUrl(), $data);
 
         $DuMo = DuMo::create([
-            'link' => url()->current(),
+            'link' => $request->fullUrl(),
             'msisdn' => $request->msisdn,
             'message' => $request->message
         ]);
