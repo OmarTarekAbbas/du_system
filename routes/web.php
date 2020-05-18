@@ -67,6 +67,7 @@ Route::resource('admin/subscribers','SubscriberController',['as' => 'admin']);
 Route::resource('admin/unsubscribers','UnSubscriberController',['as' => 'admin']);
 Route::resource('admin/charges','ChargeController',['as' => 'admin']);
 Route::resource('admin/activations','ActivationController',['as' => 'admin']);
+Route::resource('admin/logmessage','DuLogMessage',['as' => 'admin']);
 
 Route::get('admin/faildTodayCharge',"ChargeController@faildTodayCharge")->name('admin.faild.charge.get');
 Route::post('admin/faildTodayCharge',"ChargeController@excuteTodayCharge")->name('admin.faild.charge.excute');

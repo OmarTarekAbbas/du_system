@@ -7,6 +7,7 @@ use App\Service;
 use App\Subscriber;
 use App\Message;
 use App\Url;
+use App\DuMo;
 use App\LogMessage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -1970,6 +1971,12 @@ class UrlController extends Controller
 
          // Log all Mo Notification
         $this->log('DU MO All Notifications', $request->fullUrl(), $data);
+
+        $DuMo = DuMo::create([
+            'link' => $request->fullUrl(),
+            'msisdn' => $request->msisdn,
+            'message' => $request->message
+        ]);
     }
 
     public function sub_excel()
