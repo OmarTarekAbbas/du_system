@@ -55,6 +55,7 @@ class ChargeController extends Controller
 
 
 
+
         if($request->has('status') && $request->status != '' ){
             if($request->status == 'fail'){
                 $charges = $charges->whereNotIn('charges.status_code',['503 - product already purchased!',0,'24 - Insufficient funds.'])->groupBy('charges.subscriber_id');
