@@ -442,26 +442,26 @@ class MtController extends Controller
 
      if (is_null(Session::get('OpID')) || Auth::user()->admin == true) {
             if($Service == '0' && empty($date) && $status == '2'){ // get all
-                $Messages = Message::groupBy('charges.subscriber_id')->paginate(20);
+                $Messages = Message::paginate(20);
             }elseif($Service == '0' && $status == '2' && !empty($date)){ // search by date
-                $Messages = Message::where('date','=',$date)->groupBy('charges.subscriber_id')->paginate(20);
+                $Messages = Message::where('date','=',$date)->paginate(20);
             }elseif($Service !== '0' && empty($date) && $status == '2'){   // search by service_id
-                $Messages = Message::where('service_id','=',$Service)->groupBy('charges.subscriber_id')->paginate(20);
+                $Messages = Message::where('service_id','=',$Service)->paginate(20);
             }elseif($Service == '0' && empty($date) && $status !== '2'){  // search by status
-                $Messages = Message::where('status','=',$status)->groupBy('charges.subscriber_id')->paginate(20);
+                $Messages = Message::where('status','=',$status)->paginate(20);
             }elseif($Service !== '0' && empty($date) && $status !== '2'){   // search by service_id + status
-                $Messages = Message::where('status','=',$status)->where('service_id','=',$Service)->groupBy('charges.subscriber_id')->paginate(20);
+                $Messages = Message::where('status','=',$status)->where('service_id','=',$Service)->paginate(20);
             }elseif($Service == '0' && !empty($date) && $status !== '2'){  // search by date +status
-                $Messages = Message::where('status','=',$status)->where('date','=',$date)->groupBy('charges.subscriber_id')->paginate(20);
+                $Messages = Message::where('status','=',$status)->where('date','=',$date)->paginate(20);
             }elseif($Service !== '0' && !empty($date) && $status == '2'){ // search by service+date
-                $Messages = Message::where('service_id','=',$Service)->where('date','=',$date)->groupBy('charges.subscriber_id')->paginate(20);
+                $Messages = Message::where('service_id','=',$Service)->where('date','=',$date)->paginate(20);
             }elseif($Service !== '0' && !empty($date) && $status !== '2'){ // search by service+date+status
-                $Messages = Message::where('service_id','=',$Service)->where('date','=',$date)->where('status','=',$status)->groupBy('charges.subscriber_id')->paginate(20);
+                $Messages = Message::where('service_id','=',$Service)->where('date','=',$date)->where('status','=',$status)->paginate(20);
             }
         } else {  // this query not correct as it make condition  date or status
             $Messages = Message::where('service_id', '=', Session::get('OpID'))->where(function ($q) use ($date,$status){
                 $q->where('date', 'LIKE', $date)->orWhere('status', '=', $status);
-            })->groupBy('charges.subscriber_id')->paginate(20);
+            })->paginate(20);
         }
         //var_dump($date);
         return view('backend.filter', compact('Messages'));
