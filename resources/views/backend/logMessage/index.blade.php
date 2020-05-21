@@ -93,7 +93,7 @@
                             <td> {{ $item->id }}</td>
                             <td> {{ $item->msisdn }}</td>
                             <td> {{ $item->message }}</td>
-                            <td> {{ $item->link }} </td> 
+                            <td> {{ $item->link }} </td>
                             <td> {{ $item->created_at }} </td>
 
                         </tr>
