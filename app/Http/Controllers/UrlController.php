@@ -1967,6 +1967,20 @@ class UrlController extends Controller
                     $this->log('DU MO Rotana Flatter UNSUB Notification', $request->fullUrl(), $data);
                 }
             }
+        }else if ($request->message == 'm' ||  $request->message == 'M') {// subscribe to man elkeal
+
+            $this->log('DU MO Man Elkeal Sub Notification', $request->fullUrl(), $data);
+
+            $URL2 = "http://localhost/mean_alkael_php7/api/du_mo_forward_binary";
+
+            $vars = array() ;
+            $vars["msisdn"] =  $data['msisdn'] ;
+            $vars["message"] = $data['message'] ;
+            $JSON = json_encode($vars);
+            $result = $this->SendRequestPost($URL2,$JSON);
+            echo $result ;
+
+
         }
 
          // Log all Mo Notification
@@ -1978,6 +1992,30 @@ class UrlController extends Controller
             'message' => $request->message
         ]);
     }
+
+
+
+    public function SendRequestPost($URL, $JSON)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $URL);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 100);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $JSON);
+        $sOutput = curl_exec($ch);
+        curl_close($ch);
+
+
+
+        return $sOutput;
+    }
+
+
 
     public function sub_excel()
     {
