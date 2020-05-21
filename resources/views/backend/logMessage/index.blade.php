@@ -83,6 +83,7 @@
                             <th>msisdn</th>
                             <th>message</th>
                             <th>link</th>
+                            <th>Date </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,7 +93,9 @@
                             <td> {{ $item->id }}</td>
                             <td> {{ $item->msisdn }}</td>
                             <td> {{ $item->message }}</td>
-                            <td> {{ $item->link }} </td>
+                            <td> {{ $item->link }} </td> 
+                            <td> {{ $item->created_at }} </td>
+
                         </tr>
                         @endforeach
                         @endif
