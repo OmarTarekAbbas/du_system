@@ -1981,6 +1981,7 @@ class UrlController extends Controller
             echo $result ;
 
 
+
         }
 
          // Log all Mo Notification
