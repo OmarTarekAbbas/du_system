@@ -1971,7 +1971,7 @@ class UrlController extends Controller
 
             $this->log('DU MO Man Elkeal Sub Notification', $request->fullUrl(), $data);
 
-            $URL2 = "http://localhost/mean_alkael_php7/api/du_mo_forward_binary";
+            $URL2 = "https://meenelkael.digizone.com.kw/api/du_mo_forward_binary";
 
             $vars = array() ;
             $vars["msisdn"] =  $data['msisdn'] ;
