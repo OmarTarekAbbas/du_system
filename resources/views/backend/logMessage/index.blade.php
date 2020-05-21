@@ -17,8 +17,8 @@
     @endif
 
     <br>
-    {{-- <div class="form-group">
-        {!! Form::open(['url' => route('admin.messages.index'),'method'=>'get']) !!}
+    <div class="form-group">
+        {!! Form::open(['url' => url('admin/logmessage'),'method'=>'get']) !!}
 
         <div class="col-md-2">
             {!! Form::label('ms', 'Msisdn:') !!}
@@ -31,28 +31,17 @@
         </div>
 
         <div class="col-md-2">
-            {!! Form::label('se', 'Service:') !!}
-            <div class=''>
-                {!! Form::select('serviceid', $services , request()->get('serviceid'), ['class'=>'form-control','id'=>'se','placeholder'=>'Select Services']) !!}
+            {!! Form::label('msg', 'Message:') !!}
+            <div class='input-group date'>
+                <input type='text' id="ms" class="form-control" value="{{request()->get('message')}}" name="message" />
+                <span class="input-group-btn">
+                    <button  type="button" id="search-btn" class="btn"><i class="glyphicon glyphicon-search"></i></button>
+                </span>
             </div>
         </div>
 
         <div class="col-md-2">
-            {!! Form::label('plan', 'Plan:') !!}
-            <div class=''>
-                {!! Form::select('plan', ['daily'=>'daily' , 'weekly' => 'weekly'] , request()->get('plan'), ['class'=>'form-control','id'=>'plan','placeholder'=>'Select Plan']) !!}
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            {!! Form::label('Status', 'Status:') !!}
-            <div class=''>
-                {!! Form::select('status', ['0' => '0' ,'503 - product already purchased!'=>'503 - product already purchased' , '24 - Insufficient funds.' => '24 - Insufficient funds','fail' => 'Failed'] , request()->get('status'), ['class'=>'form-control','id'=>'plan','placeholder'=>'Select Status']) !!}
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            {!! Form::label('date', 'Select Activation Date :') !!}
+            {!! Form::label('date', 'Select Date :') !!}
             <div class='input-group date' id='datetimepicker'>
                 <input type='text' class="form-control" value="{{request()->get('created')}}" name="created" id="date" />
                 <span class="input-group-addon">
@@ -74,7 +63,7 @@
         </div>
 
         {!! Form::close() !!}
-    </div> --}}
+    </div>
 
     <div class="col-xs-12">
         <div class="box">
