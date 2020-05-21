@@ -1977,7 +1977,7 @@ class UrlController extends Controller
             $vars["msisdn"] =  $data['msisdn'] ;
             $vars["message"] = $data['message'] ;
             $JSON = json_encode($vars);
-            $result = $this->SendRequestPost($URL2,$JSON);
+            $result = $this->SendRequestPost($URL2,$vars);
             echo $result ;
 
 
