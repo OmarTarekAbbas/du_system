@@ -1968,7 +1968,7 @@ class UrlController extends Controller
                 }
             }
         }else if ($request->message == 'm' ||  $request->message == 'M') {// subscribe to man elkeal
-
+/*
             $this->log('DU MO Man Elkeal Sub Notification', $request->fullUrl(), $data);
 
             $URL2 = "https://meenelkael.digizone.com.kw/api/du_mo_forward_binary";
@@ -1979,7 +1979,7 @@ class UrlController extends Controller
             $JSON = json_encode($vars);
             $result = $this->SendRequestPost($URL2,$vars);
             echo $result ;
-
+*/
 
 
         }
