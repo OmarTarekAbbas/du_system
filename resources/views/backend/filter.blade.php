@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">Filter Results</h1>
-        
+
         @if(Session::has('success'))
         <p class="alert alert-success" style="padding-bottom: 11px">{{ Session::get('success') }} <a href="#"  style="margin-bottom: 5px;"  class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
        @endif
@@ -73,7 +73,7 @@
 
             {!! Form::close() !!}
         </div>
-        
+
 
         @if (Auth::user()->admin == true  )
             <div class="col-md-4">
@@ -133,7 +133,7 @@
                             </td>
                             <td><a href="{{ $Mt->ShortnedURL }}" target="_blank">{{ $Mt->ShortnedURL }}</a> </td>
                             <td>
-                                @if(is_null($Mt->IsysURL))
+                                @if(  $Mt->IsysResponse != 'OK'	)
                                 {!! Form::open(array('class' => 'form-inline col-lg-1','method' => 'DELETE', 'action' => array('MtController@destroy', $Mt->id))) !!}
                                 <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom" title="Delete" type="submit" onclick="return confirm('Are you sure you want to delete this ?')">
                                     <i class="glyphicon glyphicon-trash"></i>

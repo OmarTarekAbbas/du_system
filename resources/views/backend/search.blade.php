@@ -59,7 +59,7 @@
                             </td>
                             <td><a href="{{ $Mt->ShortnedURL }}" target="_blank">{{ $Mt->ShortnedURL }}</a> </td>
                             <td>
-                                @if(is_null($Mt->IsysURL))
+                                @if(  $Mt->IsysResponse != 'OK'	)
                                 {!! Form::open(array('class' => 'form-inline col-lg-1','method' => 'DELETE', 'action' => array('MtController@destroy', $Mt->id))) !!}
                                 <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom" title="Delete" type="submit" onclick="return confirm('Are you sure you want to delete this ?')">
                                     <i class="glyphicon glyphicon-trash"></i>
