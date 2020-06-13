@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
 
 
                  /*  SMS at 2.30 Egy  = 4.30 Emirates times */
-                 $schedule->call('App\Http\Controllers\UrlController@sendTodaySubMessage')->dailyAt('12:30');  // SMS sending at 2.30 Egypt time
+                 $schedule->call('App\Http\Controllers\UrlController@sendTodaySubMessage')->dailyAt('06:30');  // SMS sending at 2.30 Egypt time   // 8.30 Egypt = 10.30 Emirate
 
     }
 
