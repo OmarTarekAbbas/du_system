@@ -1594,7 +1594,7 @@ class UrlController extends Controller
                 } elseif ($serviceid == "greetingsdaily") {
                     $du_welcome_message .= " For Unsubcribe  https://bit.ly/2V9MtbZ";
                 } elseif ($serviceid == "flaterrotanadaily") {
-                    $du_welcome_message = "Welcome To " . $service_name ." For Unsubcribe please send stopr to 4971 or click this link https://bit.ly/2UB9wfs";
+                    $du_welcome_message = "Welcome To " . $service_name ." Enjoy with filters from this link   https://bit.ly/2C3Y5Hj  For Unsubcribe please send stopr to 4971 or click this link https://bit.ly/2UB9wfs";
                 }elseif ($serviceid == "liveqarankhatma") {
 
                     $du_welcome_message = "Hi,  Wishing you a very blessed Ramadan." ;
