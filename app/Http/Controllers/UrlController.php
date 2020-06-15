@@ -1554,7 +1554,10 @@ class UrlController extends Controller
                 $Charge->save();
 
 
-                // update subscriber after charging today
+                // update subscriber after charging today for Renew
+
+                if ($sub != null) {
+
                     $old_sub = Subscriber::findOrFail($subscriber_id );
 
                     if ($activation->plan == 'daily' ) {
@@ -1567,6 +1570,9 @@ class UrlController extends Controller
                         $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
                         $old_sub->save();
                     }
+
+                }
+
         }
 
 
