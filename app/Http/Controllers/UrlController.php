@@ -1923,7 +1923,7 @@ class UrlController extends Controller
                     $this->log('DU MO Quran Live UNSUB Notification', $request->fullUrl(), $data);
                 }
             }
-        } else if ($request->message == 'F' ||  $request->message == 'f'  ||  $request->message == '2' ) {// Sub Keywords for Flatter
+        } else if ($request->message == 'F' ||  $request->message == 'f' ) {// Sub Keywords for Flatter
                 require('uuid/UUID.php');
                 $trxid = \UUID::v4();
                 $URL = url('api/activation');
@@ -1945,7 +1945,7 @@ class UrlController extends Controller
                     $this->log('DU MO Flatter Daily UNSUB Notification', $request->fullUrl(), $data);
                 }
             }
-        } else if ($request->message == 'R' ||  $request->message == 'r' ) {// Sub to Rotana Flatter
+        } else if ($request->message == 'R' ||  $request->message == 'r'  ||  $request->message == '2' ) {// Sub to Rotana Flatter
             require('uuid/UUID.php');
             $trxid = \UUID::v4();
             $URL = url('api/activation');
