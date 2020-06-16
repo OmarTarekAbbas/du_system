@@ -571,7 +571,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "IVAS Flatter",
                 );
 
                 $billingMetas = array(
@@ -710,7 +710,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "IVAS Flatter Weekly",
                 );
 
                 $billingMetas = array(
@@ -844,7 +844,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "IVAS Greeting",
                 );
 
                 $billingMetas = array(
@@ -980,7 +980,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "IVAS Waffarly",
                 );
 
                 $billingMetas = array(
@@ -1116,7 +1116,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "IVAS 3lawein",
                 );
 
                 $billingMetas = array(
@@ -1252,7 +1252,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "IVAS Flatter Rotana",
                 );
 
                 $billingMetas = array(
@@ -1389,7 +1389,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "IVAS Live Quran",
                 );
 
                 $billingMetas = array(
@@ -1786,7 +1786,7 @@ class UrlController extends Controller
 
         $purchaseMetas = array(
             "key" => "du:assetDescription",
-            "value" => "IVAS TEST",
+            "value" => "IVAS",
         );
 
         $billingMetas = array(
