@@ -571,7 +571,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS Flatter",
+                    "value" => "Flatter",
                 );
 
                 $billingMetas = array(
@@ -710,7 +710,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS Flatter Weekly",
+                    "value" => "Flatter Weekly",
                 );
 
                 $billingMetas = array(
@@ -844,7 +844,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS Greeting",
+                    "value" => "Greeting",
                 );
 
                 $billingMetas = array(
@@ -980,7 +980,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS Waffarly",
+                    "value" => "Waffarly",
                 );
 
                 $billingMetas = array(
@@ -1116,7 +1116,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS 3lawein",
+                    "value" => "3lawein",
                 );
 
                 $billingMetas = array(
@@ -1252,7 +1252,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS Flatter Rotana",
+                    "value" => "Flatter Rotana",
                 );
 
                 $billingMetas = array(
@@ -1389,7 +1389,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS Live Quran",
+                    "value" => "Live Quran",
                 );
 
                 $billingMetas = array(
