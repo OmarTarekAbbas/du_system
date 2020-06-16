@@ -1252,7 +1252,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "Flatter Rotana",
+                    "value" => "Rotana Flater",
                 );
 
                 $billingMetas = array(
