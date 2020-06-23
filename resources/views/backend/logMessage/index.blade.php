@@ -106,7 +106,7 @@
         </div>
 
         @if(!$without_paginate)
-        {!! $messages->setPath('messages') !!}
+        {!! $messages->setPath('logmessage') !!}
         @endif
 
     </div>
