@@ -152,7 +152,7 @@
             </div>
         </div>
         @if(!$without_paginate)
-            {!! $charges->setPath('charges') !!}
+            {!! $charges->appends(request()->all())->links() !!}
         @endif
     </div>
 </div>
