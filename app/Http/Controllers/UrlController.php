@@ -1754,6 +1754,24 @@ class UrlController extends Controller
         return $result;
     }
 
+
+    public function test_du_send()
+    {
+        // Du sending welcome message
+        $URL = "http://41.33.167.14:2080/~smsdu/du_send_message";
+        $param = "phone_number=971555802322&message=test";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $URL);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $param);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        var_dump( $result);
+    }
+
     public function get_content_post($URL, $param)
     {
         $ch = curl_init();
