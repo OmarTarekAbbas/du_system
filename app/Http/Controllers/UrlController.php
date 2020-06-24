@@ -513,6 +513,10 @@ class UrlController extends Controller
                         $send_array["message_id"] = $message->id;
                         $send_array["service"] = $service->title;
                         $this->log('Du Today Send Message for ' . $service->title . ' service', url('/sendTodaySubMessage'), $send_array);
+                    }else{  // send email that today messages are failure
+                        $email = "emad@ivas.com.eg";
+                        $subject = "SMS Du Cron Schedule Failed for  " . Carbon::now()->format('Y-m-d');
+                        $this->sendMail($subject, $email);
                     }
                 }
             }
