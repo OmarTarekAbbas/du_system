@@ -102,8 +102,13 @@
                             <th>service</th>
                             <th>msisdn</th>
                             <th>message</th>
+<<<<<<< HEAD
                             <th>message_type</th>
                             <th>status</th>
+=======
+                            <th>link</th>
+                            <th>Date </th>
+>>>>>>> 82a778a42f607e7f124e52b966fac6895636631e
                         </tr>
                     </thead>
                     <tbody>

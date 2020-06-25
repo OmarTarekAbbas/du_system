@@ -34,6 +34,10 @@ class Kernel extends ConsoleKernel
                 //  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('04:00');  // charging
                   $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('05:00');
                  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('06:00');
+
+                 // failed charging for empty response
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging_for_failed')->dailyAt('07:00');
+                 $schedule->call('App\Http\Controllers\UrlController@make_today_charging_for_failed')->dailyAt('08:00');
                  //  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('07:00');
                 //  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('08:00');
                 //  $schedule->call('App\Http\Controllers\UrlController@make_today_charging')->dailyAt('09:00');
@@ -42,7 +46,7 @@ class Kernel extends ConsoleKernel
 
 
                  /*  SMS at 2.30 Egy  = 4.30 Emirates times */
-                 $schedule->call('App\Http\Controllers\UrlController@sendTodaySubMessage')->dailyAt('12:30');  // SMS sending at 2.30 Egypt time
+                 $schedule->call('App\Http\Controllers\UrlController@sendTodaySubMessage')->dailyAt('06:30');  // SMS sending at 2.30 Egypt time   // 8.30 Egypt = 10.30 Emirate
 
     }
 

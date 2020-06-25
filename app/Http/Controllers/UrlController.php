@@ -393,7 +393,7 @@ class UrlController extends Controller
 
     }
 
-    public function chargeSubs2()
+    public function chargeSubs_for_failed()
     {
 
         $today = Carbon::now()->format('Y-m-d');
@@ -513,6 +513,10 @@ class UrlController extends Controller
                         $send_array["message_id"] = $message->id;
                         $send_array["service"] = $service->title;
                         $this->log('Du Today Send Message for ' . $service->title . ' service', url('/sendTodaySubMessage'), $send_array);
+                    }else{  // send email that today messages are failure
+                        $email = "emad@ivas.com.eg";
+                        $subject = "SMS Du Cron Schedule Failed for  " . Carbon::now()->format('Y-m-d');
+                        $this->sendMail($subject, $email);
                     }
                 }
             }
@@ -571,7 +575,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "Flatter",
                 );
 
                 $billingMetas = array(
@@ -687,6 +691,9 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+
+                     // Billing Empty Response Lo
+                     $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
                 }
 
             } elseif ($serviceid == "flaterweekly") {
@@ -707,7 +714,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "Flatter Weekly",
                 );
 
                 $billingMetas = array(
@@ -817,6 +824,9 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+
+                     // Billing Empty Response Lo
+                     $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
                 }
 
             } elseif ($serviceid == "greetingsdaily") {
@@ -838,7 +848,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "Greeting",
                 );
 
                 $billingMetas = array(
@@ -950,6 +960,9 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+
+                     // Billing Empty Response Lo
+                     $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
                 }
 
             } elseif ($serviceid == "waffarlydaily") {
@@ -971,7 +984,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "Waffarly",
                 );
 
                 $billingMetas = array(
@@ -1083,6 +1096,9 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+
+                     // Billing Empty Response Lo
+                     $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
                 }
 
             } elseif ($serviceid == "3laweindaily") {
@@ -1104,7 +1120,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "3lawein",
                 );
 
                 $billingMetas = array(
@@ -1216,6 +1232,9 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+
+                     // Billing Empty Response Lo
+                     $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
                 }
 
             } elseif ($serviceid == "flaterrotanadaily") {
@@ -1237,7 +1256,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "Rotana Flater",
                 );
 
                 $billingMetas = array(
@@ -1351,6 +1370,8 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+                     // Billing Empty Response Lo
+                     $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
                 }
 
             } elseif ($serviceid == "liveqarankhatma") {
@@ -1372,7 +1393,7 @@ class UrlController extends Controller
 
                 $purchaseMetas = array(
                     "key" => "du:assetDescription",
-                    "value" => "IVAS TEST",
+                    "value" => "Live Quran",
                 );
 
                 $billingMetas = array(
@@ -1495,6 +1516,9 @@ class UrlController extends Controller
                     $charge_renew_result = 0;
                     $status = "Not Known Error";
                     $sub_id = "";
+                      // Billing Empty Response Lo
+                    $this->log('Du ' . $serviceid . ' Billing Empty Response', url('/du_charge_per_service'), $data);
+
                 }
 
 
@@ -1534,7 +1558,10 @@ class UrlController extends Controller
                 $Charge->save();
 
 
-                // update subscriber after charging today
+                // update subscriber after charging today for Renew
+
+                if ($sub != null) {
+
                     $old_sub = Subscriber::findOrFail($subscriber_id );
 
                     if ($activation->plan == 'daily' ) {
@@ -1547,6 +1574,9 @@ class UrlController extends Controller
                         $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
                         $old_sub->save();
                     }
+
+                }
+
         }
 
 
@@ -1574,7 +1604,7 @@ class UrlController extends Controller
                 } elseif ($serviceid == "greetingsdaily") {
                     $du_welcome_message .= " For Unsubcribe  https://bit.ly/2V9MtbZ";
                 } elseif ($serviceid == "flaterrotanadaily") {
-                    $du_welcome_message = "Welcome To " . $service_name ." For Unsubcribe please send stopr to 4971 or click this link https://bit.ly/2UB9wfs";
+                    $du_welcome_message = "Welcome To " . $service_name ." Enjoy with filters from this link   https://bit.ly/2C3Y5Hj  For Unsubcribe please send stopr to 4971 or click this link https://bit.ly/2UB9wfs";
                 }elseif ($serviceid == "liveqarankhatma") {
 
                     $du_welcome_message = "Hi,  Wishing you a very blessed Ramadan." ;
@@ -1725,6 +1755,65 @@ class UrlController extends Controller
         return $result;
     }
 
+
+    public function du_send_pincode (Request $request)
+    {
+        // Du sending welcome message
+        $URL = DU_SMS_SEND_MESSAGE;
+        $message = $request->message ;
+        $msisdn = $request->msisdn ;
+        $service_name = $request->service_name ;
+
+        if(isset($message) && $message  !="" && isset($msisdn)  && $msisdn  !="" && isset($service_name)  && $service_name  !=""){
+
+          $param = "phone_number=" . $msisdn . "&message=" . $message;
+        $result = $this->get_content_post($URL, $param);
+        $send_array = array();
+
+        if ($result == "1") {
+            $message_mean = "Du message sent success";
+
+        } else {
+            $message_mean = "Du message sent fail";
+        }
+
+        $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
+        $send_array["du_sms_result"] = $result;
+        $send_array["du_message_mean"] = $message_mean;
+        $send_array["message"] = $message ;
+        $send_array["msisdn"] =  $msisdn ;
+        $this->log('Du Kannel Send pincode for '.$service_name, url('/du_send_pincode'), $send_array);
+
+        // save log to DB
+        $message_type = "pincode";
+
+        $this->saveLogMessage($service_name, $msisdn, $message, $message_type);
+
+        }else{
+            $result = "0" ;
+        }
+
+        return $result;
+    }
+
+
+    public function test_du_send()
+    {
+        // Du sending welcome message
+        $URL = "http://41.33.167.14:2080/~smsdu/du_send_message";
+        $param = "phone_number=971555802322&message=test";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $URL);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $param);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        var_dump( $result);
+    }
+
     public function get_content_post($URL, $param)
     {
         $ch = curl_init();
@@ -1761,7 +1850,7 @@ class UrlController extends Controller
 
         $purchaseMetas = array(
             "key" => "du:assetDescription",
-            "value" => "IVAS TEST",
+            "value" => "IVAS",
         );
 
         $billingMetas = array(
@@ -1926,7 +2015,7 @@ class UrlController extends Controller
                     $this->log('DU MO Flatter Daily UNSUB Notification', $request->fullUrl(), $data);
                 }
             }
-        } else if ($request->message == 'R' ||  $request->message == 'r' ) {// Sub to Rotana Flatter
+        } else if ($request->message == 'R' ||  $request->message == 'r'  ||  $request->message == '2' ) {// Sub to Rotana Flatter
             require('uuid/UUID.php');
             $trxid = \UUID::v4();
             $URL = url('api/activation');
@@ -1948,6 +2037,21 @@ class UrlController extends Controller
                     $this->log('DU MO Rotana Flatter UNSUB Notification', $request->fullUrl(), $data);
                 }
             }
+        }else if ($request->message == 'm' ||  $request->message == 'M') {// subscribe to man elkeal
+/*
+            $this->log('DU MO Man Elkeal Sub Notification', $request->fullUrl(), $data);
+
+            $URL2 = "https://meenelkael.digizone.com.kw/api/du_mo_forward_binary";
+
+            $vars = array() ;
+            $vars["msisdn"] =  $data['msisdn'] ;
+            $vars["message"] = $data['message'] ;
+            $JSON = json_encode($vars);
+            $result = $this->SendRequestPost($URL2,$vars);
+            echo $result ;
+*/
+
+
         }
 
          // Log all Mo Notification
@@ -1959,6 +2063,30 @@ class UrlController extends Controller
             'message' => $request->message
         ]);
     }
+
+
+
+    public function SendRequestPost($URL, $JSON)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $URL);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 100);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $JSON);
+        $sOutput = curl_exec($ch);
+        curl_close($ch);
+
+
+
+        return $sOutput;
+    }
+
+
 
     public function sub_excel()
     {
@@ -2046,6 +2174,28 @@ class UrlController extends Controller
         curl_close($ch);
 
         echo "Du Charging By Curl exec for  toady " . $today . "Is Done";
+
+    }
+
+
+
+    public function make_today_charging_for_failed() {
+        // $today = Carbon::now()->format('Y-m-d');
+        // $email = "emad@ivas.com.eg";
+        // $subject = "Charging Cron By Curl Schedule for " . Carbon::now()->format('Y-m-d');
+        // $this->sendMail($subject, $email);
+
+        $ch = curl_init();
+        $getUrl = "https://du.notifications.digizone.com.kw/api/chargeSubs_for_failed";
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_URL, $getUrl);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 800000);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        echo "Du Charging for failed  By Curl exec for  today " . $today . "Is Done";
 
     }
 

@@ -29,29 +29,30 @@ class ChargeController extends Controller
         $services = Service::pluck('service','title');
         $without_paginate = 0;
         if($request->has('subscriber_id') && $request->subscriber_id != ''){
-            $charges = $charges->where('charges.subscriber_id',$request->subscriber_id)->groupBy('charges.subscriber_id');
+            $charges = $charges->where('charges.subscriber_id',$request->subscriber_id);
             //$without_paginate = 1;
         }
 
         if($request->has('from_date') && $request->from_date != ''){
-            $charges = $charges->where('charges.charging_date','>=',$request->from_date)->groupBy('charges.subscriber_id');
+            $charges = $charges->where('charges.charging_date','>=',$request->from_date);
             $without_paginate = 1;
         }
 
         if($request->has('to_date') && $request->to_date != ''){
-            $charges = $charges->where('charges.charging_date','<=',$request->to_date)->groupBy('charges.subscriber_id');
+            $charges = $charges->where('charges.charging_date','<=',$request->to_date);
             $without_paginate = 1;
         }
 
         if($request->has('msisdn') && $request->msisdn != ''){
-            $charges = $charges->where('activation.msisdn',$request->msisdn)->groupBy('charges.subscriber_id');
+            $charges = $charges->where('activation.msisdn',$request->msisdn);
             $without_paginate = 1;
         }
 
         if($request->has('plan') && $request->plan != ''){
-            $charges = $charges->where('activation.plan',$request->plan)->groupBy('charges.subscriber_id');
+            $charges = $charges->where('activation.plan',$request->plan);
             $without_paginate = 1;
         }
+
 
 
 
@@ -60,13 +61,13 @@ class ChargeController extends Controller
                 $charges = $charges->whereNotIn('charges.status_code',['503 - product already purchased!',0,'24 - Insufficient funds.'])->groupBy('charges.subscriber_id');
             }else{
                // if($request->status == "0")   $request->status = 0 ;  //  as it read "0"
-                $charges = $charges->where('charges.status_code',"=",$request->status)->groupBy('charges.subscriber_id');
+                $charges = $charges->where('charges.status_code',"=",$request->status);
             }
             $without_paginate = 1;
         }
 
         if($request->has('serviceid') && $request->serviceid != ''){
-            $charges = $charges->where('activation.serviceid',$request->serviceid)->groupBy('charges.subscriber_id');
+            $charges = $charges->where('activation.serviceid',$request->serviceid);
             $without_paginate = 1;
         }
 
