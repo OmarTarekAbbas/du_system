@@ -1,7 +1,7 @@
 @include('backend.header')
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">All Log Messages</h1>
+        <h1 class="page-header">All MO Messages</h1>
     </div>
 </div><!--/.row-->
 
@@ -18,17 +18,7 @@
 
     <br>
     <div class="form-group">
-        {!! Form::open(['url' => url('admin/logmessage'),'method'=>'get']) !!}
-
-        <div class="col-md-2">
-            {!! Form::label('service_id', 'Select Service :') !!}
-            <select name="service_id" class="form-control" id="service_id">
-                <option value="">Select Service</option>
-                @foreach(\App\Service::all() as $service)
-                    <option {{request()->get('service_id') == $service->title ? 'selected' : ''}} value="{{$service->title}}">{{ $service->title." | " . $service->operator->title . ' - '.$service->operator->country->name }}</option>
-                @endforeach
-            </select>
-        </div>
+        {!! Form::open(['url' => url('admin/momessage'),'method'=>'get']) !!}
 
         <div class="col-md-2">
             {!! Form::label('ms', 'Msisdn:') !!}
@@ -48,15 +38,6 @@
                     <button  type="button" id="search-btn" class="btn"><i class="glyphicon glyphicon-search"></i></button>
                 </span>
             </div>
-        </div>
-
-        <div class="col-md-2">
-            {!! Form::label('message_type', 'Select type :') !!}
-            <select name="message_type" class="form-control" id="message_type">
-                <option value="">Select type</option>
-                    <option {{request()->get('message_type') == 'Today_Messages_Schedule'? 'selected' : ''}} value="Today_Messages_Schedule">Today Messages Schedule</option>
-                    <option {{request()->get('message_type') == 'pincode'? 'selected' : ''}} value="pincode">pincode</option>
-            </select>
         </div>
 
         <div class="col-md-2">
@@ -80,8 +61,8 @@
                 <span dir="rtl" class="btn btn-success">{{ count($messages) }} </span>
             </div>
         </div>
-        {!! Form::close() !!}
 
+        {!! Form::close() !!}
     </div>
 
     <div class="col-xs-12">
@@ -99,11 +80,10 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>service</th>
                             <th>msisdn</th>
                             <th>message</th>
-                            <th>message_type</th>
-                            <th>status</th>
+                            <th>link</th>
+                            <th>Date </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -111,11 +91,11 @@
                         @foreach($messages as $item)
                         <tr>
                             <td> {{ $item->id }}</td>
-                            <td> {{ $item->service }} </td>
                             <td> {{ $item->msisdn }}</td>
                             <td> {{ $item->message }}</td>
-                            <td> {{ $item->message_type }} </td>
-                            <td> {{ $item->status? 'Success' : 'Fail' }} </td>
+                            <td> {{ $item->link }} </td>
+                            <td> {{ $item->created_at }} </td>
+
                         </tr>
                         @endforeach
                         @endif
@@ -126,7 +106,7 @@
         </div>
 
         @if(!$without_paginate)
-        {!! $messages->setPath('logmessage') !!}
+        {!! $messages->setPath('momessage') !!}
         @endif
 
     </div>
@@ -134,7 +114,7 @@
 
 @include('backend.footer')
 <script type="text/javascript">
-    $('#logmessage').addClass('active').siblings().removeClass('active');
+    $('#momessage').addClass('active').siblings().removeClass('active');
     $('#datetimepicker').datepicker({
         format: "yyyy-mm-dd"
     });

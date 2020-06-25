@@ -1706,9 +1706,10 @@ class UrlController extends Controller
 
         if ($result == "1") {
             $message_mean = "Du message sent success";
-
+            $status = 1;
         } else {
             $message_mean = "Du message sent fail";
+            $status = 0;
         }
 
         $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
@@ -1719,7 +1720,7 @@ class UrlController extends Controller
         $this->log('Du Kannel Send Message '.$service_name, url('/du_send_message'), $send_array);
 
         // save log to DB
-        $this->saveLogMessage($service_name, $msisdn, $message, $message_type);
+        $this->saveLogMessage($service_name, $msisdn, $message, $message_type, $status);
 
         return $result;
     }
@@ -2057,13 +2058,14 @@ class UrlController extends Controller
         return $this->saveLogMessage($serviceid, $msisdn, $mes, $message_type);
     }
 
-    public function saveLogMessage($serviceid, $msisdn, $mes, $message_type)
+    public function saveLogMessage($serviceid, $msisdn, $mes, $message_type, $status)
     {
         $logmes = new LogMessage();
         $logmes->service       = $serviceid;
         $logmes->msisdn        = $msisdn;
         $logmes->message       = $mes;
         $logmes->message_type  = $message_type;
+        $logmes->status  = $status;
         $logmes->save();
 
     }

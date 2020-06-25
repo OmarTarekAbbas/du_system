@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class LogMessage extends Model
 {
-    protected $fillable = ['service','msisdn','message','message_type'];
+    protected $fillable = ['service','msisdn','message','message_type', 'status'];
 
 
 }

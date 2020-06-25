@@ -80,6 +80,7 @@
     <li id="charge"><a href="{{ route('admin.charges.index') }}"><span class="glyphicon glyphicon-random"></span> Charges</a></li>
     <li id="faild"><a href="{{ route('admin.faild.charge.get') }}"><span class="glyphicon glyphicon-random"></span> Faild Today Charges</a></li>
     <li id="activations"><a href="{{ route('admin.activations.index') }}"><span class="glyphicon glyphicon-random"></span> Activations</a></li>
+    <li id="momessage"><a href="{{ url('admin/momessage') }}"><span class="glyphicon glyphicon-random"></span> MO Messages</a></li>
     <li id="logmessage"><a href="{{ url('admin/logmessage') }}"><span class="glyphicon glyphicon-random"></span> Log Messages</a></li>
     <li id="excel"><a href="{{ url('admin/subscribe/excel') }}"><span class="glyphicon glyphicon-list"></span> Subscribe Excel </a></li>
     @endif

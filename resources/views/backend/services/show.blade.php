@@ -35,6 +35,14 @@
                             <th> {{ $msgs}}</th>
                         </tr>
                         <tr>
+                            <th>Today's Success Messages Number</th>
+                            <th> {{ $successmsgs}}</th>
+                        </tr>
+                        <tr>
+                            <th>Today's Failed Messages Number</th>
+                            <th> {{ $failedmsgs}}</th>
+                        </tr>
+                        <tr>
                             <th>UnSubscribers Number</th>
                             <th> {{ $unsubscribers}}</th>
                         </tr>

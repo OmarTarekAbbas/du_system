@@ -140,8 +140,10 @@ class AdminServicesController extends Controller
 
 
         $msgs = LogMessage::where('service',$service->title)->where('created_at','LIKE',date("Y-m-d")."%")->count() ;
+        $successmsgs = LogMessage::where('service',$service->title)->where('created_at','LIKE',date("Y-m-d")."%")->where('status', 1)->count() ;
+        $failedmsgs = LogMessage::where('service',$service->title)->where('created_at','LIKE',date("Y-m-d")."%")->where('status', 0)->count() ;
 
-        return view('backend.services.show', compact('service', 'msgs', 'activations','subscribers','unsubscribers','charge_date','charge_status_0','charge_status_503','charge_status_24','failed'));
+        return view('backend.services.show', compact('service', 'msgs', 'successmsgs', 'failedmsgs', 'activations','subscribers','unsubscribers','charge_date','charge_status_0','charge_status_503','charge_status_24','failed'));
     }
 
     /**
