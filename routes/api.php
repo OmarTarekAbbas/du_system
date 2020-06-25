@@ -31,6 +31,7 @@ Route::post('activation', 'UrlController@activation');
 Route::post('test2','UrlController@test2');
 
 Route::get('sendTodaySubMessage','UrlController@sendTodaySubMessage');
+Route::post('du_send_pincode','UrlController@du_send_pincode');
 Route::get('test_du_send','UrlController@test_du_send');
 Route::get('chargeSubs','UrlController@chargeSubs');
 Route::get('chargeSubs_for_failed','UrlController@chargeSubs_for_failed')->name('admin.chargeSubs2');

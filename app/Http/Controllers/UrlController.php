@@ -1755,6 +1755,47 @@ class UrlController extends Controller
     }
 
 
+    public function du_send_pincode (Request $request)
+    {
+        // Du sending welcome message
+        $URL = DU_SMS_SEND_MESSAGE;
+        $message = $request->message ;
+        $msisdn = $request->msisdn ;
+        $service_name = $request->service_name ;
+
+        if(isset($message) && $message  !="" && isset($msisdn)  && $msisdn  !="" && isset($service_name)  && $service_name  !=""){
+
+          $param = "phone_number=" . $msisdn . "&message=" . $message;
+        $result = $this->get_content_post($URL, $param);
+        $send_array = array();
+
+        if ($result == "1") {
+            $message_mean = "Du message sent success";
+
+        } else {
+            $message_mean = "Du message sent fail";
+        }
+
+        $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
+        $send_array["du_sms_result"] = $result;
+        $send_array["du_message_mean"] = $message_mean;
+        $send_array["message"] = $message ;
+        $send_array["msisdn"] =  $msisdn ;
+        $this->log('Du Kannel Send pincode for '.$service_name, url('/du_send_pincode'), $send_array);
+
+        // save log to DB
+        $message_type = "pincode";
+
+        $this->saveLogMessage($service_name, $msisdn, $message, $message_type);
+
+        }else{
+            $result = "0" ;
+        }
+
+        return $result;
+    }
+
+
     public function test_du_send()
     {
         // Du sending welcome message
