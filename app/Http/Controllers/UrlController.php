@@ -1772,9 +1772,11 @@ class UrlController extends Controller
 
         if ($result == "1") {
             $message_mean = "Du message sent success";
+            $status = 1;
 
         } else {
             $message_mean = "Du message sent fail";
+            $status = 0 ;
         }
 
         $send_array["Date"] = Carbon::now()->format('Y-m-d H:i:s');
@@ -1787,7 +1789,7 @@ class UrlController extends Controller
         // save log to DB
         $message_type = "pincode";
 
-        $this->saveLogMessage($service_name, $msisdn, $message, $message_type);
+        $this->saveLogMessage($service_name, $msisdn, $message, $message_type,$status );
 
         }else{
             $result = "0" ;
