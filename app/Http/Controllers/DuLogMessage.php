@@ -61,6 +61,11 @@ class DuLogMessage extends Controller
             $without_paginate = 1;
         }
 
+        if ($request->has('message_status') && $request->message_status != '') {
+            $messages = $messages->where('status', $request->message_status);
+            $without_paginate = 1;
+        }
+
         if ($request->has('created') && $request->created != '') {
             $messages = $messages->whereDate('created_at', $request->created);
             $without_paginate = 1;

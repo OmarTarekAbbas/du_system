@@ -58,6 +58,15 @@
                     <option {{request()->get('message_type') == 'pincode'? 'selected' : ''}} value="pincode">pincode</option>
             </select>
         </div>
+        
+        <div class="col-md-2">
+            {!! Form::label('message_status', 'Select status :') !!}
+            <select name="message_status" class="form-control" id="message_status">
+                <option value="">Select status</option>
+                    <option {{request()->get('message_status') == '1'? 'selected' : ''}} value="1">Success</option>
+                    <option {{request()->get('message_status') == '0'? 'selected' : ''}} value="0">Fail</option>
+            </select>
+        </div>
 
         <div class="col-md-2">
             {!! Form::label('date', 'Select Date :') !!}
