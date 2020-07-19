@@ -464,6 +464,35 @@ class UrlController extends Controller
         @mail($email, $subject, $message, $headers);
     }
 
+
+      // get all subscriber with message
+      public function sendTodaySubMessageForFailed()
+      {
+        $today=date("Y-m-d") ;
+        $failed_messages =  LogMessage::where('created_at','LIKE', $today."%")->where('status',0)->get();
+
+
+
+      if ($failed_messages->count() > 0) {
+        $email = "emad@ivas.com.eg";
+        $subject = "SMS Cron Schedule sending for Failed Du Kannel" . Carbon::now()->format('Y-m-d');
+        $this->sendMail($subject, $email);
+
+        foreach($failed_messages as $failed_message){
+            $serviceid =  $failed_message->service;
+            $msisdn =  $failed_message->msisdn;
+            $mes =  $failed_message->message;
+            $message_type =  $failed_message->message_type;
+            $log_message_id =   $failed_message->id ;
+            $result = $this->du_send_message($serviceid, $msisdn, $mes, $message_type,$log_message_id);
+
+        }
+      }
+
+      echo "sendTodaySubMessageForFailed Done" ;
+
+      }
+
     // get all subscriber with message
     public function sendTodaySubMessage()
     {
@@ -498,7 +527,7 @@ class UrlController extends Controller
                         $msisdn = $sub->msisdn;
                         $mes = $data['message'];
 
-                        $result = $this->du_send_message($serviceid, $msisdn, $mes, $message_type);
+                        $result = $this->du_send_message($serviceid, $msisdn, $mes, $message_type,$log_message_id="");
 
                     }
 
@@ -1625,7 +1654,7 @@ class UrlController extends Controller
 
 
                 $message_type = "Welcome Message";
-                $this->du_send_message($service_name, $msisdn, $du_welcome_message, $message_type);
+                $this->du_send_message($service_name, $msisdn, $du_welcome_message, $message_type,$log_message_id="");
 
             }
 
@@ -1726,7 +1755,7 @@ class UrlController extends Controller
 
     }
 
-    public function du_send_message($service_name, $msisdn, $message, $message_type)
+    public function du_send_message($service_name, $msisdn, $message, $message_type,$log_message_id)
     {
         // Du sending welcome message
         $URL = DU_SMS_SEND_MESSAGE;
@@ -1750,7 +1779,7 @@ class UrlController extends Controller
         $this->log('Du Kannel Send Message '.$service_name, url('/du_send_message'), $send_array);
 
         // save log to DB
-        $this->saveLogMessage($service_name, $msisdn, $message, $message_type, $status);
+        $this->saveLogMessage($service_name, $msisdn, $message, $message_type, $status,$log_message_id);
 
         return $result;
     }
@@ -1789,7 +1818,7 @@ class UrlController extends Controller
         // save log to DB
         $message_type = "pincode";
 
-        $this->saveLogMessage($service_name, $msisdn, $message, $message_type,$status );
+        $this->saveLogMessage($service_name, $msisdn, $message, $message_type,$status,$log_message_id="" );
 
         }else{
             $result = "0" ;
@@ -2207,18 +2236,31 @@ class UrlController extends Controller
         $msisdn       = '967552121212';
         $mes          = 'hello';
         $message_type = 'daily';
-        return $this->saveLogMessage($serviceid, $msisdn, $mes, $message_type);
+        $status = 1;
+        $log_message_id = "";
+        return $this->saveLogMessage($serviceid, $msisdn, $mes, $message_type,$status,$log_message_id);
     }
 
-    public function saveLogMessage($serviceid, $msisdn, $mes, $message_type, $status)
+    public function saveLogMessage($serviceid, $msisdn, $mes, $message_type, $status,$log_message_id)
     {
-        $logmes = new LogMessage();
-        $logmes->service       = $serviceid;
-        $logmes->msisdn        = $msisdn;
-        $logmes->message       = $mes;
-        $logmes->message_type  = $message_type;
-        $logmes->status  = $status;
-        $logmes->save();
+        if($log_message_id == "" ){ // new
+            $logmes = new LogMessage();
+            $logmes->service       = $serviceid;
+            $logmes->msisdn        = $msisdn;
+            $logmes->message       = $mes;
+            $logmes->message_type  = $message_type;
+            $logmes->status  = $status;
+            $logmes->save();
+        }else{ // Update failed
+            $logmes  =  LogMessage::where('id',$log_message_id)->first() ;
+            if($logmes){
+                $logmes->status  = $status;
+                $logmes->save();
+            }
+
+
+        }
+
 
     }
 }
