@@ -86,6 +86,8 @@ class AdminServicesController extends Controller
 
         $activations = Activation::where("serviceid", $service->title)->count();
 
+        $activationsWithoutDublicates = Activation::where("serviceid", $service->title)->groupBy('msisdn')->get()->count();
+
         $subscribers = Activation::select('*','subscribers.id as subscribe_id')
             ->join('subscribers','subscribers.activation_id','=','activation.id')
             ->where('activation.serviceid', $service->title)->count();
@@ -143,7 +145,7 @@ class AdminServicesController extends Controller
         $successmsgs = LogMessage::where('service',$service->title)->where('created_at','LIKE',date("Y-m-d")."%")->where('status', 1)->count() ;
         $failedmsgs = LogMessage::where('service',$service->title)->where('created_at','LIKE',date("Y-m-d")."%")->where('status', 0)->count() ;
 
-        return view('backend.services.show', compact('service', 'msgs', 'successmsgs', 'failedmsgs', 'activations','subscribers','unsubscribers','charge_date','charge_status_0','charge_status_503','charge_status_24','failed'));
+        return view('backend.services.show', compact('service', 'msgs', 'successmsgs', 'failedmsgs', 'activations','subscribers','unsubscribers','charge_date','charge_status_0','charge_status_503','charge_status_24','failed', 'activationsWithoutDublicates'));
     }
 
     /**

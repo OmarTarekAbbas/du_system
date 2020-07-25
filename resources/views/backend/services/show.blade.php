@@ -23,8 +23,12 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th>Activation Number</th>
+                            <th>All Activation Number</th>
                             <th> {{ $activations}}</th>
+                        </tr>
+                        <tr>
+                            <th>Activation Number Without Dublicates</th>
+                            <th> {{ $activationsWithoutDublicates}}</th>
                         </tr>
                         <tr>
                             <th>Subscriber Number</th>
