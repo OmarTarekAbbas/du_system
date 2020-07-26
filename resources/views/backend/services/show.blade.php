@@ -31,6 +31,10 @@
                             <th> {{ $activationsWithoutDublicates}}</th>
                         </tr>
                         <tr>
+                            <th>Faild Activation Number</th>
+                            <th> {{ $faildActivation}}</th>
+                        </tr>
+                        <tr>
                             <th>Subscriber Number</th>
                             <th> {{ $subscribers}}</th>
                         </tr>

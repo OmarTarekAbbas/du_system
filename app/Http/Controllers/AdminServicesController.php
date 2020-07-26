@@ -140,12 +140,15 @@ class AdminServicesController extends Controller
             ->where('charges.charging_date','=',Carbon::now()->toDateString())
             ->where('activation.serviceid',$service->title)->groupBy('charges.subscriber_id')->get()->count();
 
+        $faildActivation = Activation::where('activation.serviceid',$service->title)
+        ->whereNotIn('activation.status_code',['503 - product already purchased!','0','24 - Insufficient funds.'])
+        ->get()->count();
 
         $msgs = LogMessage::where('service',$service->title)->where('created_at','LIKE',date("Y-m-d")."%")->count() ;
         $successmsgs = LogMessage::where('service',$service->title)->where('created_at','LIKE',date("Y-m-d")."%")->where('status', 1)->count() ;
         $failedmsgs = LogMessage::where('service',$service->title)->where('created_at','LIKE',date("Y-m-d")."%")->where('status', 0)->count() ;
 
-        return view('backend.services.show', compact('service', 'msgs', 'successmsgs', 'failedmsgs', 'activations','subscribers','unsubscribers','charge_date','charge_status_0','charge_status_503','charge_status_24','failed', 'activationsWithoutDublicates'));
+        return view('backend.services.show', compact('service', 'msgs', 'successmsgs', 'failedmsgs', 'activations','subscribers','unsubscribers','charge_date','charge_status_0','charge_status_503','charge_status_24','failed', 'activationsWithoutDublicates', 'faildActivation'));
     }
 
     /**
