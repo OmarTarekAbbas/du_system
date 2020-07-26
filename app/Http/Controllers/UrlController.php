@@ -1636,8 +1636,8 @@ class UrlController extends Controller
                     $du_welcome_message = "Welcome To " . $service_name ." Enjoy with filters from this link   https://bit.ly/2C3Y5Hj  For Unsubcribe please send stopr to 4971 or click this link https://bit.ly/2UB9wfs";
                 }elseif ($serviceid == "liveqarankhatma") {
 
-                    $du_welcome_message = "Hi,  Wishing you a very blessed Ramadan." ;
-                    $du_welcome_message .= "Welcome to Alafasy Quran streaming service Your link to listen him live is here" ;
+                  //  $du_welcome_message = "Hi,  Wishing you a very blessed Ramadan." ;
+                    $du_welcome_message  = "Welcome to Alafasy Quran streaming service Your link to listen him live is here" ;
                     $du_welcome_message .= " https://bit.ly/2XX83Dc " ;
                     $du_welcome_message .= "Daily charges(2/-AED),to unsubscribe send Stop to 4971 " ;
                     $du_welcome_message .= " " ;
