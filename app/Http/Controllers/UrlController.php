@@ -497,13 +497,10 @@ class UrlController extends Controller
 
 
       public function todayMessagesStatus(){
+
+
       // send mail group for today messages for all services
         $messages = \App\Message::where('status', '=', true)->where('date', '=', Carbon::now()->format('Y-m-d'))->get();
-
-        if ($messages->count() > 0) {
-            $subject = 'DU Today Messages Status';
-            $this->TodayMessagesStatus($messages);
-        }
 
         $message = "" ;
         foreach($messages as $mes){
@@ -578,6 +575,8 @@ $email = implode(',', $recipients);
         $headers2 .= 'From: DU';
 
         @mail($email, $subject2, $message2, $headers2);
+
+        echo "todayMessagesStatus Done" ;
 
     }
 
@@ -659,6 +658,8 @@ $email = implode(',', $recipients);
         $headers2 .= 'From: DU';
 
         @mail($email, $subject2, $message2, $headers2);
+
+        echo "tomorrowMessagesStatus Done" ;
 
     }
 
