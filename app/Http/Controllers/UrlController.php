@@ -508,7 +508,7 @@ class UrlController extends Controller
             $message .= '<tr>
             <td>'.$mes->MTBody .'</td>
             <td><a href="'. $mes->ShortnedURL.'"> '. $mes->ShortnedURL .'</a></td>
-            <td>'. $mes->service->title . '|'. $mes->service->operator->title.' -'. $mes->service->operator->country->name. '</td>
+            <td>'. $mes->service->service . '|'. $mes->service->operator->title.' -'. $mes->service->operator->country->name. '</td>
             <td>'.$status.'
             </td>
             </tr>' ;
@@ -591,7 +591,7 @@ $email = implode(',', $recipients);
             $message .= '<tr>
             <td>'.$mes->MTBody .'</td>
             <td><a href="'. $mes->ShortnedURL.'"> '. $mes->ShortnedURL .'</a></td>
-            <td>'. $mes->service->title . '|'. $mes->service->operator->title.' -'. $mes->service->operator->country->name. '</td>
+            <td>'. $mes->service->service . '|'. $mes->service->operator->title.' -'. $mes->service->operator->country->name. '</td>
             <td>'.$status.'
             </td>
             </tr>' ;
