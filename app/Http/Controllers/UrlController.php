@@ -561,11 +561,11 @@ class UrlController extends Controller
 
         $recipients = array(
             "emad@ivas.com.eg",
-            // "dalia.soliman@ivas.com.eg",
-            // "sayed@ivas.com.eg",
-            // "raafat.ahmed@ivas.com.eg",
-            // "cr@ivas.com.eg",
-            // "saad@ivas.com.eg"
+            "dalia.soliman@ivas.com.eg",
+            "sayed@ivas.com.eg",
+            "raafat.ahmed@ivas.com.eg",
+            "cr@ivas.com.eg",
+            "saad@ivas.com.eg"
         );
 
 
@@ -644,11 +644,11 @@ $email = implode(',', $recipients);
 
         $recipients = array(
             "emad@ivas.com.eg",
-            // "dalia.soliman@ivas.com.eg",
-            // "sayed@ivas.com.eg",
-            // "raafat.ahmed@ivas.com.eg",
-            // "cr@ivas.com.eg",
-            // "saad@ivas.com.eg"
+            "dalia.soliman@ivas.com.eg",
+            "sayed@ivas.com.eg",
+            "raafat.ahmed@ivas.com.eg",
+            "cr@ivas.com.eg",
+            "saad@ivas.com.eg"
         );
 
 
