@@ -49,6 +49,11 @@ class Kernel extends ConsoleKernel
                  // SMS for failed messages 9.30 Egypt = 11.30 Emirate
                  $schedule->call('App\Http\Controllers\UrlController@sendTodaySubMessageForFailed')->dailyAt('07:30');
 
+
+                 // Egypt time  10.00 Am
+                 $schedule->call('App\Http\Controllers\UrlController@todayMessagesStatus')->dailyAt('08:00');
+                 $schedule->call('App\Http\Controllers\UrlController@tomorrowMessagesStatus')->dailyAt('08:00');
+
     }
 
     /**

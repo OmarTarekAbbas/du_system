@@ -493,6 +493,177 @@ class UrlController extends Controller
 
       }
 
+
+
+
+      public function todayMessagesStatus(){
+      // send mail group for today messages for all services
+        $messages = \App\Message::where('status', '=', true)->where('date', '=', Carbon::now()->format('Y-m-d'))->get();
+
+        if ($messages->count() > 0) {
+            $subject = 'DU Today Messages Status';
+            $this->TodayMessagesStatus($messages);
+        }
+
+        $message = "" ;
+        foreach($messages as $mes){
+            $status =    $mes->IsysResponse == "OK" ? "Yes":"NO"  ;
+            $message .= '<tr>
+            <td>'.$mes->MTBody .'</td>
+            <td><a href="'. $mes->ShortnedURL.'"> '. $mes->ShortnedURL .'</a></td>
+            <td>'. $mes->service->title . '|'. $mes->service->operator->title.' -'. $mes->service->operator->country->name. '</td>
+            <td>'.$status.'
+            </td>
+            </tr>' ;
+        }
+
+
+        $subject2 = 'Du Today Messages Status';
+        $message2 = '<!DOCTYPE html>
+        <html lang="en">
+            <head>
+
+            </head>
+                <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+
+
+        </style>
+            <body>
+                <p><strong>Dears,</strong> <br>Kindly find Today Messages Status</p>
+                <table cellpadding="10" >
+                    <thead>
+                        <tr>
+                            <th>Message Body</th>
+                            <th>Shorten URL</th>
+                            <th>Service</th>
+                            <th>Sent</th>
+                        </tr>
+                    </thead>
+                    '.$message.'
+
+            </table>
+
+        </body>
+        </html>';
+
+
+        $recipients = array(
+            "emad@ivas.com.eg",
+            // "dalia.soliman@ivas.com.eg",
+            // "sayed@ivas.com.eg",
+            // "raafat.ahmed@ivas.com.eg",
+            // "cr@ivas.com.eg",
+            // "saad@ivas.com.eg"
+        );
+
+
+$email = implode(',', $recipients);
+        $headers2 = 'MIME-Version: 1.0' . "\r\n";
+        $headers2 .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+        $headers2 .= 'From: DU';
+
+        @mail($email, $subject2, $message2, $headers2);
+
+    }
+
+
+    public function tomorrowMessagesStatus(){
+
+        $messages = Message::where('date', '=', Carbon::tomorrow()->format('Y-m-d'))->where('status', '=', true)->get();
+
+        $message = "" ;
+        foreach($messages as $mes){
+            $status =    $mes->status == 1 ? "Yes":"NO"  ;
+            $message .= '<tr>
+            <td>'.$mes->MTBody .'</td>
+            <td><a href="'. $mes->ShortnedURL.'"> '. $mes->ShortnedURL .'</a></td>
+            <td>'. $mes->service->title . '|'. $mes->service->operator->title.' -'. $mes->service->operator->country->name. '</td>
+            <td>'.$status.'
+            </td>
+            </tr>' ;
+        }
+
+
+        $subject2 = 'DU Messages  that will sent tomorrow';
+        $message2 = '<!DOCTYPE html>
+        <html lang="en">
+            <head>
+
+            </head>
+                <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+
+
+        </style>
+            <body>
+                <p><strong>Dears,</strong> <br>Kindly find Tommorrow Messages </p>
+                <table cellpadding="10" >
+                    <thead>
+                        <tr>
+                            <th>Message Body</th>
+                            <th>Shorten URL</th>
+                            <th>Service</th>
+                            <th>Approved</th>
+                        </tr>
+                    </thead>
+                    '.$message.'
+
+            </table>
+
+        </body>
+        </html>';
+
+
+        $recipients = array(
+            "emad@ivas.com.eg",
+            // "dalia.soliman@ivas.com.eg",
+            // "sayed@ivas.com.eg",
+            // "raafat.ahmed@ivas.com.eg",
+            // "cr@ivas.com.eg",
+            // "saad@ivas.com.eg"
+        );
+
+
+$email = implode(',', $recipients);
+        $headers2 = 'MIME-Version: 1.0' . "\r\n";
+        $headers2 .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+        $headers2 .= 'From: DU';
+
+        @mail($email, $subject2, $message2, $headers2);
+
+    }
+
+
+
     // get all subscriber with message
     public function sendTodaySubMessage()
     {
