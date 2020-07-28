@@ -50,9 +50,9 @@ class Kernel extends ConsoleKernel
                  $schedule->call('App\Http\Controllers\UrlController@sendTodaySubMessageForFailed')->dailyAt('07:30');
 
 
-                 // Egypt time  10.00 Am
-                 $schedule->call('App\Http\Controllers\UrlController@todayMessagesStatus')->dailyAt('08:00');
-                 $schedule->call('App\Http\Controllers\UrlController@tomorrowMessagesStatus')->dailyAt('08:00');
+                 // Egypt time  11.28 Am
+                 $schedule->call('App\Http\Controllers\UrlController@todayMessagesStatus')->dailyAt('09:28');
+                 $schedule->call('App\Http\Controllers\UrlController@tomorrowMessagesStatus')->dailyAt('08:29');
 
     }
 
