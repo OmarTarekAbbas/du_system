@@ -466,6 +466,7 @@ class UrlController extends Controller
 
 
       // get all subscriber with message
+      // call manuel because some cases there is many failes
       public function sendTodaySubMessageForFailed()
       {
         $today=date("Y-m-d") ;
