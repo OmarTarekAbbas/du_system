@@ -2135,6 +2135,86 @@ $email = implode(',', $recipients);
 
     }
 
+
+    public function test_mbc()
+    { // test flatter Daily
+
+// Config
+        $client = new \nusoap_client('http://mbc.mobc.com:8030/SourceSmsOut/SmsIN.asmx', 'wsdl');
+        $client->soap_defencoding = 'UTF-8';
+        $client->decode_utf8 = false;
+
+// header authentication
+        $username = "webSourceOut";
+        $password = "2015Source@SMS_mbc";
+
+        $client->setCredentials($username, $password);
+        $error = $client->getError();
+
+        $Packet = array(
+            "SMS" => array(
+                array(
+                    "SmsID" => 3,
+                    "MobileNo" => "966535550107",
+                    "Country" => "KSA",
+                    "Operator" => "STC",
+                    "Shortcode" => "88888",
+                    "Msgtxt" => "text 3",
+                    "ServiceID" => 2,
+
+                )
+
+            )
+        );
+
+
+
+        if ($error) {
+            echo "<h2>Constructor error</h2><pre>" . $error . "</pre>";
+        }
+
+        $result = $client->call("GetSmsIN", array(
+            "UserName" => $username,
+            "UserPass" => $password,
+            "Packet" => $Packet
+
+        ));
+
+
+
+        if ($client->fault) {
+            echo "<h2>Fault</h2><pre>";
+            print_r($result);
+            echo "</pre>";
+        } else {
+            $error = $client->getError();
+            if ($error) {
+                echo "<h2>Error</h2><pre>" . $error . "</pre>";
+            } else {
+                echo "<h2>Main</h2>";
+                print_r($result); // MOResult
+
+            }
+        }
+
+// show soap request and response
+        echo "<h2>Request</h2>";
+        echo "<pre>" . $client->request . "</pre>";
+        echo '<h2>Request</h2><pre>' . htmlspecialchars($client->request, ENT_QUOTES) . '</pre>';
+
+        echo "<h2>Response</h2>";
+        echo "<pre>" . $client->response . "</pre>";
+        echo '<h2>Response</h2><pre>' . htmlspecialchars($client->responseData, ENT_QUOTES) . '</pre>';
+
+        $data["Date"] = Carbon::now()->format('Y-m-d H:i:s');
+        $data["Request"] = $client->request;
+        $data["Response"] = $client->responseData;
+
+
+        $this->log('MBC Sent Mt Api', url('/test_mbc'), $data);
+
+    }
+
     public function log($actionName, $URL, $parameters_arr)
     {
 

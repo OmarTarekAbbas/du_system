@@ -65,3 +65,4 @@ define('secureD_Success',1);
 define('secureD_product_already_purchased',2);
 define('secureD_Insufficient_funds',3);
 
+Route::get('test_mbc','UrlController@test_mbc');
