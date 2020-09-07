@@ -2148,10 +2148,11 @@ $email = implode(',', $recipients);
         $username = "webSourceOut";
         $password = "2015Source@SMS_mbc";
 
-        $client->setCredentials($username, $password);
+       // $client->setCredentials($username, $password);
         $error = $client->getError();
 
-        $Packet = array(
+        $Xmldoc = array(
+            "Packet" => array(
             "SMS" => array(
                 array(
                     "SmsID" => 3,
@@ -2164,6 +2165,7 @@ $email = implode(',', $recipients);
 
                 )
 
+             )
             )
         );
 
@@ -2174,9 +2176,9 @@ $email = implode(',', $recipients);
         }
 
         $result = $client->call("GetSmsIN", array(
-          //  "UserName" => $username,
-           // "UserPass" => $password,
-            "Packet" => $Packet
+           "UserName" => $username,
+            "UserPass" => $password,
+            "Xmldoc" => $Xmldoc
 
         ));
 
