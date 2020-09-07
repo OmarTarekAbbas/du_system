@@ -2174,8 +2174,8 @@ $email = implode(',', $recipients);
         }
 
         $result = $client->call("GetSmsIN", array(
-            "UserName" => $username,
-            "UserPass" => $password,
+          //  "UserName" => $username,
+           // "UserPass" => $password,
             "Packet" => $Packet
 
         ));
