@@ -2265,20 +2265,10 @@ $email = implode(',', $recipients);
             $result = $this->get_content_post($URL, $param);
             $this->log('DU MO Quran Live Subscription Notification', $request->fullUrl(), (array)$result);
             return $result;
-        } else if ($request->message == 'Stop1' ||  $request->message == 'stop1'  ||  $request->message == 'stop'  ||  $request->message == 'Stop' ) {// unsub from quran live
-            $result = $result->where('serviceid', 'liveqarankhatma');
-            $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
-            if ($result) {
-                $sub = Subscriber::where("activation_id", $result->id)->first();
-                if ($sub) {
-                    $unsub = new \App\Unsubscriber();
-                    $unsub->activation_id = $sub->activation_id;
-                    $unsub->save();
-                    $sub->delete();
-                    $data['unsub_id'] = $unsub->id;
-                    $this->log('DU MO Quran Live UNSUB Notification', $request->fullUrl(), $data);
-                }
-            }
+        } else if ($request->message == 'Stop' ||  $request->message == 'stop'  ||  $request->message == 'STOP'   ) {// unsub for all
+
+            $this->unsubAllService($result, $request, $data); //unsub all service function
+
         } else if ($request->message == 'F' ||  $request->message == 'f' ) {// Sub Keywords for Flatter
                 require('uuid/UUID.php');
                 $trxid = \UUID::v4();
@@ -2287,20 +2277,6 @@ $email = implode(',', $recipients);
                 $result = $this->get_content_post($URL, $param);
                 $this->log('DU MO Flatter Daily Subscription Notification', $request->fullUrl(), (array)$result);
                 return $result;
-        } else if ($request->message == 'StopF' ||  $request->message == 'stopf') {// unsub from Flatter
-            $result = $result->where('serviceid', 'flaterdaily');
-            $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
-            if ($result) {
-                $sub = Subscriber::where("activation_id", $result->id)->first();
-                if ($sub) {
-                    $unsub = new \App\Unsubscriber();
-                    $unsub->activation_id = $sub->activation_id;
-                    $unsub->save();
-                    $sub->delete();
-                    $data['unsub_id'] = $unsub->id;
-                    $this->log('DU MO Flatter Daily UNSUB Notification', $request->fullUrl(), $data);
-                }
-            }
         } else if ($request->message == 'R' ||  $request->message == 'r'  ||  $request->message == '2' ) {// Sub to Rotana Flatter
             require('uuid/UUID.php');
             $trxid = \UUID::v4();
@@ -2309,33 +2285,19 @@ $email = implode(',', $recipients);
             $result = $this->get_content_post($URL, $param);
             $this->log('DU MO Rotana Flatter  Subscription Notification', $request->fullUrl(), (array)$result);
             return $result;
-        } else if ($request->message == 'StopR' ||  $request->message == 'stopr'   ||  $request->message == 'Stopr' ||  $request->message == 'STOPR') {// unsub from Rotana Flatter
-            $result = $result->where('serviceid', 'flaterrotanadaily');
-            $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
-            if ($result) {
-                $sub = Subscriber::where("activation_id", $result->id)->first();
-                if ($sub) {
-                    $unsub = new \App\Unsubscriber();
-                    $unsub->activation_id = $sub->activation_id;
-                    $unsub->save();
-                    $sub->delete();
-                    $data['unsub_id'] = $unsub->id;
-                    $this->log('DU MO Rotana Flatter UNSUB Notification', $request->fullUrl(), $data);
-                }
-            }
-        }else if ($request->message == 'm' ||  $request->message == 'M') {// subscribe to man elkeal
-/*
-            $this->log('DU MO Man Elkeal Sub Notification', $request->fullUrl(), $data);
+        } else if ($request->message == 'm' ||  $request->message == 'M') {// subscribe to man elkeal
+            /*
+                        $this->log('DU MO Man Elkeal Sub Notification', $request->fullUrl(), $data);
 
-            $URL2 = "https://meenelkael.digizone.com.kw/api/du_mo_forward_binary";
+                        $URL2 = "https://meenelkael.digizone.com.kw/api/du_mo_forward_binary";
 
-            $vars = array() ;
-            $vars["msisdn"] =  $data['msisdn'] ;
-            $vars["message"] = $data['message'] ;
-            $JSON = json_encode($vars);
-            $result = $this->SendRequestPost($URL2,$vars);
-            echo $result ;
-*/
+                        $vars = array() ;
+                        $vars["msisdn"] =  $data['msisdn'] ;
+                        $vars["message"] = $data['message'] ;
+                        $JSON = json_encode($vars);
+                        $result = $this->SendRequestPost($URL2,$vars);
+                        echo $result ;
+            */
 
 
         }
@@ -2348,6 +2310,33 @@ $email = implode(',', $recipients);
             'msisdn' => $request->msisdn,
             'message' => $request->message
         ]);
+    }
+
+    /**
+     * unsubAllService ,function to unsub user from all service
+     *
+     * @param  Activation $result
+     * @param  Request $request
+     * @param  array $data
+     * @return void
+     */
+    public function unsubAllService($result, $request, $data)
+    {
+        $results = $result->latest("created_at")->get();
+        foreach ($results as $result) {
+            if ($result) {
+                $sub = Subscriber::where("activation_id", $result->id)->first();
+                if ($sub) {
+                    $unsub = new \App\Unsubscriber();
+                    $unsub->activation_id = $sub->activation_id;
+                    $unsub->save();
+                    $sub->delete();
+                    $data['unsub_id'] = $unsub->id;
+                    $data['service_name'] = $result->serviceid;
+                    $this->log('DU UNSUB Notification', $request->fullUrl(), $data);
+                }
+            }
+        }
     }
 
 
