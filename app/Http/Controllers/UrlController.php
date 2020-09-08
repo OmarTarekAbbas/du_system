@@ -2018,6 +2018,27 @@ $email = implode(',', $recipients);
         var_dump( $result);
     }
 
+    /**
+     * unsub_du_message_send , send message to told him that he unsub successfully
+     *
+     * @param  string $phoneNumber
+     * @return void
+     */
+    public function unsub_du_message_send($phoneNumber)
+    {
+        // Du sending welcome message
+        $URL = "http://41.33.167.14:2080/~smsdu/du_send_message";
+        $param = "phone_number=$phoneNumber&message=You SuccessFully UnSubscribe";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $URL);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $param);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        curl_close($ch);
+    }
+
     public function get_content_post($URL, $param)
     {
         $ch = curl_init();
@@ -2337,6 +2358,7 @@ $email = implode(',', $recipients);
                 }
             }
         }
+        $this->unsub_du_message_send($data['msisdn']);
     }
 
 
