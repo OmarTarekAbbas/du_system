@@ -2323,6 +2323,64 @@ $email = implode(',', $recipients);
 
         }
 
+
+
+/*
+ else if ($request->message == 'Stop1' ||  $request->message == 'stop1'  ||  $request->message == 'stop'  ||  $request->message == 'Stop' ) {// unsub from quran live
+            $result = $result->where('serviceid', 'liveqarankhatma');
+            $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
+            if ($result) {
+                $sub = Subscriber::where("activation_id", $result->id)->first();
+                if ($sub) {
+                    $unsub = new \App\Unsubscriber();
+                    $unsub->activation_id = $sub->activation_id;
+                    $unsub->save();
+                    $sub->delete();
+                    $data['unsub_id'] = $unsub->id;
+                    $this->log('DU MO Quran Live UNSUB Notification', $request->fullUrl(), $data);
+                }
+            }
+        }
+
+
+
+
+        else if ($request->message == 'StopF' ||  $request->message == 'stopf') {// unsub from Flatter
+            $result = $result->where('serviceid', 'flaterdaily');
+            $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
+            if ($result) {
+                $sub = Subscriber::where("activation_id", $result->id)->first();
+                if ($sub) {
+                    $unsub = new \App\Unsubscriber();
+                    $unsub->activation_id = $sub->activation_id;
+                    $unsub->save();
+                    $sub->delete();
+                    $data['unsub_id'] = $unsub->id;
+                    $this->log('DU MO Flatter Daily UNSUB Notification', $request->fullUrl(), $data);
+                }
+            }
+        }
+
+
+
+        else if ($request->message == 'StopR' ||  $request->message == 'stopr'   ||  $request->message == 'Stopr' ||  $request->message == 'STOPR') {// unsub from Rotana Flatter
+            $result = $result->where('serviceid', 'flaterrotanadaily');
+            $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
+            if ($result) {
+                $sub = Subscriber::where("activation_id", $result->id)->first();
+                if ($sub) {
+                    $unsub = new \App\Unsubscriber();
+                    $unsub->activation_id = $sub->activation_id;
+                    $unsub->save();
+                    $sub->delete();
+                    $data['unsub_id'] = $unsub->id;
+                    $this->log('DU MO Rotana Flatter UNSUB Notification', $request->fullUrl(), $data);
+                }
+            }
+        }
+
+        */
+
          // Log all Mo Notification
         $this->log('DU MO All Notifications', $request->fullUrl(), $data);
 
