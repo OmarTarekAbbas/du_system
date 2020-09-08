@@ -2309,7 +2309,7 @@ $email = implode(',', $recipients);
             $result = $this->get_content_post($URL, $param);
             $this->log('DU MO Rotana Flatter  Subscription Notification', $request->fullUrl(), (array)$result);
             return $result;
-        } else if ($request->message == 'StopR' ||  $request->message == 'stopr') {// unsub from Rotana Flatter
+        } else if ($request->message == 'StopR' ||  $request->message == 'stopr'   ||  $request->message == 'Stopr' ||  $request->message == 'STOPR') {// unsub from Rotana Flatter
             $result = $result->where('serviceid', 'flaterrotanadaily');
             $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
             if ($result) {
