@@ -29,7 +29,7 @@ define('DU_SMS_SEND_MESSAGE','http://41.33.167.14:2080/~smsdu/du_send_message');
 
 Route::post('activation', 'UrlController@activation');
 Route::post('test2','UrlController@test2');
-Route::post('test_du_purchaseConsumeProduct','UrlController@tetest_du_purchaseConsumeProductt');
+Route::get('test_du_purchaseConsumeProduct','UrlController@test_du_purchaseConsumeProduct');
 
 Route::get('todayMessagesStatus','UrlController@todayMessagesStatus');
 Route::get('tomorrowMessagesStatus','UrlController@tomorrowMessagesStatus');
