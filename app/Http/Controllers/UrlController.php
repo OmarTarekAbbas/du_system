@@ -2052,7 +2052,7 @@ $email = implode(',', $recipients);
         return $result;
     }
 
-    public function test()
+    public function test_du_purchaseConsumeProduct()
     { // test flatter Daily
 
 // Config
@@ -2061,27 +2061,26 @@ $email = implode(',', $recipients);
         $client->decode_utf8 = false;
 
 // header authentication
-        $username = "P-7SYBYFVSWA-@S-r5ZBYFVSWA-";
-        $password = "P-7SYBYFVSWA-#1234";
-
+$username = "P-wSYBYFVSWA-@S-b6ZBYFVSWA-";
+$password = "P-wSYBYFVSWA-#1234";
 // service parameters
         $userId = "971529204634";
-        $serviceId = "S-r5ZBYFVSWA-";
-        $premiumResourceType = "MP-PRT-IVAS-Flater-B2-D-Sub";
-        $productId = "Daily Flater B2 MP IVAS Sub";
+        $serviceId = "S-b6ZBYFVSWA-";
+        $premiumResourceType = "MP-PRT-IVAS-Khatma-B2-D-Sub";
+        $productId = "Daily Khatma B2 MP IVAS Sub";
 
         $client->setCredentials($username, $password);
         $error = $client->getError();
 
         $purchaseMetas = array(
             "key" => "du:assetDescription",
-            "value" => "IVAS",
+            "value" => "Live Quran",
         );
 
         $billingMetas = array(
             array(
                 "key" => "du:assetID",
-                "value" => "A-cMShAk6_L13",
+                "value" => "A-V_ShAk6_L13",
 
             ),
             array(
