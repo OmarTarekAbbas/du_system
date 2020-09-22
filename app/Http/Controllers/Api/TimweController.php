@@ -10,6 +10,10 @@ use stdClass;
 
 class TimweController
 {
+
+
+    //http://localhost:8080/du_system/api/inquiry?AuthUser=IVAS&AuthPass=123456&Msisdn=971555802322
+
     public function inquiry(Request $request)
     {
         $AuthUser = $request->AuthUser;
