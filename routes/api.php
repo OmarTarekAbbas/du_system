@@ -62,3 +62,13 @@ define('secureD_Success',1);
 define('secureD_product_already_purchased',2);
 define('secureD_Insufficient_funds',3);
 
+/***************start timwe api*************/
+
+define('TIMWE_AuthUser', 'IVAS');
+define('TIMWE_AuthPass', '123456');
+
+
+
+Route::get('inquiry','Api\TimweController@inquiry');
+
+/********************************************/
