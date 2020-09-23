@@ -11,6 +11,11 @@ use stdClass;
 class TimweController
 {
 
+/**
+ * 1- unsubscribe date from unsubscribe
+ * 2- date from / to condition
+ */
+
     //http://localhost:8080/du_system/api/inquiry?AuthUser=IVAS&AuthPass=123456&Msisdn=971555802322
 
     //http://localhost:8080/du_system/api/inquiry?AuthUser=IVAS&AuthPass=123456
