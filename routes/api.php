@@ -71,7 +71,7 @@ Route::get('test_mbc','UrlController@test_mbc');
 
 define('TIMWE_AuthUser', 'IVAS');
 define('TIMWE_AuthPass', '123456');
-
+define('ACTIVE_SERVICES', ['liveqarankhatma', 'flaterrotanadaily']);
 
 
 Route::get('inquiry','Api\TimweController@inquiry');
