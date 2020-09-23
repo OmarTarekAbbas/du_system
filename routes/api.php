@@ -67,3 +67,13 @@ define('secureD_product_already_purchased',2);
 define('secureD_Insufficient_funds',3);
 
 Route::get('test_mbc','UrlController@test_mbc');
+/***************start timwe api*************/
+
+define('TIMWE_AuthUser', 'IVAS');
+define('TIMWE_AuthPass', '123456');
+
+
+
+Route::get('inquiry','Api\TimweController@inquiry');
+
+/********************************************/
