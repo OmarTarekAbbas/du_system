@@ -152,4 +152,44 @@ class TimweController
 
         }
     }
+
+    public function unsubscribe(Type $var = null)
+    {
+        $AuthUser = $request->AuthUser;
+        $AuthPass = $request->AuthPass;
+        if ($AuthUser == TIMWE_AuthUser && $AuthPass == TIMWE_AuthPass) {
+
+            $param['RequestId'] = $request->RequestId;
+
+            if ($request->has('Msisdn') && $request->Msisdn != '') {
+
+                $subscriber = Subscriber::select('subscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')->join('activation', 'activation.id', '=', 'subscribers.activation_id');
+
+                $response['msisdn'] = $request->Msisdn;
+
+                $subscriber = $subscriber->where('msisdn', $request->Msisdn);
+
+                if($request->has('ProductId') && $request->ProductId != ''){
+
+                    $response['ProductId'] = $request->ProductId;
+
+                    $service = Service::find($response['ProductId']);
+
+                    $subscriber = $subscriber->where('serviceid', $service->title);
+
+                }
+
+                if($request->has('La') && $request->La != ''){
+                    // unsub all
+                }
+
+                if ($subscriber) {
+                    //unsub
+                }
+
+            }
+
+        }
+
+    }
 }
