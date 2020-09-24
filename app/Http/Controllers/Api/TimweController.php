@@ -16,15 +16,22 @@ class TimweController
  * 2- date from / to condition
  */
 
+    // misidn sub and unsub
     //http://localhost:8080/du_system/api/inquiry?AuthUser=IVAS&AuthPass=123456&Msisdn=971555802322
 
+    //services list
     //http://localhost:8080/du_system/api/inquiry?AuthUser=IVAS&AuthPass=123456
+
+    //from to date
+    //http://localhost:8080/du_system/api/inquiry?AuthUser=IVAS&AuthPass=123456&Msisdn=971586799659&FromDate=5-May-2020%2008:16&ToDate=7-May-2020%2008:16
 
     public function inquiry(Request $request)
     {
 
         /*
         checkMsisdnrequest() {
+            checkfromdate()
+            checktodate()
             checksub()
             checkunsub()
             returnnotexist()
@@ -34,8 +41,8 @@ class TimweController
 
         $AuthUser = $request->AuthUser;
         $AuthPass = $request->AuthPass;
-        $subscriber = Subscriber::join('activation', 'activation.id', '=', 'subscribers.activation_id');
-        $unsubscriber = Unsubscriber::join('activation', 'activation.id', '=', 'unsubscribers.activation_id');
+        $subscriber = Subscriber::select('subscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')->join('activation', 'activation.id', '=', 'subscribers.activation_id');
+        $unsubscriber = Unsubscriber::select('unsubscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')->join('activation', 'activation.id', '=', 'unsubscribers.activation_id');
         if ($AuthUser == TIMWE_AuthUser && $AuthPass == TIMWE_AuthPass) {
 
             $param['RequestId'] = $request->RequestId;
@@ -46,6 +53,18 @@ class TimweController
 
                 $subscriber = $subscriber->where('msisdn', $request->Msisdn);
                 $unsubscriber = $unsubscriber->where('msisdn', $request->Msisdn);
+
+                if($request->has('FromDate') && $request->FromDate != ''){
+                    $FromDate  = date("Y-m-d H:i:s",strtotime($request->FromDate)) ;
+                    $subscriber->where('subscribe_date',">=", $FromDate) ;
+                    $unsubscriber->where('unsubscribers.created_at',">=", $FromDate) ;
+                }
+
+                if($request->has('ToDate') && $request->ToDate != ''){
+                    $ToDate = date("Y-m-d H:i:s",strtotime($request->ToDate)) ;
+                    $subscriber->where('subscribe_date',"<=", $ToDate) ;
+                    $unsubscriber->where('unsubscribers.created_at',"<=", $ToDate) ;
+                }
 
                 $subscriber = $subscriber->first();
                 $unsubscriber = $unsubscriber->first();
