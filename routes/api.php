@@ -76,5 +76,6 @@ define('ACTIVE_SERVICES', ['liveqarankhatma', 'flaterrotanadaily']);
 
 Route::get('inquiry','Api\TimweController@inquiry');
 Route::get('unsubscribe','Api\TimweController@unsubscribe');
+Route::get('userhistory','Api\TimweController@userhistory');
 
 /********************************************/

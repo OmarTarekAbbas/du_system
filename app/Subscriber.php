@@ -38,4 +38,20 @@ class Subscriber extends Model
     {
         return $this->hasMany('App\Charge');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mts()
+    {
+        return $this->hasMany('App\LogMessage', 'msisdn', 'msisdn');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mos()
+    {
+        return $this->hasMany('App\DuMo', 'msisdn', 'msisdn');
+    }
 }

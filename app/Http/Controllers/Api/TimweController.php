@@ -27,14 +27,14 @@ class TimweController
 
         /*
         checkMsisdnrequest() {
-            checkfromdate()
-            checktodate()
-            checksub()
-            checkunsub()
-            returnnotexist()
+        checkfromdate()
+        checktodate()
+        checksub()
+        checkunsub()
+        returnnotexist()
         }
         all_services()
-        */
+         */
 
         $AuthUser = $request->AuthUser;
         $AuthPass = $request->AuthPass;
@@ -51,16 +51,16 @@ class TimweController
                 $subscriber = $subscriber->where('msisdn', $request->Msisdn);
                 $unsubscriber = $unsubscriber->where('msisdn', $request->Msisdn);
 
-                if($request->has('FromDate') && $request->FromDate != ''){
-                    $FromDate  = date("Y-m-d H:i:s",strtotime($request->FromDate)) ;
-                    $subscriber->where('subscribe_date',">=", $FromDate) ;
-                    $unsubscriber->where('unsubscribers.created_at',">=", $FromDate) ;
+                if ($request->has('FromDate') && $request->FromDate != '') {
+                    $FromDate = date("Y-m-d H:i:s", strtotime($request->FromDate));
+                    $subscriber->where('subscribe_date', ">=", $FromDate);
+                    $unsubscriber->where('unsubscribers.created_at', ">=", $FromDate);
                 }
 
-                if($request->has('ToDate') && $request->ToDate != ''){
-                    $ToDate = date("Y-m-d H:i:s",strtotime($request->ToDate)) ;
-                    $subscriber->where('subscribe_date',"<=", $ToDate) ;
-                    $unsubscriber->where('unsubscribers.created_at',"<=", $ToDate) ;
+                if ($request->has('ToDate') && $request->ToDate != '') {
+                    $ToDate = date("Y-m-d H:i:s", strtotime($request->ToDate));
+                    $subscriber->where('subscribe_date', "<=", $ToDate);
+                    $unsubscriber->where('unsubscribers.created_at', "<=", $ToDate);
                 }
 
                 $subscriber = $subscriber->first();
@@ -124,7 +124,7 @@ class TimweController
 
                 $services = Service::whereIn('title', ACTIVE_SERVICES)->get();
 
-                foreach($services as $service){
+                foreach ($services as $service) {
                     $product[$i]['id'] = $service->id;
                     $product[$i]['name'] = $service->title;
                     $product[$i]['la'] = "4971";
@@ -173,7 +173,7 @@ class TimweController
 
                 $subscriber = $subscriber->where('msisdn', $request->Msisdn);
 
-                if($request->has('ProductId') && $request->ProductId != ''){
+                if ($request->has('ProductId') && $request->ProductId != '') {
 
                     $response['ProductId'] = $request->ProductId;
 
@@ -192,7 +192,7 @@ class TimweController
                     $response['responseStatus']['description'] = "success";
 
                     $service['id'] = "1";
-                    foreach($subscriber as $sub){
+                    foreach ($subscriber as $sub) {
                         //unsub
                         $unsubscriber['activation_id'] = $sub->activation_id;
 
@@ -204,13 +204,12 @@ class TimweController
                         $product[$i]['type'] = "Brokerage"; // subscription
                         $product[$i]['subId'] = $sub->id;
                         $product[$i]['subStatus'] = "CANCELLED";
-                        $product[$i]['subscriptionDate'] = date("d-M-Y h:i",strtotime($sub->subscribe_date)); //"24-Jan-2019 12:20"
+                        $product[$i]['subscriptionDate'] = date("d-M-Y h:i", strtotime($sub->subscribe_date)); //"24-Jan-2019 12:20"
                         $sub->delete();
                         $unsubscriber_id = Unsubscriber::create($unsubscriber);
                         $product[$i]['unsubscriptionDate'] = $unsubscriber_id->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
                         $product[$i]['serviceActivationMode'] = "SMS";
                         $i++;
-
 
                     }
                     $service['product'] = $product;
@@ -224,13 +223,138 @@ class TimweController
             }
 
             $responseObj['response'] = $response;
-            if(isset($service))
-            $responseObj['service'] = [$service];
+            if (isset($service)) {
+                $responseObj['service'] = [$service];
+            }
 
             $actionName = 'CCT Unsubscribe';
             $URL = $request->fullUrl();
 
             $this->log($actionName, $URL, $responseObj);
+            return json_encode($responseObj);
+        }
+
+    }
+
+    public function userhistory(Request $request)
+    {
+
+        /*
+        get subscriber() => get charging by sub_id  (join sub on activation )
+        get Mo by msisdn
+        all messages by msidn()  = MT
+         */
+
+        $AuthUser = $request->AuthUser;
+        $AuthPass = $request->AuthPass;
+        if ($AuthUser == TIMWE_AuthUser && $AuthPass == TIMWE_AuthPass) {
+
+            $subscribers = Subscriber::select('subscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')
+                ->join('activation', 'activation.id', '=', 'subscribers.activation_id');
+
+            if ($request->has('Msisdn') && $request->Msisdn != '') {
+
+                $service['id'] = "1";
+
+                if ($request->has('FromDate') && $request->FromDate != '') {
+                    $FromDate = date("Y-m-d H:i:s", strtotime($request->FromDate));
+                    $subscribers = $subscribers->where('subscribe_date', ">=", $FromDate);
+                }
+
+                if ($request->has('ToDate') && $request->ToDate != '') {
+                    $ToDate = date("Y-m-d H:i:s", strtotime($request->ToDate));
+                    $subscribers = $subscribers->where('subscribe_date', "<=", $ToDate);
+                }
+
+                $subscribers = $subscribers->where('msisdn', $request->Msisdn)->get();
+
+                if ($subscribers->count() > 0) {
+                    $i = 0;
+                    foreach ($subscribers as $subscriber) {
+
+                        $services_id = Service::where('title', $subscriber->serviceid)->first();
+
+                        $mos = $subscriber->mos; //date
+                        foreach ($mos as $mo) {
+
+                            $product[$i]['productId'] = $services_id->id;
+                            $product[$i]['productName'] = $subscriber->serviceid;
+                            $product[$i]['userLa'] = "4971";
+                            $product[$i]['userMessage'] = $mo->message;
+                            $product[$i]['systemResponse'] = "";
+                            $product[$i]['systemLa'] = "4971";
+                            $product[$i]['billableAction'] = "no";
+                            $product[$i]['billingAmount'] = "";
+                            $product[$i]['userMessageDate'] = $mo->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+                            $product[$i]['systemResponseDate'] = ""; //"24-Jan-2019 12:20"
+                            $product[$i]['direction'] = "MO";
+
+                            $i++;
+
+                        }
+
+                        $mts = $subscriber->mts;
+                        foreach ($mts as $mt) { //date
+
+                            $product[$i]['productId'] = $services_id->id;
+                            $product[$i]['productName'] = $subscriber->serviceid;
+                            $product[$i]['userLa'] = "4971";
+                            $product[$i]['userMessage'] = "";
+                            $product[$i]['systemResponse'] = $mt->message;
+                            $product[$i]['systemLa'] = "4971";
+                            $product[$i]['billableAction'] = "no";
+                            $product[$i]['billingAmount'] = "";
+                            $product[$i]['userMessageDate'] = ""; //"24-Jan-2019 12:20"
+                            $product[$i]['systemResponseDate'] = $mt->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+                            $product[$i]['direction'] = "MT";
+
+                            $i++;
+                        }
+
+                        $charges = $subscriber->charges; //filter date
+                        foreach ($charges as $charge) {
+
+                            $product[$i]['productId'] = $services_id->id;
+                            $product[$i]['productName'] = $subscriber->serviceid;
+                            $product[$i]['userLa'] = "";
+                            $product[$i]['userMessage'] = "";
+                            $product[$i]['systemResponse'] = "";
+                            $product[$i]['systemLa'] = "4971";
+                            $product[$i]['billableAction'] = "Yes";
+                            $product[$i]['billingAmount'] = "2";
+                            $product[$i]['userMessageDate'] = ""; //"24-Jan-2019 12:20"
+                            $product[$i]['systemResponseDate'] = $charge->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+                            $product[$i]['direction'] = "DIRECT BILLING";
+
+                            $i++;
+                        }
+
+                    }
+                    if (isset($product)) {
+                        $service['product'] = $product;
+                    }
+
+                    //if found
+                    $response['msisdn'] = $request->Msisdn;
+                    $response['opId'] = $request->OpId ?? "268";
+
+                    $response['responseStatus']['code'] = "1";
+                    $response['responseStatus']['description'] = "success";
+                    $responseObj['response'] = $response;
+                    if (isset($service)) {
+                        $responseObj['service'] = [$service];
+                    }
+                } else {
+                    $response['msisdn'] = $request->Msisdn;
+                    $response['opId'] = $request->OpId ?? "268";
+
+                    $response['responseStatus']['code'] = "1";
+                    $response['responseStatus']['description'] = "success";
+                    $responseObj['response'] = $response;
+                }
+
+            }
+
             return json_encode($responseObj);
         }
 
