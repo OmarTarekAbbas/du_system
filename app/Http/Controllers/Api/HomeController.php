@@ -134,7 +134,7 @@ class HomeController extends Controller
             if (isset($service)) {
                 $responseObj['service'] = [$service_arr];
             }
-            
+
             $actionName = 'SendMt';
             $URL = $request->fullUrl();
             $this->log($actionName, $URL, $responseObj);
