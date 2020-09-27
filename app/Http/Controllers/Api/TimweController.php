@@ -6,15 +6,12 @@ use App\Service;
 use App\Subscriber;
 use App\Unsubscriber;
 use Illuminate\Http\Request;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use stdClass;
 
 class TimweController
 {
-
-/**
- * 1- unsubscribe date from unsubscribe
- * 2- date from / to condition
- */
 
     // misidn sub and unsub
     //http://localhost:8080/du_system/api/inquiry?AuthUser=IVAS&AuthPass=123456&Msisdn=971555802322
@@ -148,12 +145,18 @@ class TimweController
 
             }
 
+            $actionName = 'CCT Inquery';
+            $URL = $request->fullUrl();
+
+            $this->log($actionName, $URL, $responseObj);
             return json_encode($responseObj);
 
         }
     }
 
-    public function unsubscribe(Type $var = null)
+    //http://localhost:8080/du_system/api/inquiry?AuthUser=IVAS&AuthPass=123456&Msisdn=971555802322
+
+    public function unsubscribe(Request $request)
     {
         $AuthUser = $request->AuthUser;
         $AuthPass = $request->AuthPass;
@@ -166,6 +169,7 @@ class TimweController
                 $subscriber = Subscriber::select('subscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')->join('activation', 'activation.id', '=', 'subscribers.activation_id');
 
                 $response['msisdn'] = $request->Msisdn;
+                $response['opId'] = $request->OpId ?? "268";
 
                 $subscriber = $subscriber->where('msisdn', $request->Msisdn);
 
@@ -173,23 +177,80 @@ class TimweController
 
                     $response['ProductId'] = $request->ProductId;
 
-                    $service = Service::find($response['ProductId']);
+                    $service_id = Service::find($response['ProductId'])->id;
 
                     $subscriber = $subscriber->where('serviceid', $service->title);
 
                 }
 
-                if($request->has('La') && $request->La != ''){
-                    // unsub all
-                }
+                $subscriber = $subscriber->get();
 
-                if ($subscriber) {
-                    //unsub
+                if ($subscriber->count() > 0) {
+                    $i = 0;
+
+                    $response['responseStatus']['code'] = "1";
+                    $response['responseStatus']['description'] = "success";
+
+                    $service['id'] = "1";
+                    foreach($subscriber as $sub){
+                        //unsub
+                        $unsubscriber['activation_id'] = $sub->activation_id;
+
+                        $services_id = Service::where('title', $sub->serviceid)->first();
+
+                        $product[$i]['id'] = $services_id->id;
+                        $product[$i]['name'] = $sub->serviceid;
+                        $product[$i]['la'] = "4971";
+                        $product[$i]['type'] = "Brokerage"; // subscription
+                        $product[$i]['subId'] = $sub->id;
+                        $product[$i]['subStatus'] = "CANCELLED";
+                        $product[$i]['subscriptionDate'] = date("d-M-Y h:i",strtotime($sub->subscribe_date)); //"24-Jan-2019 12:20"
+                        $sub->delete();
+                        $unsubscriber_id = Unsubscriber::create($unsubscriber);
+                        $product[$i]['unsubscriptionDate'] = $unsubscriber_id->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+                        $product[$i]['serviceActivationMode'] = "SMS";
+                        $i++;
+
+
+                    }
+                    $service['product'] = $product;
+                } else {
+
+                    $response['responseStatus']['code'] = "-77";
+                    $response['responseStatus']['description'] = "sub not active";
+
                 }
 
             }
 
+            $responseObj['response'] = $response;
+            if(isset($service))
+            $responseObj['service'] = [$service];
+
+            $actionName = 'CCT Unsubscribe';
+            $URL = $request->fullUrl();
+
+            $this->log($actionName, $URL, $responseObj);
+            return json_encode($responseObj);
         }
 
     }
+
+    public function log($actionName, $URL, $parameters_arr)
+    {
+        date_default_timezone_set("Africa/Cairo");
+        $year = date("Y");
+        $month = date("m");
+        $day = date("d");
+        $log = new Logger($actionName);
+        $path = storage_path("logs/$year/$month/$day/$actionName");
+        // to create new folder with current date  // if folder is not found create new one
+        if (!\File::exists($path)) {
+            \File::makeDirectory($path, 0775, true, true);
+        }
+
+        $log->pushHandler(new StreamHandler(storage_path("logs/$year/$month/$day/$actionName/logFile.log", Logger::INFO)));
+        $log->addInfo($URL, $parameters_arr);
+    }
+
 }
