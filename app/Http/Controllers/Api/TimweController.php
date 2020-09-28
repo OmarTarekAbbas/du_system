@@ -13,6 +13,52 @@ use stdClass;
 class TimweController
 {
 
+    public function OpId($request, $actionName)
+    {
+        if ($request->has('OpId') && $request->OpId != OpId) {
+            $response['responseStatus']['code'] = "-2";
+            $response['responseStatus']['description'] = "Invalid Operator";
+            $responseObj['response'] = $response;
+
+            $actionName = $actionName;
+            $URL = $request->fullUrl();
+            $this->log($actionName, $URL, $responseObj);
+            $responseObj = json_encode($responseObj);
+            return $responseObj;
+        } // check OpId
+    }
+
+    public function ServiceId($request, $actionName)
+    {
+        if ($request->has('ServiceId') && $request->ServiceId != SERVICE_ID) {
+            $response['responseStatus']['code'] = "-58";
+            $response['responseStatus']['description'] = "Invalid Service";
+            $responseObj['response'] = $response;
+
+            $actionName = $actionName;
+            $URL = $request->fullUrl();
+            $this->log($actionName, $URL, $responseObj);
+            $responseObj = json_encode($responseObj);
+            return $responseObj;
+        } // check OpId
+    }
+
+    public function ProductId($request, $actionName)
+    {
+        if ($request->has('ProductId') && !in_array($request->ProductId, ProductId)) {
+            $response['responseStatus']['code'] = "-6";
+            $response['responseStatus']['description'] = "Invalid Partner Product";
+            $responseObj['response'] = $response;
+
+            $actionName = $actionName;
+            $URL = $request->fullUrl();
+            $this->log($actionName, $URL, $responseObj);
+            $responseObj = json_encode($responseObj);
+            return $responseObj;
+        } // check ProductId
+    }
+
+
     // misidn sub and unsub
     //localhost:8080/du_system/api/inquiry?AuthUser=IVAS_CCT&AuthPass=CCT_2020_981&Msisdn=971555802322
 
@@ -27,26 +73,37 @@ class TimweController
 
         /*
         checkMsisdnrequest() {
-            checkfromdate()
-            checktodate()
-            checksub()
-            checkunsub()
-            returnnotexist()
+        checkfromdate()
+        checktodate()
+        checksub()
+        checkunsub()
+        returnnotexist()
         }
         all_services()
-        */
+         */
 
         $AuthUser = $request->AuthUser;
         $AuthPass = $request->AuthPass;
         $subscribers = Subscriber::select('subscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')->join('activation', 'activation.id', '=', 'subscribers.activation_id');
         $unsubscribers = Unsubscriber::select('unsubscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')->join('activation', 'activation.id', '=', 'unsubscribers.activation_id');
-        if ($AuthUser == TIMWE_AuthUser && $AuthPass == TIMWE_AuthPass) {
+        if ($AuthUser == TIMWE_AuthUser && $AuthPass == TIMWE_AuthPass) { // check auth
 
-            $param['RequestId'] = $request->RequestId;
+            $check_op = $this->OpId($request, 'CCT Inquery');
+            if($check_op != ""){
+                return $check_op;
+            }
+            $check_service = $this->ServiceId($request, 'CCT Inquery');
+            if($check_service != ""){
+                return $check_service;
+            }
+            $check_product = $this->ProductId($request, 'CCT Inquery');
+            if($check_product != ""){
+                return $check_product;
+            }
 
-            if ($request->has('Msisdn') && $request->Msisdn != '') {
-                $param['Msisdn'] = $request->Msisdn;
+            if ($request->has('Msisdn') && $request->Msisdn != '') { // check if msisdn
                 $response['msisdn'] = $request->Msisdn;
+                $response['opId'] = $request->OpId ?? "268";
 
                 $subscribers = $subscribers->where('msisdn', $request->Msisdn);
                 $unsubscribers = $unsubscribers->where('msisdn', $request->Msisdn);
@@ -55,19 +112,17 @@ class TimweController
                     $FromDate = date("Y-m-d H:i:s", strtotime($request->FromDate));
                     $subscribers = $subscribers->where('subscribe_date', ">=", $FromDate);
                     $unsubscribers = $unsubscribers->where('unsubscribers.created_at', ">=", $FromDate);
-                }
+                } // check from date
 
                 if ($request->has('ToDate') && $request->ToDate != '') {
                     $ToDate = date("Y-m-d H:i:s", strtotime($request->ToDate));
                     $subscribers = $subscribers->where('subscribe_date', "<=", $ToDate);
                     $unsubscribers = $unsubscribers->where('unsubscribers.created_at', "<=", $ToDate);
-                }
+                } // check to date
 
                 $subscribers = $subscribers->get();
                 $unsubscribers = $unsubscribers->get();
 
-                $param['OpId'] = $request->OpId ?? "268";
-                $response['opId'] = $request->OpId ?? "268";
                 $i = 0;
                 if ($subscribers->count() > 0 || $unsubscribers->count() > 0) {
                     $response['responseStatus']['code'] = "1";
@@ -83,7 +138,7 @@ class TimweController
                         $product[$i]['type'] = PRODUCT_TYPE; // subscription
                         $product[$i]['name'] = $subscriber->serviceid;
                         $product[$i]['la'] = TIMWE_SHORTCODE;
-                        $product[$i]['subId'] = $subscriber->id;
+                        $product[$i]['subId'] = $subscriber->activation_id;
 
                         $product[$i]['subStatus'] = "ACTIVE";
                         $product[$i]['subscriptionDate'] = $subscriber->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
@@ -103,7 +158,7 @@ class TimweController
                         $product[$i]['additionalDetails'] = new stdClass();
 
                         $i++;
-                    }
+                    } // sub foreach
 
                     foreach ($unsubscribers as $unsubscriber) {
                         $service_name = $unsubscriber->serviceid;
@@ -113,7 +168,7 @@ class TimweController
                         $product[$i]['type'] = PRODUCT_TYPE; // subscription
                         $product[$i]['name'] = $unsubscriber->serviceid;
                         $product[$i]['la'] = TIMWE_SHORTCODE;
-                        $product[$i]['subId'] = $unsubscriber->id;
+                        $product[$i]['subId'] = $unsubscriber->activation_id;
 
                         $product[$i]['subStatus'] = "CANCELLED";
                         $product[$i]['subscriptionDate'] = $unsubscriber->activation->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
@@ -131,55 +186,57 @@ class TimweController
                         $product[$i]['billingAmount'] = $unsubscriber->price;
                         $product[$i]['messageMode'] = "DIRECT BILLING";
                         $product[$i]['serviceActivationMode'] = "SMS";
-                        $product[$i]    ['additionalDetails'] = new stdClass();
+                        $product[$i]['additionalDetails'] = new stdClass();
 
                         $i++;
-                    }
-                    $service['product'] = $product;
+                    } // unsub foreach
 
-                } else {
+                } else { // check sub or unsub found
                     $response['responseStatus']['code'] = "-80";
                     $response['responseStatus']['description'] = "customer not exists";
                 }
 
-                $responseObj['response'] = $response;
-                if (isset($service)) {
-                    $responseObj['service'] = [$service];
-                }
-
-            } else {
+            } else { // check if msisdn not null
                 $i = 0;
 
                 $services = Service::whereIn('title', ACTIVE_SERVICES)->get();
 
-                foreach ($services as $service) {
-                    $product[$i]['id'] = $service->id;
-                    $product[$i]['name'] = $service->title;
+                foreach ($services as $ser) {
+                    $product[$i]['id'] = $ser->id;
+                    $product[$i]['name'] = $ser->title;
                     $product[$i]['la'] = TIMWE_SHORTCODE;
                     $product[$i]['type'] = PRODUCT_TYPE;
                     $product[$i]['billingPeriod'] = "1";
                     $product[$i]['billingAmount'] = "2";
                     $i++;
-                }
+                } // service foreach
 
                 $response['responseStatus']['code'] = "1";
                 $response['responseStatus']['description'] = "success";
-                $service1['id'] = SERVICE_ID;
-                $service1['name'] = SERVICE_NAME;
-                $service1['product'] = [$product];
-
-                $responseObj['response'] = $response;
-                $responseObj['service'] = [$service1];
+                $service['id'] = SERVICE_ID;
+                $service['name'] = SERVICE_NAME;
 
             }
 
-            $actionName = 'CCT Inquery';
-            $URL = $request->fullUrl();
-
-            $this->log($actionName, $URL, $responseObj);
-            return json_encode($responseObj);
-
+        } else { // Auth check
+            $response['responseStatus']['code'] = "-3";
+            $response['responseStatus']['description'] = "Invalid Credentials";
         }
+        $responseObj['response'] = $response;
+        if (isset($product)) // check if product is set
+        {
+            $service['product'] = $product;
+        }
+
+        if (isset($service)) // check if service is set
+        {
+            $responseObj['service'] = [$service];
+        }
+
+        $actionName = 'CCT Inquery';
+        $URL = $request->fullUrl();
+        $this->log($actionName, $URL, $responseObj);
+        return json_encode($responseObj);
     }
 
     //localhost:8080/du_system/api/unsubscribe?AuthUser=IVAS_CCT&AuthPass=CCT_2020_981&Msisdn=971555802322
@@ -190,7 +247,18 @@ class TimweController
         $AuthPass = $request->AuthPass;
         if ($AuthUser == TIMWE_AuthUser && $AuthPass == TIMWE_AuthPass) {
 
-            $param['RequestId'] = $request->RequestId;
+            $check_op = $this->OpId($request, 'CCT Unsubscribe');
+            if($check_op != ""){
+                return $check_op;
+            }
+            $check_service = $this->ServiceId($request, 'CCT Unsubscribe');
+            if($check_service != ""){
+                return $check_service;
+            }
+            $check_product = $this->ProductId($request, 'CCT Unsubscribe');
+            if($check_product != ""){
+                return $check_product;
+            }
 
             if ($request->has('Msisdn') && $request->Msisdn != '') {
 
@@ -203,9 +271,9 @@ class TimweController
 
                 if ($request->has('ProductId') && $request->ProductId != '') {
 
-                    $service_id = Service::find($request->ProductId)->id;
+                    $service_id = Service::find($request->ProductId)->title;
 
-                    $subscriber = $subscriber->where('serviceid', $service->title);
+                    $subscriber = $subscriber->where('serviceid', $service_id);
 
                 }
 
@@ -228,9 +296,9 @@ class TimweController
                         $product[$i]['name'] = $sub->serviceid;
                         $product[$i]['la'] = TIMWE_SHORTCODE;
                         $product[$i]['type'] = PRODUCT_TYPE; // subscription
-                        $product[$i]['subId'] = $sub->id;
+                        $product[$i]['subId'] = $sub->activation_id;
                         $product[$i]['subStatus'] = "CANCELLED";
-                        $product[$i]['subscriptionDate'] = date("d-M-Y h:i", strtotime($sub->subscribe_date)); //"24-Jan-2019 12:20"
+                        $product[$i]['subscriptionDate'] = $sub->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
                         $sub->delete();
                         $unsubscriber_id = Unsubscriber::create($unsubscriber);
                         $product[$i]['unsubscriptionDate'] = $unsubscriber_id->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
@@ -238,7 +306,6 @@ class TimweController
                         $i++;
 
                     }
-                    $service['product'] = $product;
                 } else {
 
                     $response['responseStatus']['code'] = "-77";
@@ -248,18 +315,26 @@ class TimweController
 
             }
 
-            $responseObj['response'] = $response;
-            if (isset($service)) {
-                $responseObj['service'] = [$service];
-            }
-
-            $actionName = 'CCT Unsubscribe';
-            $URL = $request->fullUrl();
-
-            $this->log($actionName, $URL, $responseObj);
-            return json_encode($responseObj);
+        } else { // Auth check
+            $response['responseStatus']['code'] = "-3";
+            $response['responseStatus']['description'] = "Invalid Credentials";
         }
 
+        $responseObj['response'] = $response;
+        if (isset($product)) // check if product is set
+        {
+            $service['product'] = $product;
+        }
+
+        if (isset($service)) // check if service is set
+        {
+            $responseObj['service'] = [$service];
+        }
+
+        $actionName = 'CCT Unsubscribe';
+        $URL = $request->fullUrl();
+        $this->log($actionName, $URL, $responseObj);
+        return json_encode($responseObj);
     }
     //localhost:8080/du_system/api/userhistory?AuthUser=IVAS_CCT&AuthPass=CCT_2020_981&Msisdn=971555802322
 
@@ -270,11 +345,24 @@ class TimweController
         get subscriber() => get charging by sub_id  (join sub on activation )
         get Mo by msisdn
         all messages by msidn()  = MT
-        */
+         */
 
         $AuthUser = $request->AuthUser;
         $AuthPass = $request->AuthPass;
         if ($AuthUser == TIMWE_AuthUser && $AuthPass == TIMWE_AuthPass) {
+
+            $check_op = $this->OpId($request, 'CCT User History');
+            if($check_op != ""){
+                return $check_op;
+            }
+            $check_service = $this->ServiceId($request, 'CCT User History');
+            if($check_service != ""){
+                return $check_service;
+            }
+            $check_product = $this->ProductId($request, 'CCT User History');
+            if($check_product != ""){
+                return $check_product;
+            }
 
             $subscribers = Subscriber::select('subscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')
                 ->join('activation', 'activation.id', '=', 'subscribers.activation_id');
@@ -282,6 +370,7 @@ class TimweController
             if ($request->has('Msisdn') && $request->Msisdn != '') {
 
                 $service['id'] = SERVICE_ID;
+                $service['name'] = SERVICE_NAME;
 
                 if ($request->has('FromDate') && $request->FromDate != '') {
                     $FromDate = date("Y-m-d H:i:s", strtotime($request->FromDate));
@@ -373,7 +462,7 @@ class TimweController
 
                     }
                     if (isset($product)) {
-                        $service['product'] = $product;
+                        $service['userRequest '] = $product;
                     }
 
                     //if found
@@ -397,8 +486,12 @@ class TimweController
 
             }
 
-            return json_encode($responseObj);
+        } else { // Auth check
+            $response['responseStatus']['code'] = "-3";
+            $response['responseStatus']['description'] = "Invalid Credentials";
+            $responseObj['response'] = $response;
         }
+        return json_encode($responseObj);
 
     }
 
@@ -411,6 +504,19 @@ class TimweController
         $AuthPass = $request->AuthPass;
 
         if ($AuthUser == TIMWE_AuthUser && $AuthPass == TIMWE_AuthPass) {
+
+            $check_op = $this->OpId($request, 'CCT Send Mt');
+            if($check_op != ""){
+                return $check_op;
+            }
+            $check_service = $this->ServiceId($request, 'CCT Send MT');
+            if($check_service != ""){
+                return $check_service;
+            }
+            $check_product = $this->ProductId($request, 'CCT Send Mt');
+            if($check_product != ""){
+                return $check_product;
+            }
 
             $subscriber = Subscriber::select('subscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')
                 ->join('activation', 'activation.id', '=', 'subscribers.activation_id');
@@ -440,7 +546,7 @@ class TimweController
 
                                 $product['id'] = $service_id->id;
                                 $product['la'] = TIMWE_SHORTCODE;
-                                $product['subId'] = $subscriber->id;
+                                $product['subId'] = $subscriber->activation_id;
                                 $product['mtId'] = $subscriber->mts->first()->id;
                                 $product['subStatus'] = "ACTIVE";
                                 $product['subscriptionDate'] = $subscriber->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
@@ -469,11 +575,6 @@ class TimweController
 
                             }
                         }
-                    } else {
-
-                        $response['responseStatus']['code'] = "-77";
-                        $response['responseStatus']['description'] = "sub not active";
-
                     }
                 }
                 $responseObj['response'] = $response;
@@ -488,7 +589,12 @@ class TimweController
 
                 return json_encode($responseObj);
             }
+        } else { // Auth check
+            $response['responseStatus']['code'] = "-3";
+            $response['responseStatus']['description'] = "Invalid Credentials";
+            $responseObj['response'] = $response;
         }
+        return json_encode($responseObj);
     }
 
     public function du_message_send($Msisdn, $MtText)
