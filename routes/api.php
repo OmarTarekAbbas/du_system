@@ -50,7 +50,6 @@ Route::get('getTodayMessage/{id}','UrlController@getMessage');
 
 Route::post('unsub', 'Api\HomeController@msisdn');
 Route::post('checkSub', 'Api\HomeController@checkSub');
-Route::get('sendmt', 'Api\HomeController@sendmt');
 
 // welcome message --- here must get by ip
 define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');
@@ -71,8 +70,8 @@ define('secureD_Insufficient_funds',3);
 Route::get('test_mbc','UrlController@test_mbc');
 /***************start timwe api*************/
 
-define('TIMWE_AuthUser', 'IVAS');
-define('TIMWE_AuthPass', '123456');
+define('TIMWE_AuthUser', 'IVAS_CCT');
+define('TIMWE_AuthPass', 'CCT_2020_981');
 define('TIMWE_SHORTCODE', '4971');
 define('ACTIVE_SERVICES', ['liveqarankhatma', 'flaterrotanadaily']);
 
@@ -80,5 +79,6 @@ define('ACTIVE_SERVICES', ['liveqarankhatma', 'flaterrotanadaily']);
 Route::get('inquiry','Api\TimweController@inquiry');
 Route::get('unsubscribe','Api\TimweController@unsubscribe');
 Route::get('userhistory','Api\TimweController@userhistory');
+Route::get('sendmt', 'Api\TimweController@sendmt');
 
 /********************************************/
