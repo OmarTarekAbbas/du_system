@@ -45,10 +45,12 @@ Route::get('chargeSubs_for_failed','UrlController@chargeSubs_for_failed')->name(
  Route::get('make_today_charging_for_failed','UrlController@make_today_charging_for_failed');
 
 
+
 Route::get('getTodayMessage/{id}','UrlController@getMessage');
 
 Route::post('unsub', 'Api\HomeController@msisdn');
 Route::post('checkSub', 'Api\HomeController@checkSub');
+Route::get('sendmt', 'Api\HomeController@sendmt');
 
 // welcome message --- here must get by ip
 define('DU_Flatter_Link','https://filters.digizone.com.kw/newdesignv4/6928153');
@@ -71,6 +73,7 @@ Route::get('test_mbc','UrlController@test_mbc');
 
 define('TIMWE_AuthUser', 'IVAS');
 define('TIMWE_AuthPass', '123456');
+define('TIMWE_SHORTCODE', '4971');
 define('ACTIVE_SERVICES', ['liveqarankhatma', 'flaterrotanadaily']);
 
 

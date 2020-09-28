@@ -25,7 +25,9 @@ class SubscriberController extends Controller
     {
         $subscribers = Activation::select('*','subscribers.id as subscribe_id')
                        ->join('subscribers','subscribers.activation_id','=','activation.id');
+
         $services = Service::pluck('service','title');
+
         $without_paginate = 0;
         if($request->has('next_charging_date') && $request->next_charging_date != ''){
             $subscribers = $subscribers->where('subscribers.next_charging_date',$request->next_charging_date);
@@ -34,6 +36,7 @@ class SubscriberController extends Controller
 
         if($request->has('msisdn') && $request->msisdn != ''){
             $subscribers = $subscribers->where('activation.msisdn',$request->msisdn);
+            dd($subscribers);
             $without_paginate = 1;
         }
 
