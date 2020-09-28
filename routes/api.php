@@ -72,6 +72,9 @@ Route::get('test_mbc','UrlController@test_mbc');
 
 define('TIMWE_AuthUser', 'IVAS_CCT');
 define('TIMWE_AuthPass', 'CCT_2020_981');
+define('SERVICE_ID', '1');
+define('SERVICE_NAME', 'IVAS');
+define('PRODUCT_TYPE', 'Brokerage');
 define('TIMWE_SHORTCODE', '4971');
 define('ACTIVE_SERVICES', ['liveqarankhatma', 'flaterrotanadaily']);
 

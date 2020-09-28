@@ -14,27 +14,27 @@ class TimweController
 {
 
     // misidn sub and unsub
-    //http://localhost:8080/du_system/api/inquiry?AuthUser=IVAS&AuthPass=123456&Msisdn=971555802322
+    //localhost:8080/du_system/api/inquiry?AuthUser=IVAS_CCT&AuthPass=CCT_2020_981&Msisdn=971555802322
 
     //services list
-    //http://localhost:8080/du_system/api/inquiry?AuthUser=IVAS&AuthPass=123456
+    //localhost:8080/du_system/api/inquiry?AuthUser=IVAS_CCT&AuthPass=CCT_2020_981
 
     //from to date
-    //http://localhost:8080/du_system/api/inquiry?AuthUser=IVAS&AuthPass=123456&Msisdn=971586799659&FromDate=5-May-2020%2008:16&ToDate=7-May-2020%2008:16
+    //localhost:8080/du_system/api/inquiry?AuthUser=IVAS_CCT&AuthPass=CCT_2020_981&Msisdn=971586799659&FromDate=5-May-2020%2008:16&ToDate=7-May-2020%2008:16
 
     public function inquiry(Request $request)
     {
 
         /*
         checkMsisdnrequest() {
-        checkfromdate()
-        checktodate()
-        checksub()
-        checkunsub()
-        returnnotexist()
+            checkfromdate()
+            checktodate()
+            checksub()
+            checkunsub()
+            returnnotexist()
         }
         all_services()
-         */
+        */
 
         $AuthUser = $request->AuthUser;
         $AuthPass = $request->AuthPass;
@@ -69,20 +69,20 @@ class TimweController
                 $param['OpId'] = $request->OpId ?? "268";
                 $response['opId'] = $request->OpId ?? "268";
                 $i = 0;
-                if ($subscribers->count() > 0) {
+                if ($subscribers->count() > 0 || $unsubscribers->count() > 0) {
                     $response['responseStatus']['code'] = "1";
                     $response['responseStatus']['description'] = "success";
-                    $service['id'] = "1";
-                    $service['name'] = "IVAS";
+                    $service['id'] = SERVICE_ID;
+                    $service['name'] = SERVICE_NAME;
 
                     foreach ($subscribers as $subscriber) {
                         $service_name = $subscriber->serviceid;
                         $service_id = Service::where('title', 'LIKE', "%$service_name%")->first()->id;
 
                         $product[$i]['id'] = $service_id;
-                        $product[$i]['type'] = "Brokerage"; // subscription
+                        $product[$i]['type'] = PRODUCT_TYPE; // subscription
                         $product[$i]['name'] = $subscriber->serviceid;
-                        $product[$i]['la'] = "4971";
+                        $product[$i]['la'] = TIMWE_SHORTCODE;
                         $product[$i]['subId'] = $subscriber->id;
 
                         $product[$i]['subStatus'] = "ACTIVE";
@@ -104,22 +104,15 @@ class TimweController
 
                         $i++;
                     }
-                    $service['product'] = $product;
-
-                } elseif ($unsubscribers->count() > 0) {
-                    $response['responseStatus']['code'] = "1";
-                    $response['responseStatus']['description'] = "success";
-                    $service['id'] = "1";
-                    $service['name'] = "IVAS";
 
                     foreach ($unsubscribers as $unsubscriber) {
                         $service_name = $unsubscriber->serviceid;
                         $service_id = Service::where('title', 'LIKE', "%$service_name%")->first()->id;
 
                         $product[$i]['id'] = $service_id;
-                        $product[$i]['type'] = "Brokerage"; // subscription
+                        $product[$i]['type'] = PRODUCT_TYPE; // subscription
                         $product[$i]['name'] = $unsubscriber->serviceid;
-                        $product[$i]['la'] = "4971";
+                        $product[$i]['la'] = TIMWE_SHORTCODE;
                         $product[$i]['subId'] = $unsubscriber->id;
 
                         $product[$i]['subStatus'] = "CANCELLED";
@@ -162,8 +155,8 @@ class TimweController
                 foreach ($services as $service) {
                     $product[$i]['id'] = $service->id;
                     $product[$i]['name'] = $service->title;
-                    $product[$i]['la'] = "4971";
-                    $product[$i]['type'] = "Brokerage";
+                    $product[$i]['la'] = TIMWE_SHORTCODE;
+                    $product[$i]['type'] = PRODUCT_TYPE;
                     $product[$i]['billingPeriod'] = "1";
                     $product[$i]['billingAmount'] = "2";
                     $i++;
@@ -171,8 +164,8 @@ class TimweController
 
                 $response['responseStatus']['code'] = "1";
                 $response['responseStatus']['description'] = "success";
-                $service1['id'] = "1";
-                $service1['name'] = "IVAS";
+                $service1['id'] = SERVICE_ID;
+                $service1['name'] = SERVICE_NAME;
                 $service1['product'] = [$product];
 
                 $responseObj['response'] = $response;
@@ -189,7 +182,7 @@ class TimweController
         }
     }
 
-    //http://localhost:8080/du_system/api/inquiry?AuthUser=IVAS&AuthPass=123456&Msisdn=971555802322
+    //localhost:8080/du_system/api/unsubscribe?AuthUser=IVAS_CCT&AuthPass=CCT_2020_981&Msisdn=971555802322
 
     public function unsubscribe(Request $request)
     {
@@ -224,7 +217,7 @@ class TimweController
                     $response['responseStatus']['code'] = "1";
                     $response['responseStatus']['description'] = "success";
 
-                    $service['id'] = "1";
+                    $service['id'] = SERVICE_ID;
                     foreach ($subscriber as $sub) {
                         //unsub
                         $unsubscriber['activation_id'] = $sub->activation_id;
@@ -233,8 +226,8 @@ class TimweController
 
                         $product[$i]['id'] = $services_id->id;
                         $product[$i]['name'] = $sub->serviceid;
-                        $product[$i]['la'] = "4971";
-                        $product[$i]['type'] = "Brokerage"; // subscription
+                        $product[$i]['la'] = TIMWE_SHORTCODE;
+                        $product[$i]['type'] = PRODUCT_TYPE; // subscription
                         $product[$i]['subId'] = $sub->id;
                         $product[$i]['subStatus'] = "CANCELLED";
                         $product[$i]['subscriptionDate'] = date("d-M-Y h:i", strtotime($sub->subscribe_date)); //"24-Jan-2019 12:20"
@@ -268,6 +261,7 @@ class TimweController
         }
 
     }
+    //localhost:8080/du_system/api/userhistory?AuthUser=IVAS_CCT&AuthPass=CCT_2020_981&Msisdn=971555802322
 
     public function userhistory(Request $request)
     {
@@ -276,7 +270,7 @@ class TimweController
         get subscriber() => get charging by sub_id  (join sub on activation )
         get Mo by msisdn
         all messages by msidn()  = MT
-         */
+        */
 
         $AuthUser = $request->AuthUser;
         $AuthPass = $request->AuthPass;
@@ -287,7 +281,7 @@ class TimweController
 
             if ($request->has('Msisdn') && $request->Msisdn != '') {
 
-                $service['id'] = "1";
+                $service['id'] = SERVICE_ID;
 
                 if ($request->has('FromDate') && $request->FromDate != '') {
                     $FromDate = date("Y-m-d H:i:s", strtotime($request->FromDate));
@@ -329,10 +323,10 @@ class TimweController
 
                             $product[$i]['productId'] = $services_id->id;
                             $product[$i]['productName'] = $subscriber->serviceid;
-                            $product[$i]['userLa'] = "4971";
+                            $product[$i]['userLa'] = TIMWE_SHORTCODE;
                             $product[$i]['userMessage'] = $mo->message;
                             $product[$i]['systemResponse'] = "";
-                            $product[$i]['systemLa'] = "4971";
+                            $product[$i]['systemLa'] = TIMWE_SHORTCODE;
                             $product[$i]['billableAction'] = "no";
                             $product[$i]['billingAmount'] = "";
                             $product[$i]['userMessageDate'] = $mo->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
@@ -347,10 +341,10 @@ class TimweController
 
                             $product[$i]['productId'] = $services_id->id;
                             $product[$i]['productName'] = $subscriber->serviceid;
-                            $product[$i]['userLa'] = "4971";
+                            $product[$i]['userLa'] = TIMWE_SHORTCODE;
                             $product[$i]['userMessage'] = "";
                             $product[$i]['systemResponse'] = $mt->message;
-                            $product[$i]['systemLa'] = "4971";
+                            $product[$i]['systemLa'] = TIMWE_SHORTCODE;
                             $product[$i]['billableAction'] = "no";
                             $product[$i]['billingAmount'] = "";
                             $product[$i]['userMessageDate'] = ""; //"24-Jan-2019 12:20"
@@ -364,10 +358,10 @@ class TimweController
 
                             $product[$i]['productId'] = $services_id->id;
                             $product[$i]['productName'] = $subscriber->serviceid;
-                            $product[$i]['userLa'] = "";
+                            $product[$i]['userLa'] = TIMWE_SHORTCODE;
                             $product[$i]['userMessage'] = "";
                             $product[$i]['systemResponse'] = "";
-                            $product[$i]['systemLa'] = "4971";
+                            $product[$i]['systemLa'] = TIMWE_SHORTCODE;
                             $product[$i]['billableAction'] = "Yes";
                             $product[$i]['billingAmount'] = "2";
                             $product[$i]['userMessageDate'] = ""; //"24-Jan-2019 12:20"
@@ -407,6 +401,8 @@ class TimweController
         }
 
     }
+
+    //localhost:8080/du_system/api/sendmt?AuthUser=IVAS_CCT&AuthPass=CCT_2020_981&Msisdn=971554350230&MtText=test&ProductId=5
 
     public function sendmt(Request $request)
     {
@@ -461,10 +457,15 @@ class TimweController
                                 }
 
                                 $product['billingAmount'] = $subscriber->price;
-                                $service_arr['id'] = "1";
+                                $service_arr['id'] = SERVICE_ID;
                                 $service_arr['product'] = [$product];
 
                                 // $this->du_message_send($request->Msisdn, $request->MtText);
+
+                            } else {
+
+                                $response['responseStatus']['code'] = "-77";
+                                $response['responseStatus']['description'] = "sub not active";
 
                             }
                         }
