@@ -8,6 +8,7 @@ use App\LogMessage;
 use App\Subscriber;
 use Monolog\Logger;
 use App\Unsubscriber;
+use App\Timwecct;
 use Illuminate\Http\Request;
 use Monolog\Handler\StreamHandler;
 
@@ -237,6 +238,10 @@ class TimweController
         $actionName = 'CCT Inquery';
         $URL = $request->fullUrl();
         $this->log($actionName, $URL, $responseObj);
+        $timwecct = new Timwecct();
+        $timwecct->request_link = $URL;
+        $timwecct->response = json_encode($responseObj);
+        $timwecct->save();
         return json_encode($responseObj);
     }
 
@@ -335,6 +340,10 @@ class TimweController
         $actionName = 'CCT Unsubscribe';
         $URL = $request->fullUrl();
         $this->log($actionName, $URL, $responseObj);
+        $timwecct = new Timwecct();
+        $timwecct->request_link = $URL;
+        $timwecct->response = json_encode($responseObj);
+        $timwecct->save();
         return json_encode($responseObj);
     }
     //localhost:8080/du_system/api/userhistory?AuthUser=IVAS_CCT&AuthPass=CCT_2020_981&Msisdn=971555802322
@@ -492,6 +501,16 @@ class TimweController
             $response['responseStatus']['description'] = "Invalid Credentials";
             $responseObj['response'] = $response;
         }
+
+                $actionName = 'User History';
+                $URL = $request->fullUrl();
+                $this->log($actionName, $URL, $responseObj);
+
+                $timwecct = new Timwecct();
+                $timwecct->request_link = $URL;
+                $timwecct->response = json_encode($responseObj);
+                $timwecct->save();
+
         return json_encode($responseObj);
 
     }
@@ -585,11 +604,14 @@ class TimweController
                 if (isset($service_arr)) {
                     $responseObj['service'] = [$service_arr];
                 }
-
                 $actionName = 'SendMt';
                 $URL = $request->fullUrl();
                 $this->log($actionName, $URL, $responseObj);
 
+                $timwecct = new Timwecct();
+                $timwecct->request_link = $URL;
+                $timwecct->response = json_encode($responseObj);
+                $timwecct->save();
                 return json_encode($responseObj);
             }
         } else { // Auth check
@@ -597,6 +619,14 @@ class TimweController
             $response['responseStatus']['description'] = "Invalid Credentials";
             $responseObj['response'] = $response;
         }
+        $actionName = 'SendMt';
+        $URL = $request->fullUrl();
+        $this->log($actionName, $URL, $responseObj);
+
+        $timwecct = new Timwecct();
+        $timwecct->request_link = $URL;
+        $timwecct->response = json_encode($responseObj);
+        $timwecct->save();
         return json_encode($responseObj);
     }
 
