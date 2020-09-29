@@ -561,7 +561,7 @@ class TimweController
                             $subscriber = $subscriber->first();
                             if ($subscriber) {
 
-                                  // $this->du_message_send($request->Msisdn, $request->MtText,$subscriber->serviceid);
+                                   $this->du_message_send($request->Msisdn, $request->MtText,$subscriber->serviceid);
 
                                 $response['responseStatus']['code'] = "1";
                                 $response['responseStatus']['description'] = "success";
@@ -635,7 +635,7 @@ class TimweController
     public function du_message_send($Msisdn, $MtText,$service)
     {
         // Du sending welcome message
-        //$URL = "http://41.33.167.14:2080/~smsdu/du_send_message";
+        //$URL = DU_SMS_SEND_MESSAGE;
         $URL = "";
         $param = "phone_number=$Msisdn&message=$MtText";
 
