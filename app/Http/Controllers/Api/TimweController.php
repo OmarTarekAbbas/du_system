@@ -393,7 +393,6 @@ class TimweController
                 }
 
                 $subscribers = $subscribers->where('msisdn', $request->Msisdn)->get();
-
                 if ($subscribers->count() > 0) {
                     $i = 0;
                     foreach ($subscribers as $subscriber) {
@@ -415,8 +414,11 @@ class TimweController
                             $mos = $mos->where('created_at', "<=", $ToDate)->take(100);
                             $mts = $mts->where('created_at', "<=", $ToDate)->take(100);
                             $charges = $charges->where('created_at', "<=", $ToDate)->take(100);
-
                         }
+
+                        $mts = $mts->sortByDesc('created_at');
+                        $mos = $mos->sortByDesc('created_at');
+                        $charges = $charges->sortByDesc('created_at');
 
                         foreach ($mos as $mo) {
 
