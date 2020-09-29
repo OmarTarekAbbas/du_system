@@ -72,7 +72,10 @@ Route::get('test_mbc','UrlController@test_mbc');
 
 define('TIMWE_AuthUser', 'IVAS_CCT');
 define('TIMWE_AuthPass', 'CCT_2020_981');
+define('OpId', '268');
 define('SERVICE_ID', '1');
+define('CountryId', '971');
+define('ProductId', ['5', '7']);
 define('SERVICE_NAME', 'IVAS');
 define('PRODUCT_TYPE', 'Brokerage');
 define('TIMWE_SHORTCODE', '4971');
