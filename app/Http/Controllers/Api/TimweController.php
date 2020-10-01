@@ -399,7 +399,7 @@ class TimweController
                         $services_id = Service::where('title', $subscriber->serviceid)->first();
 
                         $mos = $subscriber->mos; //date
-                        $mts = $subscriber->mts;
+                        $mts = $subscriber->mts->where('service', $subscriber->serviceid);
                         $charges = $subscriber->charges; //filter date
 
                         if ($request->has('FromDate') && $request->FromDate != '') {
