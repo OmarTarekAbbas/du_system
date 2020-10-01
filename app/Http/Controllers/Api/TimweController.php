@@ -662,7 +662,7 @@ class TimweController
         $send_array["du_message_mean"] = $message_mean;
         $send_array["message"] = $MtText;
         $send_array["msisdn"] = $Msisdn;
-        $this->log('CCT Sent Mt '.$service, url('/du_message_send'), $send_array);
+        $this->log('CCT Kannel Sent Mt '.$service, url('/du_message_send'), $send_array);
 
 
         $logmes = new LogMessage();
