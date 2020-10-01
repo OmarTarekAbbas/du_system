@@ -143,7 +143,7 @@ class TimweController
                         $product[$i]['subId'] = $subscriber->activation_id;
 
                         $product[$i]['subStatus'] = "ACTIVE";
-                        $product[$i]['subscriptionDate'] = $subscriber->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+                        $product[$i]['subscriptionDate'] = $subscriber->subscribe_date->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
 
                         $plan = $subscriber->plan;
                         switch ($plan) {
