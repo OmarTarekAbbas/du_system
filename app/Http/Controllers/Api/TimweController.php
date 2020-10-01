@@ -86,7 +86,7 @@ class TimweController
 
         $AuthUser = $request->AuthUser;
         $AuthPass = $request->AuthPass;
-        $subscribers = Subscriber::select('subscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')->join('activation', 'activation.id', '=', 'subscribers.activation_id');
+        $subscribers = Subscriber::select('subscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price','activation.created_at AS act_created')->join('activation', 'activation.id', '=', 'subscribers.activation_id');
         $unsubscribers = Unsubscriber::select('unsubscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')->join('activation', 'activation.id', '=', 'unsubscribers.activation_id');
         if ($AuthUser == TIMWE_AuthUser && $AuthPass == TIMWE_AuthPass) { // check auth
 
@@ -143,7 +143,7 @@ class TimweController
                         $product[$i]['subId'] = $subscriber->activation_id;
 
                         $product[$i]['subStatus'] = "ACTIVE";
-                        $product[$i]['subscriptionDate'] =   date("d-M-Y h:i",strtotime( $subscriber->subscribe_date)) ; //"24-Jan-2019 12:20"
+                        $product[$i]['subscriptionDate'] =   date("d-M-Y h:i",strtotime($subscriber->act_created))     ; //   $subscriber->act_created->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
 
                         $plan = $subscriber->plan;
                         switch ($plan) {
