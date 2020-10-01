@@ -405,21 +405,21 @@ class TimweController
 
                         if ($request->has('FromDate') && $request->FromDate != '') {
                             $FromDate = date("Y-m-d H:i:s", strtotime($request->FromDate));
-                            $mos = $mos->where('created_at', ">=", $FromDate)->take(30);
-                            $mts = $mts->where('created_at', ">=", $FromDate)->take(30);
-                            $charges = $charges->where('created_at', ">=", $FromDate)->take(30);
+                            $mos = $mos->where('created_at', ">=", $FromDate);
+                            $mts = $mts->where('created_at', ">=", $FromDate);
+                            $charges = $charges->where('created_at', ">=", $FromDate);
                         }
 
                         if ($request->has('ToDate') && $request->ToDate != '') {
                             $ToDate = date("Y-m-d H:i:s", strtotime($request->ToDate));
-                            $mos = $mos->where('created_at', "<=", $ToDate)->take(30);
-                            $mts = $mts->where('created_at', "<=", $ToDate)->take(30);
-                            $charges = $charges->where('created_at', "<=", $ToDate)->take(30);
+                            $mos = $mos->where('created_at', "<=", $ToDate);
+                            $mts = $mts->where('created_at', "<=", $ToDate);
+                            $charges = $charges->where('created_at', "<=", $ToDate);
                         }
 
-                        $mts = $mts->sortByDesc('created_at');
-                        $mos = $mos->sortByDesc('created_at');
-                        $charges = $charges->sortByDesc('created_at');
+                        $mts = $mts->sortByDesc('created_at')->take(30);
+                        $mos = $mos->sortByDesc('created_at')->take(30);
+                        $charges = $charges->sortByDesc('created_at')->take(30);
 
                         foreach ($mos as $mo) {
 
