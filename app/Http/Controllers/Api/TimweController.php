@@ -9,6 +9,7 @@ use App\Subscriber;
 use Monolog\Logger;
 use App\Unsubscriber;
 use App\Timwecct;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Monolog\Handler\StreamHandler;
 
@@ -690,6 +691,7 @@ class TimweController
 
         $log->pushHandler(new StreamHandler(storage_path("logs/$year/$month/$day/$actionName/logFile.log", Logger::INFO)));
         $log->addInfo($URL, $parameters_arr);
+
     }
 
 }
