@@ -417,9 +417,9 @@ class TimweController
                             $charges = $charges->where('created_at', "<=", $ToDate);
                         }
 
-                        $mts = $mts->sortByDesc('created_at')->take(30);
-                        $mos = $mos->sortByDesc('created_at')->take(30);
-                        $charges = $charges->sortByDesc('created_at')->take(30);
+                        $mts = $mts->sortByDesc('created_at')->take(PAGINATION);
+                        $mos = $mos->sortByDesc('created_at')->take(PAGINATION);
+                        $charges = $charges->sortByDesc('created_at')->take(PAGINATION);
 
                         foreach ($mos as $mo) {
 

@@ -70,6 +70,7 @@ define('secureD_Insufficient_funds',3);
 Route::get('test_mbc','UrlController@test_mbc');
 /***************start timwe api*************/
 
+define('PAGINATION', 30);
 define('TIMWE_AuthUser', 'IVAS_CCT');
 define('TIMWE_AuthPass', 'CCT_2020_981');
 define('OpId', '268');
