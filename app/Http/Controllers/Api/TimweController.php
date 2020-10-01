@@ -561,7 +561,7 @@ class TimweController
                             $subscriber = $subscriber->first();
                             if ($subscriber) {
 
-                                   $this->du_message_send($request->Msisdn, $request->MtText,$subscriber->serviceid);
+                                $LogMessage_id =      $this->du_message_send($request->Msisdn, $request->MtText,$subscriber->serviceid);
 
                                 $response['responseStatus']['code'] = "1";
                                 $response['responseStatus']['description'] = "success";
@@ -571,7 +571,7 @@ class TimweController
                                 $product['id'] = $service_id->id;
                                 $product['la'] = TIMWE_SHORTCODE;
                                 $product['subId'] = $subscriber->activation_id;
-                                $product['mtId'] = $subscriber->mts->first()->id;
+                                $product['mtId'] = $LogMessage_id;
                                 $product['subStatus'] = "ACTIVE";
                                 $product['subscriptionDate'] = $subscriber->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
 
@@ -635,8 +635,8 @@ class TimweController
     public function du_message_send($Msisdn, $MtText,$service)
     {
         // Du sending welcome message
-        //$URL = DU_SMS_SEND_MESSAGE;
-        $URL = "";
+        $URL = DU_SMS_SEND_MESSAGE;
+       // $URL = "";
         $param = "phone_number=$Msisdn&message=$MtText";
 
         $ch = curl_init();
@@ -671,6 +671,8 @@ class TimweController
         $logmes->message_type  = "cct_sent_mt";
         $logmes->status  = $status;
         $logmes->save();
+
+        return  $logmes->id ;
     }
 
     public function log($actionName, $URL, $parameters_arr)
