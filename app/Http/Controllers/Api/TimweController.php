@@ -404,16 +404,16 @@ class TimweController
 
                         if ($request->has('FromDate') && $request->FromDate != '') {
                             $FromDate = date("Y-m-d H:i:s", strtotime($request->FromDate));
-                            $mos = $mos->where('created_at', ">=", $FromDate)->take(100);
-                            $mts = $mts->where('created_at', ">=", $FromDate)->take(100);
-                            $charges = $charges->where('created_at', ">=", $FromDate)->take(100);
+                            $mos = $mos->where('created_at', ">=", $FromDate)->take(30);
+                            $mts = $mts->where('created_at', ">=", $FromDate)->take(30);
+                            $charges = $charges->where('created_at', ">=", $FromDate)->take(30);
                         }
 
                         if ($request->has('ToDate') && $request->ToDate != '') {
                             $ToDate = date("Y-m-d H:i:s", strtotime($request->ToDate));
-                            $mos = $mos->where('created_at', "<=", $ToDate)->take(100);
-                            $mts = $mts->where('created_at', "<=", $ToDate)->take(100);
-                            $charges = $charges->where('created_at', "<=", $ToDate)->take(100);
+                            $mos = $mos->where('created_at', "<=", $ToDate)->take(30);
+                            $mts = $mts->where('created_at', "<=", $ToDate)->take(30);
+                            $charges = $charges->where('created_at', "<=", $ToDate)->take(30);
                         }
 
                         $mts = $mts->sortByDesc('created_at');
