@@ -87,4 +87,6 @@ Route::get('testyousef','HomeController@test');
 
 Route::get('test_successfulSubs','UrlController@test_successfulSubs');
 
+Route::resource('admin/setting','SettingController');
+Route::post('admin/setting/{id}','SettingController@update');
 
