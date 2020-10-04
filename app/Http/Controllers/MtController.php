@@ -7,6 +7,7 @@ use App\Operator;
 use App\Service;
 use App\Upload;
 use App\User;
+use App\Helpers\Helper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -125,7 +126,7 @@ class MtController extends Controller
             if ($Messages->isEmpty()) {
                 $status = (Auth::user()->admin == true) ? 1 : 0;
                 if (Auth::user()->admin == 0) {
-                    $status = ENABLE;
+                    $status = Helper::setting();
                 }
                 Message::create(['MTBody' => rtrim($request->input('MTBody'))  , 'date' => $request->input('date'), 'MTURL' => $request->input('MTURL'), 'ShortnedURL' => $this->ShortURL(trim($request->input('MTURL')), $request->input('date'), $GetServiceDetails->ExURL), 'service_id' => $OpId, 'status' => $status,
                 'user_id' => Auth::user()->id, 'time' => $time ]);
@@ -145,7 +146,7 @@ class MtController extends Controller
                     if ($Messages->isEmpty()) {
                         $status = (Auth::user()->admin == true) ? 1 : 0;
                         if (Auth::user()->admin == 0) {
-                            $status = ENABLE;
+                            $status = Helper::setting();
                         }
                         Message::create(['MTBody' => rtrim($request->input('MTBody')) , 'date' => $request->input('date'), 'MTURL' => $request->input('MTURL'), 'ShortnedURL' => $this->ShortURL(trim($request->input('MTURL')), $request->input('date'), $GetServiceDetails->ExURL), 'service_id' => $OpId, 'status' => $status, 'user_id' => Auth::user()->id
                             , 'time' => $time]);
@@ -182,7 +183,7 @@ class MtController extends Controller
                     $FID = $this->UploadContent($request->file('file'), $OpId);
                     $status = (Auth::user()->admin == true) ? 1 : 0;
                     if (Auth::user()->admin == 0) {
-                        $status = ENABLE;
+                        $status = Helper::setting();
                     }
                     Message::create(['MTBody' =>rtrim($request->input('MTBody')) , 'date' => $request->input('date'), 'MTURL' => url('get/' . $FID), 'ShortnedURL' => $this->ShortURL(url('get/' . $FID), $request->input('date'), $GetServiceDetails->ExURL), 'service_id' => $OpId, 'status' => $status, 'user_id' => Auth::user()->id]);
                     return redirect('admin/mt');
@@ -203,7 +204,7 @@ class MtController extends Controller
                             $FID = $this->UploadContent($request->file('file'), $OpId);
                             $status = (Auth::user()->admin == true) ? 1 : 0;
                             if (Auth::user()->admin == 0) {
-                                $status = ENABLE;
+                                $status = Helper::setting();
                             }
                             Message::create(['MTBody' =>rtrim($request->input('MTBody')) , 'date' => $request->input('date'), 'MTURL' => url('get/' . $FID), 'ShortnedURL' => $this->ShortURL(url('get/' . $FID), $request->input('date'), $GetServiceDetails->ExURL), 'service_id' => $OpId, 'status' => $status, 'user_id' => Auth::user()->id
                                 , 'time' => $time]);
@@ -378,7 +379,7 @@ class MtController extends Controller
             $GetServiceDetails = Service::find($OpId);
             $status = (Auth::user()->admin == true) ? 1 : 0;
             if (Auth::user()->admin == 0) {
-                $status = ENABLE;
+                $status = Helper::setting();
             }
             Message::find($id)->update(['MTBody' => rtrim($request->input('MTBody')) , 'date' => $request->input('date'), 'MTURL' => $request->input('MTURL'), 'ShortnedURL' => $this->ShortURL(trim($request->input('MTURL')), $request->input('date'), $GetServiceDetails->ExURL), 'service_id' => $OpId, 'status' => $status, 'user_id' => Auth::user()->id
                 , 'time' => $time]);
@@ -390,7 +391,7 @@ class MtController extends Controller
             $FID = $this->UploadContent($request->file('file'), $OpId);
             $status = (Auth::user()->admin == true) ? 1 : 0;
             if (Auth::user()->admin == 0) {
-                $status = ENABLE;
+                $status = Helper::setting();
             }
             Message::find($id)->update(['MTBody' => rtrim($request->input('MTBody')) , 'date' => $request->input('date'), 'MTURL' => url('get/' . $FID), 'ShortnedURL' => $this->ShortURL(url('get/' . $FID), $request->input('date'), $GetServiceDetails->ExURL), 'service_id' => $OpId, 'status' => $status, 'user_id' => Auth::user()->id
                 , 'time' => $time]);
