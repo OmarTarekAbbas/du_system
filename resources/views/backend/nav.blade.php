@@ -89,5 +89,6 @@
     @if(Auth::user()->admin == true)
         <li><a href="{{ url('admin/user/create') }}"><span class="glyphicon glyphicon-user"></span> Add User</a></li>
         <li><a href="{{ url('admin/user') }}"><span class="glyphicon glyphicon-list"></span> Users list</a></li>
+        <li><a href="{{ url('admin/setting') }}"><span class="glyphicon glyphicon-list"></span> Setting</a></li>
     @endif
 </ul>
