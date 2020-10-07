@@ -562,18 +562,18 @@ class UrlController extends Controller
 
         $recipients = array(
             "emad@ivas.com.eg",
-            "dalia.soliman@ivas.com.eg",
-            "sayed@ivas.com.eg",
-            "raafat.ahmed@ivas.com.eg",
-            "cr@ivas.com.eg",
-            "saad@ivas.com.eg"
+            // "dalia.soliman@ivas.com.eg",
+            // "sayed@ivas.com.eg",
+            // "raafat.ahmed@ivas.com.eg",
+            // "cr@ivas.com.eg",
+            // "saad@ivas.com.eg"
         );
 
 
 $email = implode(',', $recipients);
         $headers2 = 'MIME-Version: 1.0' . "\r\n";
         $headers2 .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-        $headers2 .= 'From: DU';
+        $headers2 .= 'From: emad@ivas.com.eg';
 
         @mail($email, $subject2, $message2, $headers2);
 
