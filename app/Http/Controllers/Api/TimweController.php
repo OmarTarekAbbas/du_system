@@ -137,11 +137,11 @@ class TimweController
                         $service_name = $subscriber->serviceid;
                         $service_id = Service::where('title', 'LIKE', "%$service_name%")->first()->id;
 
-                        $product[$i]['id'] = $service_id;
+                        $product[$i]['id'] = (string)$service_id;
                         $product[$i]['type'] = PRODUCT_TYPE; // subscription
                         $product[$i]['name'] = $subscriber->serviceid;
                         $product[$i]['la'] = TIMWE_SHORTCODE;
-                        $product[$i]['subId'] = $subscriber->activation_id;
+                        $product[$i]['subId'] = (string)$subscriber->activation_id;
 
                         $product[$i]['subStatus'] = "ACTIVE";
                         $product[$i]['subscriptionDate'] =   date("d-M-Y h:i",strtotime($subscriber->act_created))     ; //   $subscriber->act_created->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
@@ -149,10 +149,10 @@ class TimweController
                         $plan = $subscriber->plan;
                         switch ($plan) {
                             case 'daily':
-                                $product[$i]['billingPeriod'] = 1;
+                                $product[$i]['billingPeriod'] = (string)1;
                                 break;
                             case 'weekly':
-                                $product[$i]['billingPeriod'] = 7;
+                                $product[$i]['billingPeriod'] = (string)7;
                                 break;
                         }
                         $product[$i]['billingAmount'] = $subscriber->price;
@@ -167,11 +167,11 @@ class TimweController
                         $service_name = $unsubscriber->serviceid;
                         $service_id = Service::where('title', 'LIKE', "%$service_name%")->first()->id;
 
-                        $product[$i]['id'] = $service_id;
+                        $product[$i]['id'] = (string)$service_id;
                         $product[$i]['type'] = PRODUCT_TYPE; // subscription
                         $product[$i]['name'] = $unsubscriber->serviceid;
                         $product[$i]['la'] = TIMWE_SHORTCODE;
-                        $product[$i]['subId'] = $unsubscriber->activation_id;
+                        $product[$i]['subId'] = (string)$unsubscriber->activation_id;
 
                         $product[$i]['subStatus'] = "CANCELLED";
                         $product[$i]['subscriptionDate'] = $unsubscriber->activation->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
@@ -180,10 +180,10 @@ class TimweController
                         $plan = $unsubscriber->plan;
                         switch ($plan) {
                             case 'daily':
-                                $product[$i]['billingPeriod'] = 1;
+                                $product[$i]['billingPeriod'] = (string)1;
                                 break;
                             case 'weekly':
-                                $product[$i]['billingPeriod'] = 7;
+                                $product[$i]['billingPeriod'] = (string)7;
                                 break;
                         }
                         $product[$i]['billingAmount'] = $unsubscriber->price;
@@ -423,7 +423,7 @@ class TimweController
 
                         foreach ($mos as $mo) {
 
-                            $product[$i]['productId'] = $services_id->id;
+                            $product[$i]['productId'] = (string)$services_id->id;
                             $product[$i]['productName'] = $subscriber->serviceid;
                             $product[$i]['userLa'] = TIMWE_SHORTCODE;
                             $product[$i]['userMessage'] = $mo->message;
@@ -441,7 +441,7 @@ class TimweController
 
                         foreach ($mts as $mt) {
 
-                            $product[$i]['productId'] = $services_id->id;
+                            $product[$i]['productId'] = (string)$services_id->id;
                             $product[$i]['productName'] = $subscriber->serviceid;
                             $product[$i]['userLa'] = TIMWE_SHORTCODE;
                             $product[$i]['userMessage'] = "";
@@ -458,7 +458,7 @@ class TimweController
 
                         foreach ($charges as $charge) {
 
-                            $product[$i]['productId'] = $services_id->id;
+                            $product[$i]['productId'] = (string)$services_id->id;
                             $product[$i]['productName'] = $subscriber->serviceid;
                             $product[$i]['userLa'] = TIMWE_SHORTCODE;
                             $product[$i]['userMessage'] = "";
