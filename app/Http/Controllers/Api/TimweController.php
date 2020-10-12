@@ -233,7 +233,7 @@ class TimweController
 
         if (isset($service)) // check if service is set
         {
-            $responseObj['service'] = [$service];
+            $responseObj['response']['service'] = [$service];
         }
 
         $actionName = 'CCT Inquery';
@@ -335,7 +335,7 @@ class TimweController
 
         if (isset($service)) // check if service is set
         {
-            $responseObj['service'] = [$service];
+            $responseObj['response']['service'] = [$service];
         }
 
         $actionName = 'CCT Unsubscribe';
@@ -486,7 +486,7 @@ class TimweController
                     $response['responseStatus']['description'] = "success";
                     $responseObj['response'] = $response;
                     if (isset($service)) {
-                        $responseObj['service'] = [$service];
+                        $responseObj['response']['service'] = [$service];
                     }
                 } else {
                     $response['msisdn'] = $request->Msisdn;
@@ -605,7 +605,7 @@ class TimweController
                 $responseObj['response'] = $response;
 
                 if (isset($service_arr)) {
-                    $responseObj['service'] = [$service_arr];
+                    $responseObj['response']['service'] = [$service_arr];
                 }
                 $actionName = 'SendMt';
                 $URL = $request->fullUrl();
