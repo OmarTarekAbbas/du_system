@@ -173,7 +173,7 @@ class TimweController
                         $product[$i]['la'] = TIMWE_SHORTCODE;
                         $product[$i]['subId'] = (string)$unsubscriber->activation_id;
 
-                        $product[$i]['subStatus'] = "CANCELLED";
+                        $product[$i]['subStatus'] = "CANCELED";
                         $product[$i]['subscriptionDate'] = $unsubscriber->activation->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
                         $product[$i]['unsubscriptionDate'] = $unsubscriber->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
 
@@ -304,13 +304,19 @@ class TimweController
                         $product[$i]['la'] = TIMWE_SHORTCODE;
                         $product[$i]['type'] = PRODUCT_TYPE; // subscription
                         $product[$i]['subId'] = $sub->activation_id;
-                        $product[$i]['subStatus'] = "CANCELLED";
+                        $product[$i]['subStatus'] = "CANCELED";
                         $product[$i]['subscriptionDate'] = $sub->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
                         $sub->delete();
                         $unsubscriber_id = Unsubscriber::create($unsubscriber);
                         $product[$i]['unsubscriptionDate'] = $unsubscriber_id->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
                         $product[$i]['serviceActivationMode'] = "SMS";
                         $i++;
+
+                        // here send unsub message to the user
+                      $unsub_message = "You are unsub successfully from ".  $services_id->service ;
+                      $message_type="cct_unsub_mt";
+                     $LogMessage_id =      $this->du_message_send( $request->Msisdn,  $unsub_message, $sub->serviceid, $message_type);
+
 
                     }
                 } else {
@@ -562,7 +568,8 @@ class TimweController
                             $subscriber = $subscriber->first();
                             if ($subscriber) {
 
-                                $LogMessage_id =      $this->du_message_send($request->Msisdn, $request->MtText,$subscriber->serviceid);
+                                $message_type = "cct_sent_mt";
+                                $LogMessage_id =      $this->du_message_send($request->Msisdn, $request->MtText,$subscriber->serviceid, $message_type);
 
                                 $response['responseStatus']['code'] = "1";
                                 $response['responseStatus']['description'] = "success";
@@ -633,7 +640,7 @@ class TimweController
         return json_encode($responseObj);
     }
 
-    public function du_message_send($Msisdn, $MtText,$service)
+    public function du_message_send($Msisdn, $MtText,$service,$message_type)
     {
         // Du sending welcome message
         $URL = DU_SMS_SEND_MESSAGE;
@@ -669,7 +676,7 @@ class TimweController
         $logmes->service       = $service;
         $logmes->msisdn        = $Msisdn;
         $logmes->message       = $MtText;
-        $logmes->message_type  = "cct_sent_mt";
+        $logmes->message_type  =  $message_type;
         $logmes->status  = $status;
         $logmes->save();
 
