@@ -119,14 +119,7 @@ class TimweController
                     }
                 }
 
-
-
-
-
-
                 foreach($services_arr as $key => $value){
-
-
                     $subscribers = Subscriber::select('subscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price','activation.created_at AS act_created')->join('activation', 'activation.id', '=', 'subscribers.activation_id');
                     $unsubscribers = Unsubscriber::select('unsubscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')->join('activation', 'activation.id', '=', 'unsubscribers.activation_id');
 
@@ -150,15 +143,8 @@ class TimweController
 
 
 
-
-
-
-
-
                     $subscriber = $subscribers->where('serviceid', $value)->latest()->first();
                     $unsubscriber = $unsubscribers->where('serviceid', $value)->latest()->first();
-
-
 
 
                     if ($subscriber || $unsubscriber) {
