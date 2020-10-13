@@ -408,9 +408,9 @@ class TimweController
                 // limit sunscribers by specific service
                 if ($request->has('ProductId') && $request->ProductId != '') {
                     if (in_array($request->ProductId , ProductId)) {
-                        $service = Service::where('id', $request->ProductId)->first();
+                        $service_fetch = Service::where('id', $request->ProductId)->first();
                         // $mts = $mts ->where('service', $service->title);
-                        $subscribers = $subscribers->where('serviceid', $service->title) ;
+                        $subscribers = $subscribers->where('serviceid', $service_fetch->title) ;
                         $filter_by_product = 1 ;
                     }else{
                         $filter_by_product = 0 ;
@@ -432,7 +432,7 @@ class TimweController
 
                         // filetr MT
                         if( $filter_by_product){
-                               $mts = $mts ->where('service', $service->title);
+                               $mts = $mts ->where('service', $service_fetch->title);
                         }
 
                         if ($request->has('FromDate') && $request->FromDate != '') {
@@ -535,9 +535,9 @@ class TimweController
 
                        if ($request->has('ProductId') && $request->ProductId != '') {
                         if (in_array($request->ProductId , ProductId)) {
-                            $service = Service::where('id', $request->ProductId)->first();
-                            $mts = $mts ->where('service', $service->title);
-                            $activations = $activations ->where('serviceid', $service->title);
+                            $service_fetch = Service::where('id', $request->ProductId)->first();
+                            $mts = $mts ->where('service', $service_fetch->title);
+                            $activations = $activations ->where('serviceid', $service_fetch->title);
                             $productId = $request->ProductId ;
                             $productName =  $service->title ;
                         }else{
