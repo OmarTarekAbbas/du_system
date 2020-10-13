@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use stdClass;
 use App\Service;
+use App\Activation;
 use App\LogMessage;
+use App\DuMo;
 use App\Subscriber;
 use Monolog\Logger;
 use App\Unsubscriber;
@@ -389,6 +391,8 @@ class TimweController
                 $service['id'] = SERVICE_ID;
                 $service['name'] = SERVICE_NAME;
 
+
+
                 if ($request->has('FromDate') && $request->FromDate != '') {
                     $FromDate = date("Y-m-d H:i:s", strtotime($request->FromDate));
                     $subscribers = $subscribers->where('subscribe_date', ">=", $FromDate);
@@ -400,6 +404,23 @@ class TimweController
                 }
 
                 $subscribers = $subscribers->where('msisdn', $request->Msisdn)->get();
+
+                // limit sunscribers by specific service
+                if ($request->has('ProductId') && $request->ProductId != '') {
+                    if (in_array($request->ProductId , ProductId)) {
+                        $service = Service::where('id', $request->ProductId)->first();
+                        // $mts = $mts ->where('service', $service->title);
+                        $subscribers = $subscribers->where('serviceid', $service->title) ;
+                        $filter_by_product = 1 ;
+                    }else{
+                        $filter_by_product = 0 ;
+                    }
+                }else{
+                    $filter_by_product = 0 ;
+                }
+
+
+
                 if ($subscribers->count() > 0) {
                     $i = 0;
                     foreach ($subscribers as $subscriber) {
@@ -408,6 +429,11 @@ class TimweController
                         $mos = $subscriber->mos; //date
                         $mts = $subscriber->mts->where('service', $subscriber->serviceid);
                         $charges = $subscriber->charges; //filter date
+
+                        // filetr MT
+                        if( $filter_by_product){
+                               $mts = $mts ->where('service', $service->title);
+                        }
 
                         if ($request->has('FromDate') && $request->FromDate != '') {
                             $FromDate = date("Y-m-d H:i:s", strtotime($request->FromDate));
@@ -426,6 +452,12 @@ class TimweController
                         $mts = $mts->sortByDesc('created_at')->take(PAGINATION);
                         $mos = $mos->sortByDesc('created_at')->take(PAGINATION);
                         $charges = $charges->sortByDesc('created_at')->take(PAGINATION);
+
+
+
+
+
+
 
                         foreach ($mos as $mo) {
 
@@ -495,12 +527,121 @@ class TimweController
                         $responseObj['response']['service'] = [$service];
                     }
                 } else {
+
+                       // check for insufficient balance for MO and charging history
+                       $mos =    DuMo::where('msisdn', $request->Msisdn) ;
+                       $mts =    LogMessage::where('msisdn', $request->Msisdn) ;
+                       $activations =    Activation::where('msisdn', $request->Msisdn) ;
+
+                       if ($request->has('ProductId') && $request->ProductId != '') {
+                        if (in_array($request->ProductId , ProductId)) {
+                            $service = Service::where('id', $request->ProductId)->first();
+                            $mts = $mts ->where('service', $service->title);
+                            $activations = $activations ->where('serviceid', $service->title);
+                            $productId = $request->ProductId ;
+                            $productName =  $service->title ;
+                        }else{
+                            $productId = $request->ProductId ;
+                            $productName = "" ;
+                        }
+                    }else{
+                        $productId = "" ;
+                        $productName = "" ;
+                    }
+
+
+                       if ($request->has('FromDate') && $request->FromDate != '') {
+                        $FromDate = date("Y-m-d H:i:s", strtotime($request->FromDate));
+                        $mos = $mos->where('created_at', ">=", $FromDate);
+                        $mts = $mts->where('created_at', ">=", $FromDate);
+                        $activations = $activations->where('created_at', ">=", $FromDate);
+                    }
+
+                    if ($request->has('ToDate') && $request->ToDate != '') {
+                        $ToDate = date("Y-m-d H:i:s", strtotime($request->ToDate));
+                        $mos = $mos->where('created_at', "<=", $ToDate);
+                        $mts = $mts->where('created_at', "<=", $ToDate);
+                        $activations = $activations->where('created_at', "<=", $ToDate);
+                    }
+
+                    $mts = $mts->sortByDesc('created_at')->take(PAGINATION);
+                    $mos = $mos->sortByDesc('created_at')->take(PAGINATION);
+                    $activations = $activations->sortByDesc('created_at')->take(PAGINATION);
+
+
+                    foreach ($mos as $mo) {
+                        $product[$i]['productId'] = (string) $productId;
+                        $product[$i]['productName'] = $productName;
+                        $product[$i]['userLa'] = TIMWE_SHORTCODE;
+                        $product[$i]['userMessage'] = $mo->message;
+                        $product[$i]['systemResponse'] = "";
+                        $product[$i]['systemLa'] = TIMWE_SHORTCODE;
+                        $product[$i]['billableAction'] = "no";
+                        $product[$i]['billingAmount'] = "";
+                        $product[$i]['userMessageDate'] = $mo->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+                        $product[$i]['systemResponseDate'] = ""; //"24-Jan-2019 12:20"
+                        $product[$i]['direction'] = "MO";
+
+                        $i++;
+                    }
+
+
+                    foreach ($mts as $mt) {
+                        $product[$i]['productId'] = (string) $productId;
+                        $product[$i]['productName'] = $productName;
+                        $product[$i]['userLa'] = TIMWE_SHORTCODE;
+                        $product[$i]['userMessage'] = "";
+                        $product[$i]['systemResponse'] = $mt->message;
+                        $product[$i]['systemLa'] = TIMWE_SHORTCODE;
+                        $product[$i]['billableAction'] = "no";
+                        $product[$i]['billingAmount'] = "";
+                        $product[$i]['userMessageDate'] = ""; //"24-Jan-2019 12:20"
+                        $product[$i]['systemResponseDate'] = $mt->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+                        $product[$i]['direction'] = "MT";
+
+                        $i++;
+                    }
+
+
+                    foreach ($activations as $activation) {
+
+                        $product[$i]['productId'] =  (string) $productId;
+                        $product[$i]['productName'] = $activation->serviceid;
+                        $product[$i]['userLa'] = TIMWE_SHORTCODE;
+                        $product[$i]['userMessage'] = "";
+                        $product[$i]['systemResponse'] = "";
+                        $product[$i]['systemLa'] = TIMWE_SHORTCODE;
+                        $product[$i]['billableAction'] = "Yes";
+                        $product[$i]['billingAmount'] = "2";
+                        $product[$i]['userMessageDate'] = ""; //"24-Jan-2019 12:20"
+                        $product[$i]['systemResponseDate'] = $activation->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+                        $product[$i]['direction'] = "DIRECT BILLING";
+
+                        $i++;
+                    }
+
+
+                    if (isset($product)) {
+                        $service['userRequest '] = $product;
+                    }
+
+                    //if found
                     $response['msisdn'] = $request->Msisdn;
                     $response['opId'] = $request->OpId ?? "268";
 
                     $response['responseStatus']['code'] = "1";
                     $response['responseStatus']['description'] = "success";
                     $responseObj['response'] = $response;
+                    if (isset($service)) {
+                        $responseObj['response']['service'] = [$service];
+                    }
+
+
+
+                    $responseObj['response'] = $response;
+
+
+
                 }
 
             }
