@@ -76,11 +76,17 @@ define('TIMWE_AuthPass', 'CCT_2020_981');
 define('OpId', '268');
 define('SERVICE_ID', '1');
 define('CountryId', '971');
-define('ProductId', ['5', '7']);
+
 define('SERVICE_NAME', 'IVAS');
 define('PRODUCT_TYPE', 'Brokerage');
 define('TIMWE_SHORTCODE', '4971');
+define('ProductId', ['5', '7']);
 define('ACTIVE_SERVICES', ['liveqarankhatma', 'flaterrotanadaily']);
+define('ACTIVE_SERVICES_Array', [
+                            'flaterrotanadaily' => '5' ,
+                            'liveqarankhatma'=>'7'
+
+]);
 
 
 Route::get('inquiry','Api\TimweController@inquiry');

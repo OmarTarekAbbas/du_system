@@ -527,26 +527,23 @@ class TimweController
                         $responseObj['response']['service'] = [$service];
                     }
                 } else {
-
+                      $i = 0;
                        // check for insufficient balance for MO and charging history
                        $mos =    DuMo::where('msisdn', $request->Msisdn) ;
                        $mts =    LogMessage::where('msisdn', $request->Msisdn) ;
                        $activations =    Activation::where('msisdn', $request->Msisdn) ;
+
 
                        if ($request->has('ProductId') && $request->ProductId != '') {
                         if (in_array($request->ProductId , ProductId)) {
                             $service_fetch = Service::where('id', $request->ProductId)->first();
                             $mts = $mts ->where('service', $service_fetch->title);
                             $activations = $activations ->where('serviceid', $service_fetch->title);
-                            $productId = $request->ProductId ;
+                            $productId = $service_fetch->id ;
                             $productName =  $service_fetch->title ;
                         }else{
                             $productId = $request->ProductId ;
-                            $productName = "" ;
                         }
-                    }else{
-                        $productId = "" ;
-                        $productName = "" ;
                     }
 
 
@@ -564,9 +561,9 @@ class TimweController
                         $activations = $activations->where('created_at', "<=", $ToDate);
                     }
 
-                    $mts = $mts->orderBy('created_at','Desc')->take(PAGINATION);
-                    $mos = $mos->orderBy('created_at','Desc')->take(PAGINATION);
-                    $activations = $activations->orderBy('created_at','Desc')->take(PAGINATION);
+                    $mts = $mts->orderBy('created_at','Desc')->take(PAGINATION)->get();
+                    $mos = $mos->orderBy('created_at','Desc')->take(PAGINATION)->get();
+                    $activations = $activations->orderBy('created_at','Desc')->take(PAGINATION)->get();
 
 
                     foreach ($mos as $mo) {
@@ -585,10 +582,9 @@ class TimweController
                         $i++;
                     }
 
-
                     foreach ($mts as $mt) {
-                        $product[$i]['productId'] = (string) $productId;
-                        $product[$i]['productName'] = $productName;
+                        $product[$i]['productId'] =  (string)($productId??ACTIVE_SERVICES_Array[$mt->service]??'');
+                        $product[$i]['productName'] = $productName??array_search ( $product[$i]['productId'] , ACTIVE_SERVICES_Array)??'';
                         $product[$i]['userLa'] = TIMWE_SHORTCODE;
                         $product[$i]['userMessage'] = "";
                         $product[$i]['systemResponse'] = $mt->message;
@@ -605,7 +601,7 @@ class TimweController
 
                     foreach ($activations as $activation) {
 
-                        $product[$i]['productId'] =  (string) $productId;
+                        $product[$i]['productId'] =  (string) ACTIVE_SERVICES_Array[$activation->serviceid];
                         $product[$i]['productName'] = $activation->serviceid;
                         $product[$i]['userLa'] = TIMWE_SHORTCODE;
                         $product[$i]['userMessage'] = "";
@@ -621,9 +617,13 @@ class TimweController
                     }
 
 
+
+
                     if (isset($product)) {
                         $service['userRequest '] = $product;
                     }
+
+
 
                     //if found
                     $response['msisdn'] = $request->Msisdn;
@@ -638,7 +638,6 @@ class TimweController
 
 
 
-                    $responseObj['response'] = $response;
 
 
 
