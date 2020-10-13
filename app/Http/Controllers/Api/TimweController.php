@@ -605,22 +605,6 @@ class TimweController
                     }
 
                     foreach ($mts as $mt) {
-
-                        switch ($mt->service) {
-                            case ACTIVE_SERVICES_WTH_SPACE[0]:
-                                $service_name = ACTIVE_SERVICES[0];
-                                break;
-                            case ACTIVE_SERVICES_WTH_SPACE[1]:
-                                $service_name = ACTIVE_SERVICES[1] ;
-                                break;
-
-                                default:
-                                $service_name = $mt->service;
-                                break;
-                        }
-
-
-
                         $product[$i]['productId'] =  (string)($productId??ACTIVE_SERVICES_Array[ $service_name]??'');
                         $product[$i]['productName'] = $productName??array_search ( $product[$i]['productId'] , ACTIVE_SERVICES_Array)??'';
                         $product[$i]['userLa'] = TIMWE_SHORTCODE;
