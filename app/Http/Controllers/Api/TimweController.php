@@ -564,9 +564,9 @@ class TimweController
                         $activations = $activations->where('created_at', "<=", $ToDate);
                     }
 
-                    $mts = $mts->sortByDesc('created_at')->take(PAGINATION);
-                    $mos = $mos->sortByDesc('created_at')->take(PAGINATION);
-                    $activations = $activations->sortByDesc('created_at')->take(PAGINATION);
+                    $mts = $mts->orderBy('created_at','Desc')->take(PAGINATION);
+                    $mos = $mos->orderBy('created_at','Desc')->take(PAGINATION);
+                    $activations = $activations->orderBy('created_at','Desc')->take(PAGINATION);
 
 
                     foreach ($mos as $mo) {
