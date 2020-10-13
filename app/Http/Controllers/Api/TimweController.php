@@ -453,6 +453,7 @@ class TimweController
 
                         // filetr MT
                         if( $filter_by_product){
+
                                $mts = $mts ->where('service', $service_fetch->title);
                         }
 
@@ -604,8 +605,6 @@ class TimweController
                     }
 
                     foreach ($mts as $mt) {
-                        if($mt->service == ACTIVE_SERVICES_WTH_SPACE[0])   $service_name = ACTIVE_SERVICES[1] ;
-                        if($mt->service == ACTIVE_SERVICES_WTH_SPACE[1])   $service_name = ACTIVE_SERVICES[0] ;
 
                         switch ($mt->service) {
                             case ACTIVE_SERVICES_WTH_SPACE[0]:

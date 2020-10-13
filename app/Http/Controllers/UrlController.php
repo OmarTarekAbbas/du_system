@@ -2566,6 +2566,21 @@ $password = "P-wSYBYFVSWA-#1234";
 
     public function saveLogMessage($serviceid, $msisdn, $mes, $message_type, $status,$log_message_id)
     {
+
+        switch ($serviceid) {
+            case 'Live Quran Khatma':
+                $serviceid = ACTIVE_SERVICES[0] ;
+                break;
+
+                case 'Flater Rotana':
+                    $serviceid = ACTIVE_SERVICES[1] ;
+                    break;
+
+            default:
+            $serviceid = $serviceid ;
+                break;
+        }
+
         if($log_message_id == "" ){ // new
             $logmes = new LogMessage();
             $logmes->service       = $serviceid;
