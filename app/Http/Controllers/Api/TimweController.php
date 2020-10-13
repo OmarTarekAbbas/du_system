@@ -605,7 +605,7 @@ class TimweController
                     }
 
                     foreach ($mts as $mt) {
-                        $product[$i]['productId'] =  (string)($productId??ACTIVE_SERVICES_Array[ $service_name]??'');
+                        $product[$i]['productId'] =  (string)($productId??ACTIVE_SERVICES_Array[ $$mt->service]??'');
                         $product[$i]['productName'] = $productName??array_search ( $product[$i]['productId'] , ACTIVE_SERVICES_Array)??'';
                         $product[$i]['userLa'] = TIMWE_SHORTCODE;
                         $product[$i]['userMessage'] = "";
