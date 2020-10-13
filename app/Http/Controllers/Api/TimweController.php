@@ -89,8 +89,6 @@ class TimweController
 
         $AuthUser = $request->AuthUser;
         $AuthPass = $request->AuthPass;
-        $subscribers = Subscriber::select('subscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price','activation.created_at AS act_created')->join('activation', 'activation.id', '=', 'subscribers.activation_id');
-        $unsubscribers = Unsubscriber::select('unsubscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')->join('activation', 'activation.id', '=', 'unsubscribers.activation_id');
         if ($AuthUser == TIMWE_AuthUser && $AuthPass == TIMWE_AuthPass) { // check auth
 
             $check_op = $this->OpId($request, 'CCT Inquery');
@@ -107,98 +105,135 @@ class TimweController
             }
 
             if ($request->has('Msisdn') && $request->Msisdn != '') { // check if msisdn
-                $response['msisdn'] = $request->Msisdn;
-                $response['opId'] = $request->OpId ?? "268";
-
-                $subscribers = $subscribers->where('msisdn', $request->Msisdn);
-                $unsubscribers = $unsubscribers->where('msisdn', $request->Msisdn);
-
-                if ($request->has('FromDate') && $request->FromDate != '') {
-                    $FromDate = date("Y-m-d H:i:s", strtotime($request->FromDate));
-                    $subscribers = $subscribers->where('subscribe_date', ">=", $FromDate);
-                    $unsubscribers = $unsubscribers->where('unsubscribers.created_at', ">=", $FromDate);
-                } // check from date
-
-                if ($request->has('ToDate') && $request->ToDate != '') {
-                    $ToDate = date("Y-m-d H:i:s", strtotime($request->ToDate));
-                    $subscribers = $subscribers->where('subscribe_date', "<=", $ToDate);
-                    $unsubscribers = $unsubscribers->where('unsubscribers.created_at', "<=", $ToDate);
-                } // check to date
-
-                $subscribers = $subscribers->get();
-                $unsubscribers = $unsubscribers->get();
 
                 $i = 0;
-                if ($subscribers->count() > 0 || $unsubscribers->count() > 0) {
-                    $response['responseStatus']['code'] = "1";
-                    $response['responseStatus']['description'] = "success";
-                    $service['id'] = SERVICE_ID;
-                    $service['name'] = SERVICE_NAME;
+                $s = 0;
 
-                    foreach ($subscribers as $subscriber) {
-                        $service_name = $subscriber->serviceid;
-                        $service_id = Service::where('title', 'LIKE', "%$service_name%")->first()->id;
+                $services_arr = ACTIVE_SERVICES;
 
-                        $product[$i]['id'] = (string)$service_id;
-                        $product[$i]['type'] = PRODUCT_TYPE; // subscription
-                        $product[$i]['name'] = $subscriber->serviceid;
-                        $product[$i]['la'] = TIMWE_SHORTCODE;
-                        $product[$i]['subId'] = (string)$subscriber->activation_id;
+                if ($request->has('ProductId') && $request->ProductId != '') {
 
-                        $product[$i]['subStatus'] = "ACTIVE";
-                        $product[$i]['subscriptionDate'] =   date("d-M-Y h:i",strtotime($subscriber->act_created))     ; //   $subscriber->act_created->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+                    if(in_array( $request->ProductId, ProductId )){
+                        $service_id = Service::where('id', $request->ProductId)->first()->title;
+                        $services_arr = array($service_id) ;
+                    }
+                }
 
-                        $plan = $subscriber->plan;
-                        switch ($plan) {
-                            case 'daily':
-                                $product[$i]['billingPeriod'] = (string)1;
-                                break;
-                            case 'weekly':
-                                $product[$i]['billingPeriod'] = (string)7;
-                                break;
-                        }
-                        $product[$i]['billingAmount'] = $subscriber->price;
-                        $product[$i]['messageMode'] = "DIRECT BILLING";
-                        $product[$i]['serviceActivationMode'] = "SMS";
-                        $product[$i]['additionalDetails'] = new stdClass();
 
-                        $i++;
-                    } // sub foreach
 
-                    foreach ($unsubscribers as $unsubscriber) {
-                        $service_name = $unsubscriber->serviceid;
-                        $service_id = Service::where('title', 'LIKE', "%$service_name%")->first()->id;
 
-                        $product[$i]['id'] = (string)$service_id;
-                        $product[$i]['type'] = PRODUCT_TYPE; // subscription
-                        $product[$i]['name'] = $unsubscriber->serviceid;
-                        $product[$i]['la'] = TIMWE_SHORTCODE;
-                        $product[$i]['subId'] = (string)$unsubscriber->activation_id;
 
-                        $product[$i]['subStatus'] = "CANCELED";
-                        $product[$i]['subscriptionDate'] = $unsubscriber->activation->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
-                        $product[$i]['unsubscriptionDate'] = $unsubscriber->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
 
-                        $plan = $unsubscriber->plan;
-                        switch ($plan) {
-                            case 'daily':
-                                $product[$i]['billingPeriod'] = (string)1;
-                                break;
-                            case 'weekly':
-                                $product[$i]['billingPeriod'] = (string)7;
-                                break;
-                        }
-                        $product[$i]['billingAmount'] = $unsubscriber->price;
-                        $product[$i]['messageMode'] = "DIRECT BILLING";
-                        $product[$i]['serviceActivationMode'] = "SMS";
-                        $product[$i]['additionalDetails'] = new stdClass();
+                foreach($services_arr as $key => $value){
 
-                        $i++;
-                    } // unsub foreach
 
-                } else { // check sub or unsub found
-                    $response['responseStatus']['code'] = "-80";
-                    $response['responseStatus']['description'] = "customer not exists";
+                    $subscribers = Subscriber::select('subscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price','activation.created_at AS act_created')->join('activation', 'activation.id', '=', 'subscribers.activation_id');
+                    $unsubscribers = Unsubscriber::select('unsubscribers.*', 'activation.msisdn', 'activation.plan', 'activation.serviceid', 'activation.price')->join('activation', 'activation.id', '=', 'unsubscribers.activation_id');
+
+                    $response['msisdn'] = $request->Msisdn;
+                    $response['opId'] = $request->OpId ?? "268";
+
+                    $subscribers = $subscribers->where('msisdn', $request->Msisdn);
+                    $unsubscribers = $unsubscribers->where('msisdn', $request->Msisdn);
+
+                    if ($request->has('FromDate') && $request->FromDate != '') {
+                        $FromDate = date("Y-m-d H:i:s", strtotime($request->FromDate));
+                        $subscribers = $subscribers->where('subscribe_date', ">=", $FromDate);
+                        $unsubscribers = $unsubscribers->where('unsubscribers.created_at', ">=", $FromDate);
+                    } // check from date
+
+                    if ($request->has('ToDate') && $request->ToDate != '') {
+                        $ToDate = date("Y-m-d H:i:s", strtotime($request->ToDate));
+                        $subscribers = $subscribers->where('subscribe_date', "<=", $ToDate);
+                        $unsubscribers = $unsubscribers->where('unsubscribers.created_at', "<=", $ToDate);
+                    } // check to date
+
+
+
+
+
+
+
+
+                    $subscriber = $subscribers->where('serviceid', $value)->latest()->first();
+                    $unsubscriber = $unsubscribers->where('serviceid', $value)->latest()->first();
+
+
+
+
+                    if ($subscriber || $unsubscriber) {
+                        $response['responseStatus']['code'] = "1";
+                        $response['responseStatus']['description'] = "success";
+                        $service['id'] = SERVICE_ID;
+                        $service['name'] = SERVICE_NAME;
+
+                        if ($subscriber) {
+                            $service_name = $subscriber->serviceid;
+                            $service_id = Service::where('title', 'LIKE', "%$service_name%")->first()->id;
+
+                            $product[$i]['id'] = (string)$service_id;
+                            $product[$i]['type'] = PRODUCT_TYPE; // subscription
+                            $product[$i]['name'] = $subscriber->serviceid;
+                            $product[$i]['la'] = TIMWE_SHORTCODE;
+                            $product[$i]['subId'] = (string)$subscriber->activation_id;
+
+                            $product[$i]['subStatus'] = "ACTIVE";
+                            $product[$i]['subscriptionDate'] =   date("d-M-Y h:i",strtotime($subscriber->act_created))     ; //   $subscriber->act_created->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+
+                            $plan = $subscriber->plan;
+                            switch ($plan) {
+                                case 'daily':
+                                    $product[$i]['billingPeriod'] = (string)1;
+                                    break;
+                                case 'weekly':
+                                    $product[$i]['billingPeriod'] = (string)7;
+                                    break;
+                            }
+                            $product[$i]['billingAmount'] = $subscriber->price;
+                            $product[$i]['messageMode'] = "DIRECT BILLING";
+                            $product[$i]['serviceActivationMode'] = "SMS";
+                            $product[$i]['additionalDetails'] = new stdClass();
+
+                            $i++;
+                        } // sub foreach
+
+                        if ($unsubscriber) {
+                            $service_name = $unsubscriber->serviceid;
+                            $service_id = Service::where('title', 'LIKE', "%$service_name%")->first()->id;
+
+                            $product[$i]['id'] = (string)$service_id;
+                            $product[$i]['type'] = PRODUCT_TYPE; // subscription
+                            $product[$i]['name'] = $unsubscriber->serviceid;
+                            $product[$i]['la'] = TIMWE_SHORTCODE;
+                            $product[$i]['subId'] = (string)$unsubscriber->activation_id;
+
+                            $product[$i]['subStatus'] = "CANCELED";
+                            $product[$i]['subscriptionDate'] = $unsubscriber->activation->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+                            $product[$i]['unsubscriptionDate'] = $unsubscriber->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+
+                            $plan = $unsubscriber->plan;
+                            switch ($plan) {
+                                case 'daily':
+                                    $product[$i]['billingPeriod'] = (string)1;
+                                    break;
+                                case 'weekly':
+                                    $product[$i]['billingPeriod'] = (string)7;
+                                    break;
+                            }
+                            $product[$i]['billingAmount'] = $unsubscriber->price;
+                            $product[$i]['messageMode'] = "DIRECT BILLING";
+                            $product[$i]['serviceActivationMode'] = "SMS";
+                            $product[$i]['additionalDetails'] = new stdClass();
+
+                            $i++;
+                        } // unsub foreach
+                        // $s++;
+                    } else { // check sub or unsub found
+                        $response['responseStatus']['code'] = "-80";
+                        $response['responseStatus']['description'] = "customer not exists";
+                    }
+
+                        // echo($service_sn);
                 }
 
             } else { // check if msisdn not null
