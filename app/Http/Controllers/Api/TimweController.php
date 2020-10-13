@@ -539,7 +539,7 @@ class TimweController
                             $mts = $mts ->where('service', $service_fetch->title);
                             $activations = $activations ->where('serviceid', $service_fetch->title);
                             $productId = $request->ProductId ;
-                            $productName =  $service->title ;
+                            $productName =  $service_fetch->title ;
                         }else{
                             $productId = $request->ProductId ;
                             $productName = "" ;
