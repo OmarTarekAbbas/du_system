@@ -2284,7 +2284,7 @@ $password = "P-wSYBYFVSWA-#1234";
             $param = "msisdn=" . $request->msisdn . "&trxid=$trxid&serviceid=liveqarankhatma&plan=daily&price=2";
             $result = $this->get_content_post($URL, $param);
             $this->log('DU MO Quran Live Subscription Notification', $request->fullUrl(), (array)$result);
-            return $result;
+
         } else if ($request->message == 'Stop' ||  $request->message == 'stop'  ||  $request->message == 'STOP'   ) {// unsub for all
 
             $this->unsubAllService($result, $request, $data); //unsub all service function
@@ -2296,7 +2296,7 @@ $password = "P-wSYBYFVSWA-#1234";
                 $param = "msisdn=" . $request->msisdn . "&trxid=$trxid&serviceid=flaterdaily&plan=daily&price=2";
                 $result = $this->get_content_post($URL, $param);
                 $this->log('DU MO Flatter Daily Subscription Notification', $request->fullUrl(), (array)$result);
-                return $result;
+
         } else if ($request->message == 'R' ||  $request->message == 'r'  ||  $request->message == '2' ) {// Sub to Rotana Flatter
             require('uuid/UUID.php');
             $trxid = \UUID::v4();
@@ -2304,7 +2304,7 @@ $password = "P-wSYBYFVSWA-#1234";
             $param = "msisdn=" . $request->msisdn . "&trxid=$trxid&serviceid=flaterrotanadaily&plan=daily&price=2";
             $result = $this->get_content_post($URL, $param);
             $this->log('DU MO Rotana Flatter  Subscription Notification', $request->fullUrl(), (array)$result);
-            return $result;
+
         } else if ($request->message == 'm' ||  $request->message == 'M') {// subscribe to man elkeal
             /*
                         $this->log('DU MO Man Elkeal Sub Notification', $request->fullUrl(), $data);

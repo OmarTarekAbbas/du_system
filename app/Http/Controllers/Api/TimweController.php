@@ -497,8 +497,25 @@ class TimweController
 
                         foreach ($mos as $mo) {
 
-                            $product[$i]['productId'] = (string)$services_id->id;
-                            $product[$i]['productName'] = $subscriber->serviceid;
+                            switch ($mo->message) {
+                                case '1':
+                                    $product_id = ProductId[1] ;
+                                    $product_name = ACTIVE_SERVICES[0] ;
+                                    break;
+
+                               case '2':
+                                $product_id = ProductId[0] ;
+                                $product_name = ACTIVE_SERVICES[1] ;
+                                break;
+
+                                default:
+                                $product_id = $services_id->id ;
+                                $product_name = $subscriber->serviceid ;
+                                    break;
+                            }
+
+                            $product[$i]['productId'] = (string) $product_id;
+                            $product[$i]['productName'] = $product_name;
                             $product[$i]['userLa'] = TIMWE_SHORTCODE;
                             $product[$i]['userMessage'] = $mo->message;
                             $product[$i]['systemResponse'] = "";
@@ -606,8 +623,26 @@ class TimweController
                     // systemLa, systemResponse and systemResponseDate - should be blank for MO user requests
 
                     foreach ($mos as $mo) {
-                        $product[$i]['productId'] = (string) $productId;
-                        $product[$i]['productName'] = $productName;
+
+                        switch ($mo->message) {
+                            case '1':
+                                $product_id = ProductId[1] ;
+                                $product_name = ACTIVE_SERVICES[0] ;
+                                break;
+
+                           case '2':
+                            $product_id = ProductId[0] ;
+                            $product_name = ACTIVE_SERVICES[1] ;
+                            break;
+
+                            default:
+                            $product_id = $productId ;
+                            $product_name = $productName ;
+                                break;
+                        }
+
+                        $product[$i]['productId'] = (string) $product_id;
+                        $product[$i]['productName'] = $product_name;
                         $product[$i]['userLa'] = TIMWE_SHORTCODE;
                         $product[$i]['userMessage'] = $mo->message;
                         $product[$i]['systemResponse'] = "";
