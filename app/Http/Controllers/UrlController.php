@@ -2037,6 +2037,14 @@ $email = implode(',', $recipients);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
         curl_close($ch);
+
+
+        $DuMo = DuMo::create([
+            'link' => "unsub_from_all_services",
+            'msisdn' => $phoneNumber,
+            'message' => "You SuccessFully UnSubscribe"
+        ]);
+
     }
 
     public function get_content_post($URL, $param)
