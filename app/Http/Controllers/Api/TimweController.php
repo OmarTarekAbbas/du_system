@@ -663,7 +663,7 @@ class TimweController
 
                     foreach ($mts as $mt) {
                         $product[$i]['productId'] =  (string) ACTIVE_SERVICES_Array[$mt->service]??'';
-                        $product[$i]['productName'] = $productName??array_search ( $product[$i]['productId'] , ACTIVE_SERVICES_Array)??'';
+                        $product[$i]['productName'] = $mt->service??'';
                         $product[$i]['userLa'] = "";
                         $product[$i]['userMessage'] = "";
                         $product[$i]['systemResponse'] = $mt->message;
