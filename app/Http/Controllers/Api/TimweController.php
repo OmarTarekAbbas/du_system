@@ -499,13 +499,13 @@ class TimweController
 
                             switch ($mo->message) {
                                 case '1':
-                                    $product_id = ProductId[1] ;
-                                    $product_name = ACTIVE_SERVICES[0] ;
+                                    $product_id = (string)  ProductId[1] ;
+                                    $product_name = (string) ACTIVE_SERVICES[0] ;
                                     break;
 
                                case '2':
-                                $product_id = ProductId[0] ;
-                                $product_name = ACTIVE_SERVICES[1] ;
+                                $product_id = (string) ProductId[0] ;
+                                $product_name = (string) ACTIVE_SERVICES[1] ;
                                 break;
 
                                 default:
@@ -514,8 +514,8 @@ class TimweController
                                     break;
                             }
 
-                            $product[$i]['productId'] = (string) $product_id;
-                            $product[$i]['productName'] = (string) $product_name;
+                            $product[$i]['productId'] = $product_id;
+                            $product[$i]['productName'] = $product_name;
                             $product[$i]['userLa'] = TIMWE_SHORTCODE;
                             $product[$i]['userMessage'] = $mo->message;
                             $product[$i]['systemResponse'] = "";
@@ -593,10 +593,10 @@ class TimweController
                             $service_fetch = Service::where('id', $request->ProductId)->first();
                             $mts = $mts ->where('service', $service_fetch->title);
                             $activations = $activations ->where('serviceid', $service_fetch->title);
-                            $productId = $service_fetch->id ;
-                            $productName =  $service_fetch->title ;
+                            $productId = (string) $service_fetch->id ;
+                            $productName =  (string) $service_fetch->title ;
                         }else{
-                            $productId = $request->ProductId ;
+                            $productId = (string)  $request->ProductId ;
                             $productName = null ;
                         }
                     }else{
@@ -630,13 +630,13 @@ class TimweController
 
                         switch ($mo->message) {
                             case '1':
-                                $product_id = ProductId[1] ;
-                                $product_name = ACTIVE_SERVICES[0] ;
+                                $product_id = (string) ProductId[1] ;
+                                $product_name = (string) ACTIVE_SERVICES[0] ;
                                 break;
 
                            case '2':
-                            $product_id = ProductId[0] ;
-                            $product_name = ACTIVE_SERVICES[1] ;
+                            $product_id = (string) ProductId[0] ;
+                            $product_name = (string) ACTIVE_SERVICES[1] ;
                             break;
 
                             default:
@@ -645,8 +645,8 @@ class TimweController
                             break;
                         }
 
-                        $product[$i]['productId'] = (string) $product_id;
-                        $product[$i]['productName'] = (string) $product_name;
+                        $product[$i]['productId'] = $product_id;
+                        $product[$i]['productName'] = $product_name;
                         $product[$i]['userLa'] = TIMWE_SHORTCODE;
                         $product[$i]['userMessage'] = $mo->message;
                         $product[$i]['systemResponse'] = "";
