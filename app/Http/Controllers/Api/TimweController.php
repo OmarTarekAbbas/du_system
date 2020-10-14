@@ -493,7 +493,7 @@ class TimweController
 
 
 
-
+              // systemLa, systemResponse and systemResponseDate - should be blank for MO user requests
 
                         foreach ($mos as $mo) {
 
@@ -513,22 +513,23 @@ class TimweController
 
                         }
 
-                        foreach ($mts as $mt) {
+                    // userLa, userMessage and userMessageDate - should be blank for MT and DIRECT BILLING user requests
+                        // foreach ($mts as $mt) {
 
-                            $product[$i]['productId'] = (string)$services_id->id;
-                            $product[$i]['productName'] = $subscriber->serviceid;
-                            $product[$i]['userLa'] = "";
-                            $product[$i]['userMessage'] = "";
-                            $product[$i]['systemResponse'] = $mt->message;
-                            $product[$i]['systemLa'] = TIMWE_SHORTCODE;
-                            $product[$i]['billableAction'] = "no";
-                            $product[$i]['billingAmount'] = "";
-                            $product[$i]['userMessageDate'] = ""; //"24-Jan-2019 12:20"
-                            $product[$i]['systemResponseDate'] = $mt->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
-                            $product[$i]['direction'] = "MT";
+                        //     $product[$i]['productId'] = (string)$services_id->id;
+                        //     $product[$i]['productName'] = $subscriber->serviceid;
+                        //     $product[$i]['userLa'] = "";
+                        //     $product[$i]['userMessage'] = "";
+                        //     $product[$i]['systemResponse'] = $mt->message;
+                        //     $product[$i]['systemLa'] = TIMWE_SHORTCODE;
+                        //     $product[$i]['billableAction'] = "no";
+                        //     $product[$i]['billingAmount'] = "";
+                        //     $product[$i]['userMessageDate'] = ""; //"24-Jan-2019 12:20"
+                        //     $product[$i]['systemResponseDate'] = $mt->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+                        //     $product[$i]['direction'] = "MT";
 
-                            $i++;
-                        }
+                        //     $i++;
+                        // }
 
                         foreach ($charges as $charge) {
 
@@ -602,6 +603,8 @@ class TimweController
                     $activations = $activations->orderBy('created_at','Desc')->take(PAGINATION)->get();
 
 
+                    // systemLa, systemResponse and systemResponseDate - should be blank for MO user requests
+
                     foreach ($mos as $mo) {
                         $product[$i]['productId'] = (string) $productId;
                         $product[$i]['productName'] = $productName;
@@ -618,21 +621,23 @@ class TimweController
                         $i++;
                     }
 
-                    foreach ($mts as $mt) {
-                        $product[$i]['productId'] =  (string)($productId??ACTIVE_SERVICES_Array[$mt->service]??'');
-                        $product[$i]['productName'] = $productName??array_search ( $product[$i]['productId'] , ACTIVE_SERVICES_Array)??'';
-                        $product[$i]['userLa'] = "";
-                        $product[$i]['userMessage'] = "";
-                        $product[$i]['systemResponse'] = $mt->message;
-                        $product[$i]['systemLa'] = TIMWE_SHORTCODE;
-                        $product[$i]['billableAction'] = "no";
-                        $product[$i]['billingAmount'] = "";
-                        $product[$i]['userMessageDate'] = ""; //"24-Jan-2019 12:20"
-                        $product[$i]['systemResponseDate'] = $mt->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
-                        $product[$i]['direction'] = "MT";
+                   // userLa, userMessage and userMessageDate - should be blank for MT and DIRECT BILLING user requests
 
-                        $i++;
-                    }
+                    // foreach ($mts as $mt) {
+                    //     $product[$i]['productId'] =  (string)($productId??ACTIVE_SERVICES_Array[$mt->service]??'');
+                    //     $product[$i]['productName'] = $productName??array_search ( $product[$i]['productId'] , ACTIVE_SERVICES_Array)??'';
+                    //     $product[$i]['userLa'] = "";
+                    //     $product[$i]['userMessage'] = "";
+                    //     $product[$i]['systemResponse'] = $mt->message;
+                    //     $product[$i]['systemLa'] = TIMWE_SHORTCODE;
+                    //     $product[$i]['billableAction'] = "no";
+                    //     $product[$i]['billingAmount'] = "";
+                    //     $product[$i]['userMessageDate'] = ""; //"24-Jan-2019 12:20"
+                    //     $product[$i]['systemResponseDate'] = $mt->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
+                    //     $product[$i]['direction'] = "MT";
+
+                    //     $i++;
+                    // }
 
 
                     foreach ($activations as $activation) {
