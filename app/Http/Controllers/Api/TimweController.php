@@ -147,13 +147,26 @@ class TimweController
                     $unsubscriber = $unsubscribers->where('serviceid', $value)->latest()->first();
 
 
+                    // take the last sub or unsub per service
+                    if(   $subscriber &&  $unsubscriber   ){
+                        if(  $unsubscriber->created_at > $subscriber->created_at ) {
+                            $subscriber = 0 ; // unset subscriber
+                        }elseif($subscriber->created_at > $unsubscriber->created_at ){
+                            $unsubscriber = 0 ; // unset subscriber
+                        }
+                    }
+
+
                     if ($subscriber || $unsubscriber) {
                         $response['responseStatus']['code'] = "1";
                         $response['responseStatus']['description'] = "success";
                         $service['id'] = SERVICE_ID;
                         $service['name'] = SERVICE_NAME;
 
-                        if ($subscriber) {
+                        if ($subscriber  ) {
+
+
+
                             $service_name = $subscriber->serviceid;
                             $service_id = Service::where('title', 'LIKE', "%$service_name%")->first()->id;
 
@@ -184,6 +197,7 @@ class TimweController
                         } // sub foreach
 
                         if ($unsubscriber) {
+
                             $service_name = $unsubscriber->serviceid;
                             $service_id = Service::where('title', 'LIKE', "%$service_name%")->first()->id;
 
