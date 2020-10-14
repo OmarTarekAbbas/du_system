@@ -532,9 +532,8 @@ class TimweController
 
                     // userLa, userMessage and userMessageDate - should be blank for MT and DIRECT BILLING user requests
                         foreach ($mts as $mt) {
-
-                            $product[$i]['productId'] = (string)$services_id->id;
-                            $product[$i]['productName'] = $subscriber->serviceid;
+                            $product[$i]['productId'] = (string)ACTIVE_SERVICES_Array[$mt->service]??'';
+                            $product[$i]['productName'] =$mt->service;
                             $product[$i]['userLa'] = "";
                             $product[$i]['userMessage'] = "";
                             $product[$i]['systemResponse'] = $mt->message;
@@ -663,7 +662,7 @@ class TimweController
                    // userLa, userMessage and userMessageDate - should be blank for MT and DIRECT BILLING user requests
 
                     foreach ($mts as $mt) {
-                        $product[$i]['productId'] =  (string)($productId??ACTIVE_SERVICES_Array[$mt->service]??'');
+                        $product[$i]['productId'] =  (string) ACTIVE_SERVICES_Array[$mt->service]??'';
                         $product[$i]['productName'] = $productName??array_search ( $product[$i]['productId'] , ACTIVE_SERVICES_Array)??'';
                         $product[$i]['userLa'] = "";
                         $product[$i]['userMessage'] = "";
