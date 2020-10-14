@@ -2024,11 +2024,13 @@ $email = implode(',', $recipients);
      * @param  string $phoneNumber
      * @return void
      */
-    public function unsub_du_message_send($phoneNumber)
+    public function unsub_du_message_send($phoneNumber,$serviceid)
     {
         // Du sending welcome message
+        $message = "You SuccessFully UnSubscribe From ".ACTIVE_SERVICES_Array_good_names[$serviceid] ?? "" ;
+        $message_type = "unsub_all";
         $URL = "http://41.33.167.14:2080/~smsdu/du_send_message";
-        $param = "phone_number=$phoneNumber&message=You SuccessFully UnSubscribe";
+        $param = "phone_number=$phoneNumber&message=$message";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $URL);
@@ -2039,11 +2041,20 @@ $email = implode(',', $recipients);
         curl_close($ch);
 
 
-        // $DuMo = DuMo::create([
-        //     'link' => "unsub_from_all_services",
-        //     'msisdn' => $phoneNumber,
-        //     'message' => "You SuccessFully UnSubscribe"
-        // ]);
+        if ($result == "1") {
+            $status = 1;
+        } else {
+            $status = 0;
+        }
+
+
+        $logmes = new LogMessage();
+        $logmes->service       = $serviceid;
+        $logmes->msisdn        = $phoneNumber;
+        $logmes->message       = $message;
+        $logmes->message_type  = $message_type;
+        $logmes->status  = $status;
+        $logmes->save();
 
     }
 
@@ -2420,10 +2431,14 @@ $password = "P-wSYBYFVSWA-#1234";
                     $data['unsub_id'] = $unsub->id;
                     $data['service_name'] = $result->serviceid;
                     $this->log('DU UNSUB Notification', $request->fullUrl(), $data);
+
+
+                    $this->unsub_du_message_send($data['msisdn'],$result->serviceid);
+
                 }
             }
         }
-        $this->unsub_du_message_send($data['msisdn']);
+
     }
 
 

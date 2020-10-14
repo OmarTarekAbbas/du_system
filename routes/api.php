@@ -88,6 +88,14 @@ define('ACTIVE_SERVICES_Array', [
 
 ]);
 
+define('ACTIVE_SERVICES_Array_good_names', [
+    'flaterrotanadaily' => 'Flatter Rotana' ,
+    'liveqarankhatma'=>'Live Qaran Khatma'
+
+]);
+
+
+
 
 Route::get('inquiry','Api\TimweController@inquiry');
 Route::get('unsubscribe','Api\TimweController@unsubscribe');
