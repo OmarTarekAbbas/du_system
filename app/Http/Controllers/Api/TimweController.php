@@ -548,6 +548,7 @@ class TimweController
                         }
 
                         foreach ($charges as $charge) {
+                            if($charge->status_code != "0") continue ;
 
                             $product[$i]['productId'] = (string)$services_id->id;
                             $product[$i]['productName'] = $subscriber->serviceid;
@@ -679,6 +680,7 @@ class TimweController
 
 
                     foreach ($activations as $activation) {
+                        if($activation->status_code != "0") continue ;
 
                         $product[$i]['productId'] =  (string) ACTIVE_SERVICES_Array[$activation->serviceid];
                         $product[$i]['productName'] = $activation->serviceid;
