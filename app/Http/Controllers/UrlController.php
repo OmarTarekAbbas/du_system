@@ -2039,11 +2039,11 @@ $email = implode(',', $recipients);
         curl_close($ch);
 
 
-        $DuMo = DuMo::create([
-            'link' => "unsub_from_all_services",
-            'msisdn' => $phoneNumber,
-            'message' => "You SuccessFully UnSubscribe"
-        ]);
+        // $DuMo = DuMo::create([
+        //     'link' => "unsub_from_all_services",
+        //     'msisdn' => $phoneNumber,
+        //     'message' => "You SuccessFully UnSubscribe"
+        // ]);
 
     }
 
