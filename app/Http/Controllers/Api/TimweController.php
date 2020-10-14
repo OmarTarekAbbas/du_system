@@ -509,8 +509,8 @@ class TimweController
                                 break;
 
                                 default:
-                                $product_id = $services_id->id ;
-                                $product_name = $subscriber->serviceid ;
+                                $product_id = "" ;
+                                $product_name = "" ;
                                     break;
                             }
 
@@ -597,7 +597,11 @@ class TimweController
                             $productName =  $service_fetch->title ;
                         }else{
                             $productId = $request->ProductId ;
+                            $productName = "" ;
                         }
+                    }else{
+                        $productId = "" ;
+                        $productName = "" ;
                     }
 
 
@@ -638,7 +642,7 @@ class TimweController
                             default:
                             $product_id = $productId ;
                             $product_name = $productName ;
-                                break;
+                            break;
                         }
 
                         $product[$i]['productId'] = (string) $product_id;
