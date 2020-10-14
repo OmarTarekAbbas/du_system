@@ -509,8 +509,8 @@ class TimweController
                                 break;
 
                                 default:
-                                $product_id = "" ;
-                                $product_name = "" ;
+                                $product_id = null ;
+                                $product_name = null ;
                                     break;
                             }
 
@@ -548,6 +548,8 @@ class TimweController
                         }
 
                         foreach ($charges as $charge) {
+
+                            var_dump($charge->status_code) ; die;
                             if($charge->status_code != "0") continue ;
 
                             $product[$i]['productId'] = (string)$services_id->id;
@@ -597,11 +599,11 @@ class TimweController
                             $productName =  $service_fetch->title ;
                         }else{
                             $productId = $request->ProductId ;
-                            $productName = "" ;
+                            $productName = null ;
                         }
                     }else{
-                        $productId = "" ;
-                        $productName = "" ;
+                        $productId = null ;
+                        $productName = null ;
                     }
 
 
