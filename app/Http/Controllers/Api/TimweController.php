@@ -515,7 +515,7 @@ class TimweController
                             }
 
                             $product[$i]['productId'] = (string) $product_id;
-                            $product[$i]['productName'] = $product_name;
+                            $product[$i]['productName'] = (string) $product_name;
                             $product[$i]['userLa'] = TIMWE_SHORTCODE;
                             $product[$i]['userMessage'] = $mo->message;
                             $product[$i]['systemResponse'] = "";
@@ -548,8 +548,6 @@ class TimweController
                         }
 
                         foreach ($charges as $charge) {
-
-                            var_dump($charge->status_code) ; die;
                             if($charge->status_code != "0") continue ;
 
                             $product[$i]['productId'] = (string)$services_id->id;
@@ -648,7 +646,7 @@ class TimweController
                         }
 
                         $product[$i]['productId'] = (string) $product_id;
-                        $product[$i]['productName'] = $product_name;
+                        $product[$i]['productName'] = (string) $product_name;
                         $product[$i]['userLa'] = TIMWE_SHORTCODE;
                         $product[$i]['userMessage'] = $mo->message;
                         $product[$i]['systemResponse'] = "";
