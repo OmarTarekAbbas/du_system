@@ -502,7 +502,7 @@ class TimweController
                             $product[$i]['userLa'] = TIMWE_SHORTCODE;
                             $product[$i]['userMessage'] = $mo->message;
                             $product[$i]['systemResponse'] = "";
-                            $product[$i]['systemLa'] = TIMWE_SHORTCODE;
+                            $product[$i]['systemLa'] = "";
                             $product[$i]['billableAction'] = "no";
                             $product[$i]['billingAmount'] = "";
                             $product[$i]['userMessageDate'] = $mo->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
@@ -517,7 +517,7 @@ class TimweController
 
                             $product[$i]['productId'] = (string)$services_id->id;
                             $product[$i]['productName'] = $subscriber->serviceid;
-                            $product[$i]['userLa'] = TIMWE_SHORTCODE;
+                            $product[$i]['userLa'] = "";
                             $product[$i]['userMessage'] = "";
                             $product[$i]['systemResponse'] = $mt->message;
                             $product[$i]['systemLa'] = TIMWE_SHORTCODE;
@@ -534,7 +534,7 @@ class TimweController
 
                             $product[$i]['productId'] = (string)$services_id->id;
                             $product[$i]['productName'] = $subscriber->serviceid;
-                            $product[$i]['userLa'] = TIMWE_SHORTCODE;
+                            $product[$i]['userLa'] = "";
                             $product[$i]['userMessage'] = "";
                             $product[$i]['systemResponse'] = "";
                             $product[$i]['systemLa'] = TIMWE_SHORTCODE;
@@ -608,7 +608,7 @@ class TimweController
                         $product[$i]['userLa'] = TIMWE_SHORTCODE;
                         $product[$i]['userMessage'] = $mo->message;
                         $product[$i]['systemResponse'] = "";
-                        $product[$i]['systemLa'] = TIMWE_SHORTCODE;
+                        $product[$i]['systemLa'] = "";
                         $product[$i]['billableAction'] = "no";
                         $product[$i]['billingAmount'] = "";
                         $product[$i]['userMessageDate'] = $mo->created_at->format('d-M-Y h:i'); //"24-Jan-2019 12:20"
@@ -621,7 +621,7 @@ class TimweController
                     foreach ($mts as $mt) {
                         $product[$i]['productId'] =  (string)($productId??ACTIVE_SERVICES_Array[$mt->service]??'');
                         $product[$i]['productName'] = $productName??array_search ( $product[$i]['productId'] , ACTIVE_SERVICES_Array)??'';
-                        $product[$i]['userLa'] = TIMWE_SHORTCODE;
+                        $product[$i]['userLa'] = "";
                         $product[$i]['userMessage'] = "";
                         $product[$i]['systemResponse'] = $mt->message;
                         $product[$i]['systemLa'] = TIMWE_SHORTCODE;
@@ -639,7 +639,7 @@ class TimweController
 
                         $product[$i]['productId'] =  (string) ACTIVE_SERVICES_Array[$activation->serviceid];
                         $product[$i]['productName'] = $activation->serviceid;
-                        $product[$i]['userLa'] = TIMWE_SHORTCODE;
+                        $product[$i]['userLa'] = "";
                         $product[$i]['userMessage'] = "";
                         $product[$i]['systemResponse'] = "";
                         $product[$i]['systemLa'] = TIMWE_SHORTCODE;
