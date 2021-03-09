@@ -95,6 +95,12 @@ define('ACTIVE_SERVICES_Array_good_names', [
 ]);
 
 
+define('WEEKLY_REMINDER_MESSAGE', [
+    'flaterrotanadaily' => "Flater Rotana service Daily charges(2/-AED) to unsubscribe you can send stopr to 4971" ,
+    'liveqarankhatma'=>"Alafasy Quran service  Daily charges(2/-AED) to unsubscribe you can send Stopq to 4971"
+
+]) ;
+
 
 
 Route::get('inquiry','Api\TimweController@inquiry');
@@ -103,3 +109,31 @@ Route::get('userhistory','Api\TimweController@userhistory');
 Route::get('sendmt', 'Api\TimweController@sendmt');
 
 /********************************************/
+
+
+/*
+
+1- weekly reminder :
+- for subscribers table : add new colum "weekly_reminder_date"  nullable
+- make cron when today = weekly_reminder_date in subscribers table =>  send weekly reminder by service and how to unsub
+=> make insert into log_messages table  [ message_type = "Weekly_Reminder"]
+=> add week to weekly_reminder_date column on susbcribers table  if send is  success by kannel
+=> you can get weekly reminder message from   WEEKLY_REMINDER_MESSAGE['flaterrotanadaily']  OR  WEEKLY_REMINDER_MESSAGE['liveqarankhatma']
+
+
+2-make grace peroid is 30 days :
+- on subscribers table  add new column : grace_days  nullable  default 0  int
+- on charging table :  statu_code when not equal = 0   =>  grace_days + 1
+ when make daily charging =   make_today_charging  and make_today_charging_for_failed
+ - when grace_days == 31  make force unsub  :  here in unsubscriber table add new column grace nullable
+ and when this case accur make grace = 1
+
+
+ 3-weekly report template :
+ - # of charged users today
+ - # of active users (30 days or less)  = all subscribers
+ - SMS reminders sent  [ it  should be   active users  * 7 ]
+
+
+
+*/

@@ -1802,25 +1802,25 @@ $email = implode(',', $recipients);
                 $du_welcome_message = "Welcome To " . $service_name . "  Service ";
                 $du_welcome_message .= $welcome_message;
                 if ($serviceid == "flaterdaily") {
-                    $du_welcome_message = "Welcome To " . $service_name ." For Unsubcribe please send stopf to 4971 or click this link https://bit.ly/2XawRXY";
+                    $du_welcome_message = "Welcome To " . $service_name ." For Unsubcribe please send stopf to 4971";
                 } elseif ($serviceid == "greetingsdaily") {
-                    $du_welcome_message .= " For Unsubcribe  https://bit.ly/2V9MtbZ";
+                    $du_welcome_message .= " For Unsubcribe  https://greetingnew.ivascloud.com/du_unsubc";
                 } elseif ($serviceid == "flaterrotanadaily") {
-                    $du_welcome_message = "Welcome To " . $service_name ." Enjoy with filters from this link   https://bit.ly/2C3Y5Hj  For Unsubcribe please send stopr to 4971 or click this link https://bit.ly/2UB9wfs";
+                    $du_welcome_message = "Welcome To " . $service_name ." Enjoy with filters from this link  https://rotana.digizone.com.kw/rotanav2/31014  For Unsubcribe please send stopr to 4971";
                 }elseif ($serviceid == "liveqarankhatma") {
 
                   //  $du_welcome_message = "Hi,  Wishing you a very blessed Ramadan." ;
                     $du_welcome_message  = "Welcome to Alafasy Quran streaming service Your link to listen him live is here" ;
-                    $du_welcome_message .= " https://bit.ly/2XX83Dc " ;
-                    $du_welcome_message .= "Daily charges(2/-AED),to unsubscribe send Stop to 4971 " ;
+                    $du_welcome_message .= " http://quranlive.digizone.com.kw/?OpID=10 " ;
+                    $du_welcome_message .= "Daily charges(2/-AED),to unsubscribe send Stopq to 4971 " ;
                     $du_welcome_message .= " " ;
 
                     $du_welcome_message .= "عزيزي مشترك دو كل عام وانتم بخير." ;
                     $du_welcome_message .= "مرحبا بكم في خدمة العفاسى لبث القران الكريم" ;
                     $du_welcome_message .= " اضغط على الرابط لسماعه مباشر" ;
-                    $du_welcome_message .= " https://bit.ly/2XX83Dc " ;
+                    $du_welcome_message .= " http://quranlive.digizone.com.kw/?OpID=10 " ;
                     $du_welcome_message .= "الاشتراك (٢درهم/يومياً) " ;
-                    $du_welcome_message .= "  لالغاء الاشتراك ارسل Stop  الى 4971" ;
+                    $du_welcome_message .= "  لالغاء الاشتراك ارسل Stopq  الى 4971" ;
 
 
                 }
@@ -2343,8 +2343,8 @@ $password = "P-wSYBYFVSWA-#1234";
 
 
 
-/*
- else if ($request->message == 'Stop1' ||  $request->message == 'stop1'  ||  $request->message == 'stop'  ||  $request->message == 'Stop' ) {// unsub from quran live
+
+ else if ($request->message == 'Stopq' ||  $request->message == 'stopq'  ||  $request->message == 'STOPQ'   ) {// unsub from quran live
             $result = $result->where('serviceid', 'liveqarankhatma');
             $result = $result->latest("created_at")->first(['id', 'msisdn', 'serviceid']);
             if ($result) {
@@ -2356,6 +2356,8 @@ $password = "P-wSYBYFVSWA-#1234";
                     $sub->delete();
                     $data['unsub_id'] = $unsub->id;
                     $this->log('DU MO Quran Live UNSUB Notification', $request->fullUrl(), $data);
+                    // send unsub confirm message
+                    $this->unsub_du_message_send($result->msisdn,$result->serviceid);
                 }
             }
         }
@@ -2375,6 +2377,8 @@ $password = "P-wSYBYFVSWA-#1234";
                     $sub->delete();
                     $data['unsub_id'] = $unsub->id;
                     $this->log('DU MO Flatter Daily UNSUB Notification', $request->fullUrl(), $data);
+                     // send unsub confirm message
+                     $this->unsub_du_message_send($result->msisdn,$result->serviceid);
                 }
             }
         }
@@ -2393,11 +2397,13 @@ $password = "P-wSYBYFVSWA-#1234";
                     $sub->delete();
                     $data['unsub_id'] = $unsub->id;
                     $this->log('DU MO Rotana Flatter UNSUB Notification', $request->fullUrl(), $data);
+                     // send unsub confirm message
+                     $this->unsub_du_message_send($result->msisdn,$result->serviceid);
                 }
             }
         }
 
-        */
+
 
          // Log all Mo Notification
         $this->log('DU MO All Notifications', $request->fullUrl(), $data);
