@@ -113,6 +113,8 @@ Route::get('sendmt', 'Api\TimweController@sendmt');
 
 /*********************start weekly_reminder_date***********************/
 Route::get('weekly_reminder_date', 'WeeklyReminderDateController@weekly_reminder_date');
+Route::get('weekly_statistics', 'WeeklyReminderDateController@weekly_statistics');
+Route::get('weekly_statistics_excel', 'WeeklyReminderDateController@weekly_statistics_excel');
 /***********************end weekly_reminder_date*********************/
 /*
 

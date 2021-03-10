@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Activation;
 use App\Subscriber;
 use App\LogMessage;
+use App\Charge;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -106,4 +107,38 @@ class WeeklyReminderDateController extends Controller
         return $result ;
 
     }
+
+    public function weekly_statistics(Request $request)
+    {
+        $total_today_charges = Charge::where('charging_date',date('Y-m-d'))->count();
+        $charges_status_success_today = Charge::where('charging_date',date('Y-m-d'))->where('status_code',"0")->count();
+        $charges_status_fail_today = Charge::where('charging_date',date('Y-m-d'))->whereNotIn('status_code',['503 - product already purchased!',0])->count();
+        $get_all_subscribers = Subscriber::count();
+        $log_messages_table_today = LogMessage::whereDate('created_at',date('Y-m-d'))->where('message_type',"Weekly_Reminder")->count();
+        $data['data'] = [
+            'Total Today Charges'                => $total_today_charges,
+            'Total Today Charges Status Success ' => $charges_status_success_today,
+            'Total Today Charges Status Fail'    => $charges_status_fail_today,
+            'Total Subscribers'                  => $get_all_subscribers,
+            'Totel Today Log Messages'     => $log_messages_table_today
+        ];
+        return response()->json( [$data] );
+    }
+
+    public function weekly_statistics_excel(Request $request)
+    {
+        $total_today_charges = Charge::where('charging_date',date('Y-m-d'))->count();
+        $charges_status_success_today = Charge::where('charging_date',date('Y-m-d'))->where('status_code',"0")->count();
+        $charges_status_fail_today = Charge::where('charging_date',date('Y-m-d'))->whereNotIn('status_code',['503 - product already purchased!',0])->count();
+        $get_all_subscribers = Subscriber::count();
+        $log_messages_table_today = LogMessage::whereDate('created_at',date('Y-m-d'))->where('message_type',"Weekly_Reminder")->count();
+
+        \Excel::create('WeeklyStatisticsExcel-'.Carbon::now()->toDateString(), function($excel) use ($total_today_charges,$charges_status_success_today,$charges_status_fail_today,$get_all_subscribers,$log_messages_table_today) {
+            $excel->sheet('Excel', function($sheet) use ($total_today_charges,$charges_status_success_today,$charges_status_fail_today,$get_all_subscribers,$log_messages_table_today) {
+                $sheet->loadView('backend.weekly_statistics_excel.weekly_statistics_excel')->with("total_today_charges", $total_today_charges)->with("charges_status_success_today", $charges_status_success_today)->with("charges_status_fail_today", $charges_status_fail_today)->with("get_all_subscribers", $get_all_subscribers)->with("log_messages_table_today", $log_messages_table_today);
+            });
+        })->export('xlsx');
+
+    }
+    
 }
