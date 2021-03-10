@@ -1767,15 +1767,22 @@ $email = implode(',', $recipients);
                     $old_sub = Subscriber::findOrFail($subscriber_id );
 
                     if ($activation->plan == 'daily' ) {
+                        $old_sub->grace_days = $this->status_grace_days($status);
                         $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
                         $old_sub->save();
+
                     } elseif ($activation->plan == 'weekly') {
+                        $old_sub->grace_days = $this->status_grace_days($status);
+
                         $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 week"));
                         $old_sub->save();
                     } else { // default is daily
+                        $old_sub->grace_days = $this->status_grace_days($status);
                         $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
                         $old_sub->save();
                     }
+                    $this->check_grace_days($old_sub->grace_days,$old_sub->activation_id,$old_sub);
+
 
                 }
 
@@ -2631,4 +2638,28 @@ $password = "P-wSYBYFVSWA-#1234";
 
 
     }
+
+    public function status_grace_days($status){
+
+        if($status == 0){
+            $grace_days = 0;
+        }else{
+            $grace_days = +1;
+        }
+        return $grace_days;
+    }
+
+    public function check_grace_days($check_grace_days,$sub_activation_id,$old_sub){
+        if ($check_grace_days == 30) {
+            $unsub = new \App\Unsubscriber();
+            $unsub->activation_id = $sub_activation_id;
+            $unsub->grace = 1;
+            $unsub->save();
+            $old_sub->delete();
+        }
+
+    }
+
+
+
 }

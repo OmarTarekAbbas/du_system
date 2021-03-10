@@ -12,11 +12,7 @@ class CreateWeeklyReminderDateTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('activation', function(Blueprint $table)
-		{
-			\DB::statement("ALTER TABLE `subscribers` ADD `weekly_reminder_date` DATE NULL DEFAULT NULL AFTER `subscribe_date`;");
-            
-		});
+        \DB::statement("ALTER TABLE `subscribers` ADD `weekly_reminder_date` DATE NULL DEFAULT NULL AFTER `subscribe_date`;");
 	}
 
 
@@ -27,7 +23,6 @@ class CreateWeeklyReminderDateTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('activation');
 	}
 
 }
