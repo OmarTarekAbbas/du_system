@@ -1767,17 +1767,17 @@ $email = implode(',', $recipients);
                     $old_sub = Subscriber::findOrFail($subscriber_id );
 
                     if ($activation->plan == 'daily' ) {
-                        $old_sub->grace_days = $this->status_grace_days($status);
+                        $old_sub->grace_days = $this->status_grace_days($status,$old_sub->grace_days);
                         $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
                         $old_sub->save();
 
                     } elseif ($activation->plan == 'weekly') {
-                        $old_sub->grace_days = $this->status_grace_days($status);
+                        $old_sub->grace_days = $this->status_grace_days($status,$old_sub->grace_days);
 
                         $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 week"));
                         $old_sub->save();
                     } else { // default is daily
-                        $old_sub->grace_days = $this->status_grace_days($status);
+                        $old_sub->grace_days = $this->status_grace_days($status,$old_sub->grace_days);
                         $old_sub->next_charging_date = date('Y-m-d', strtotime($sub->next_charging_date . "+1 day"));
                         $old_sub->save();
                     }
@@ -2639,12 +2639,12 @@ $password = "P-wSYBYFVSWA-#1234";
 
     }
 
-    public function status_grace_days($status){
+    public function status_grace_days($status,$old_sub_grace_days){
 
         if($status == 0){
             $grace_days = 0;
         }else{
-            $grace_days = +1;
+            $grace_days = $old_sub_grace_days+1;
         }
         return $grace_days;
     }
