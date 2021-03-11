@@ -159,7 +159,7 @@ class WeeklyReminderDateController extends Controller
             'Total Today Charges Status Success ' => $charges_status_success_today,
             'Total Today Charges Status Fail'    => $charges_status_fail_today,
             'Total Subscribers'                  => $get_all_subscribers,
-            'Totel Today Log Messages'     => $log_messages_table_today
+            'Totel Weekly Reminder'     => $log_messages_table_today
         ];
         return response()->json( [$data] );
     }
@@ -167,7 +167,7 @@ class WeeklyReminderDateController extends Controller
     public function weekly_statistics_excel(Request $request)
     {
         if($request->service){
-            
+
             $total_today_charges = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
             ->join('subscribers','subscribers.id','=','charges.subscriber_id')
             ->join('activation','subscribers.activation_id','=','activation.id')
