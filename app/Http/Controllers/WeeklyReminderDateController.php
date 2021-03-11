@@ -110,11 +110,50 @@ class WeeklyReminderDateController extends Controller
 
     public function weekly_statistics(Request $request)
     {
-        $total_today_charges = Charge::where('charging_date',date('Y-m-d'))->count();
-        $charges_status_success_today = Charge::where('charging_date',date('Y-m-d'))->where('status_code',"0")->count();
-        $charges_status_fail_today = Charge::where('charging_date',date('Y-m-d'))->whereNotIn('status_code',['503 - product already purchased!',0])->count();
-        $get_all_subscribers = Subscriber::count();
-        $log_messages_table_today = LogMessage::whereDate('created_at',date('Y-m-d'))->where('message_type',"Weekly_Reminder")->count();
+
+        if($request->service){
+            $total_today_charges = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
+            ->join('subscribers','subscribers.id','=','charges.subscriber_id')
+            ->join('activation','subscribers.activation_id','=','activation.id')
+            ->where('charges.charging_date',date('Y-m-d'))
+            ->where('activation.serviceid',$request->service)
+            ->count();
+
+            $charges_status_success_today = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
+            ->join('subscribers','subscribers.id','=','charges.subscriber_id')
+            ->join('activation','subscribers.activation_id','=','activation.id')
+            ->where('charges.charging_date',date('Y-m-d'))
+            ->where('charges.status_code',"0")
+            ->where('activation.serviceid',$request->service)
+            ->count();
+
+            $charges_status_fail_today = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
+            ->join('subscribers','subscribers.id','=','charges.subscriber_id')
+            ->join('activation','subscribers.activation_id','=','activation.id')
+            ->where('charges.charging_date',date('Y-m-d'))
+            ->whereNotIn('charges.status_code',['503 - product already purchased!',0])
+            ->where('activation.serviceid',$request->service)
+            ->count();
+
+            $get_all_subscribers = Subscriber::select('*')
+            ->join('activation','subscribers.activation_id','=','activation.id')
+            ->where('activation.serviceid',$request->service)
+            ->count();
+
+            $log_messages_table_today = LogMessage::whereDate('created_at',date('Y-m-d'))->where('service',$request->service)->where('message_type',"Weekly_Reminder")->count();
+
+        }else{
+            $total_today_charges = Charge::where('charging_date',date('Y-m-d'))->count();
+
+            $charges_status_success_today = Charge::where('charging_date',date('Y-m-d'))->where('status_code',"0")->count();
+
+            $charges_status_fail_today = Charge::where('charging_date',date('Y-m-d'))->whereNotIn('status_code',['503 - product already purchased!',0])->count();
+
+            $get_all_subscribers = Subscriber::count();
+
+            $log_messages_table_today = LogMessage::whereDate('created_at',date('Y-m-d'))->where('message_type',"Weekly_Reminder")->count();
+
+        }
         $data['data'] = [
             'Total Today Charges'                => $total_today_charges,
             'Total Today Charges Status Success ' => $charges_status_success_today,
@@ -127,11 +166,50 @@ class WeeklyReminderDateController extends Controller
 
     public function weekly_statistics_excel(Request $request)
     {
-        $total_today_charges = Charge::where('charging_date',date('Y-m-d'))->count();
-        $charges_status_success_today = Charge::where('charging_date',date('Y-m-d'))->where('status_code',"0")->count();
-        $charges_status_fail_today = Charge::where('charging_date',date('Y-m-d'))->whereNotIn('status_code',['503 - product already purchased!',0])->count();
-        $get_all_subscribers = Subscriber::count();
-        $log_messages_table_today = LogMessage::whereDate('created_at',date('Y-m-d'))->where('message_type',"Weekly_Reminder")->count();
+        if($request->service){
+            
+            $total_today_charges = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
+            ->join('subscribers','subscribers.id','=','charges.subscriber_id')
+            ->join('activation','subscribers.activation_id','=','activation.id')
+            ->where('charges.charging_date',date('Y-m-d'))
+            ->where('activation.serviceid',$request->service)
+            ->count();
+
+            $charges_status_success_today = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
+            ->join('subscribers','subscribers.id','=','charges.subscriber_id')
+            ->join('activation','subscribers.activation_id','=','activation.id')
+            ->where('charges.charging_date',date('Y-m-d'))
+            ->where('charges.status_code',"0")
+            ->where('activation.serviceid',$request->service)
+            ->count();
+
+            $charges_status_fail_today = Charge::select('*','charges.id as charge_id','charges.status_code as charge_status_code')
+            ->join('subscribers','subscribers.id','=','charges.subscriber_id')
+            ->join('activation','subscribers.activation_id','=','activation.id')
+            ->where('charges.charging_date',date('Y-m-d'))
+            ->whereNotIn('charges.status_code',['503 - product already purchased!',0])
+            ->where('activation.serviceid',$request->service)
+            ->count();
+
+            $get_all_subscribers = Subscriber::select('*')
+            ->join('activation','subscribers.activation_id','=','activation.id')
+            ->where('activation.serviceid',$request->service)
+            ->count();
+
+            $log_messages_table_today = LogMessage::whereDate('created_at',date('Y-m-d'))->where('service',$request->service)->where('message_type',"Weekly_Reminder")->count();
+
+        }else{
+            $total_today_charges = Charge::where('charging_date',date('Y-m-d'))->count();
+
+            $charges_status_success_today = Charge::where('charging_date',date('Y-m-d'))->where('status_code',"0")->count();
+
+            $charges_status_fail_today = Charge::where('charging_date',date('Y-m-d'))->whereNotIn('status_code',['503 - product already purchased!',0])->count();
+
+            $get_all_subscribers = Subscriber::count();
+
+            $log_messages_table_today = LogMessage::whereDate('created_at',date('Y-m-d'))->where('message_type',"Weekly_Reminder")->count();
+
+        }
 
         \Excel::create('WeeklyStatisticsExcel-'.Carbon::now()->toDateString(), function($excel) use ($total_today_charges,$charges_status_success_today,$charges_status_fail_today,$get_all_subscribers,$log_messages_table_today) {
             $excel->sheet('Excel', function($sheet) use ($total_today_charges,$charges_status_success_today,$charges_status_fail_today,$get_all_subscribers,$log_messages_table_today) {
@@ -140,5 +218,5 @@ class WeeklyReminderDateController extends Controller
         })->export('xlsx');
 
     }
-    
+
 }
