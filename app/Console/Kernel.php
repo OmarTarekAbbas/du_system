@@ -54,6 +54,11 @@ class Kernel extends ConsoleKernel
                  $schedule->call('App\Http\Controllers\UrlController@todayMessagesStatus')->dailyAt('09:30');
                  $schedule->call('App\Http\Controllers\UrlController@tomorrowMessagesStatus')->dailyAt('08:31');
 
+
+                 // send weekly reminder
+                 $schedule->call('App\Http\Controllers\WeeklyReminderDateController@weekly_reminder_date')->dailyAt('11:00');
+                 $schedule->call('App\Http\Controllers\WeeklyReminderDateController@weekly_reminder_date')->dailyAt('12:00');
+
     }
 
     /**
