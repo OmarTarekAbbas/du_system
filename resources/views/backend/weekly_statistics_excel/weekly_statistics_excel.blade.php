@@ -6,7 +6,7 @@
                 <th>Total Today Charges Status Success</th>
                 <th>Total Today Charges Status Fail</th>
                 <th>Total Subscribers</th>
-                <th>Weekly Reminder</th>
+                <th>Total Weekly Reminder</th>
             </tr>
         </thead>
         <tbody>

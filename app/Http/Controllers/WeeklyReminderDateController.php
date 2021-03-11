@@ -159,7 +159,7 @@ class WeeklyReminderDateController extends Controller
             'Total Today Charges Status Success ' => $charges_status_success_today,
             'Total Today Charges Status Fail'    => $charges_status_fail_today,
             'Total Subscribers'                  => $get_all_subscribers,
-            'Totel Weekly Reminder'     => $log_messages_table_today
+            'Total Weekly Reminder'     => $log_messages_table_today
         ];
         return response()->json( [$data] );
     }
