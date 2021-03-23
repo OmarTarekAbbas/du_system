@@ -560,14 +560,7 @@ class UrlController extends Controller
         </html>';
 
 
-        $recipients = array(
-            "emad@ivas.com.eg",
-            "dalia.soliman@ivas.com.eg",
-            "sayed@ivas.com.eg",
-            "raafat.ahmed@ivas.com.eg",
-            "cr@ivas.com.eg",
-            "saad@ivas.com.eg"
-        );
+        $recipients = Helper::emails();
 
 
 $email = implode(',', $recipients);
@@ -643,14 +636,7 @@ $email = implode(',', $recipients);
         </html>';
 
 
-        $recipients = array(
-            "emad@ivas.com.eg",
-            "dalia.soliman@ivas.com.eg",
-            "sayed@ivas.com.eg",
-            "raafat.ahmed@ivas.com.eg",
-            "cr@ivas.com.eg",
-            "saad@ivas.com.eg"
-        );
+        $recipients = Helper::emails();
 
 
 $email = implode(',', $recipients);
