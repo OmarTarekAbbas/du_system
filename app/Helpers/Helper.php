@@ -29,8 +29,7 @@ class Helper {
             "dalia.soliman@ivas.com.eg",
             "sayed@ivas.com.eg",
             "raafat.ahmed@ivas.com.eg",
-            "upload@ivas.com.eg",
-            "saad@ivas.com.eg"
+            "upload@ivas.com.eg"
         );
 
         return $email_array;
