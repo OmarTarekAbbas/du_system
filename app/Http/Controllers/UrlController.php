@@ -10,6 +10,7 @@ use App\Url;
 use App\DuMo;
 use App\LogMessage;
 use Carbon\Carbon;
+use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
@@ -573,7 +574,6 @@ $email = implode(',', $recipients);
         echo "todayMessagesStatus Done" ;
 
     }
-
 
     public function tomorrowMessagesStatus(){
 
