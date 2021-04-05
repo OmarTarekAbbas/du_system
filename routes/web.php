@@ -56,7 +56,8 @@ Route::get('approveAllComing','ServicesController@approveAllComing');
 
 Route::get('admin/toSendTomorrow','ServicesController@toSendTomorrow');
 Route::get('admin/notSendTomrrow','ServicesController@notSendTomrrow');
-
+Route::get("admin/profile", "BackendController@profile")->name("admin.profile");
+Route::post("admin/profile", "BackendController@updateProfile")->name("admin.profile.submit");
 
 Route::resource('admin/services','AdminServicesController');
 Route::get('admin/services/{id}/show','AdminServicesController@show');

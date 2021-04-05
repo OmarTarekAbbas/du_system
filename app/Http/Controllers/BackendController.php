@@ -36,4 +36,16 @@ class BackendController extends Controller
 
     }
 
+    public function profile()
+    {
+        return view("backend.profile");
+    }
+
+    public function updateProfile(Request $request)
+    {
+        auth()->user()->update(['password' => \Hash::make($request->password)]);
+        session()->flash("success", "Update Password SuccessFully");
+        return back();
+    }
+
 }
